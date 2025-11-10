@@ -5,9 +5,5 @@
   "scripts": {
     "data:write": "node scripts/write-data.js",
     "gh:update-attendance-file": "node .github/update-attendance-file.js"
-  },
-  "devDependencies": {
-    "@actions/core": "^1.11.1",
-    "@types/node": "^24.10.0"
   }
 }
