@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "data:write": "node scripts/write-data.js",
-    "gh:get-attendance": "node .github/get-attendance.js"
+    "gh:get-attendance": "node .github/get-attendance.js",
+    "gh:write-attendance-file": "node .github/write-attendance-file.js"
   },
   "devDependencies": {
     "@actions/core": "^1.11.1",
