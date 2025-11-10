@@ -19,12 +19,9 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - run: npm ci
-      - id: get-attendance
-        name: Get attendance
-        run: npm run gh:get-attendance
       - id: update-attendance-file
         name: Update attendance file
-        run: npm run gh:write-attendance-file '${{ steps.get-attendance.outputs.attendance }}'
+        run: npm run gh:update-attendance-file
       - id: check-empty-file
         name: Interrupt workflow
         run: |
