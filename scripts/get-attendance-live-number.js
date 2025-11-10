@@ -26,7 +26,7 @@ export async function getAttendanceLiveNumber(
   const date = new Date(response.headers.get('date') ?? new Date());
 
   return {
-    date: date.toISOString(),
+    date,
     liveVisitors: result.value,
   };
 }
