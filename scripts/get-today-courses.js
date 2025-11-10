@@ -46,5 +46,3 @@ export async function getTodayCourses(
 
   return todayCourses;
 }
-
-await getTodayCourses();
