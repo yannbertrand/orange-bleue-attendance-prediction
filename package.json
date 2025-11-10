@@ -1,0 +1,13 @@
+{
+  "name": "orange-bleu-attendance-prediction",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "data:write": "node scripts/write-data.js",
+    "gh:get-attendance": "node scripts/get-attendance.js"
+  },
+  "devDependencies": {
+    "@actions/core": "^1.11.1",
+    "@types/node": "^24.10.0"
+  }
+}

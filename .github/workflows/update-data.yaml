@@ -1,0 +1,48 @@
+name: Update data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/10 6-23 * * *'
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci
+      - id: get-attendance
+        name: Get attendance
+        run: npm run gh:get-attendance
+      - id: update-attendance-file
+        name: Update attendance file
+        run: npm run gh:write-attendance-file '${{ steps.get-attendance.outputs.attendance }}'
+      - id: check-empty-file
+        name: Interrupt workflow
+        run: |
+          set +e
+          git diff --quiet data/attendance.json
+          DIFF_EXIT_CODE=$?
+          set -e
+
+          if [ $DIFF_EXIT_CODE -ne 0 ]; then
+              echo "attendance.json has changed"
+              echo "do-commit=true" >> $GITHUB_OUTPUT
+          else
+              echo "attendance.json has not changed"
+              echo "do-commit=false" >> $GITHUB_OUTPUT
+          fi
+      - uses: test-room-7/action-update-file@v2
+        if: steps.check-empty-file.outputs.do-commit == 'true'
+        with:
+          file-path: data/attendance.json
+          commit-msg: 📦️ Update attendance.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
