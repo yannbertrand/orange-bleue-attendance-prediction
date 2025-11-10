@@ -27,6 +27,6 @@ export async function getAttendanceLiveNumber(
 
   return {
     date: date.toISOString(),
-    value: result.value,
+    liveVisitors: result.value,
   };
 }

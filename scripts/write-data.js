@@ -1,15 +1,13 @@
-import { writeFile } from 'node:fs';
-import attendance from '../data/attendance.json' with { type: 'json' };
+import { appendFile } from 'node:fs/promises';
 
-export const updateAttendanceFile = async (newAttendanceLiveData) => {
-	const allTrips = [...attendance, newAttendanceLiveData];
+export const updateAttendanceFile = async ({ date, liveVisitors }) => {
+  const newAttendanceCsvFormattedData = `${date},${liveVisitors},,,\n`;
 
-	await writeFile(
-		'./data/attendance.json',
-		JSON.stringify(allTrips),
-		'utf8',
-		console.error,
-	);
+  await appendFile(
+    './data/attendance.csv',
+    newAttendanceCsvFormattedData,
+    'utf8'
+  );
 
-	return newAttendanceLiveData;
+  return newAttendanceCsvFormattedData;
 };

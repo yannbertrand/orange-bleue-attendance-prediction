@@ -25,20 +25,20 @@ jobs:
         name: Interrupt workflow
         run: |
           set +e
-          git diff --quiet data/attendance.json
+          git diff --quiet data/attendance.csv
           DIFF_EXIT_CODE=$?
           set -e
 
           if [ $DIFF_EXIT_CODE -ne 0 ]; then
-              echo "attendance.json has changed"
+              echo "attendance.csv has changed"
               echo "do-commit=true" >> $GITHUB_OUTPUT
           else
-              echo "attendance.json has not changed"
+              echo "attendance.csv has not changed"
               echo "do-commit=false" >> $GITHUB_OUTPUT
           fi
       - uses: test-room-7/action-update-file@v2
         if: steps.check-empty-file.outputs.do-commit == 'true'
         with:
-          file-path: data/attendance.json
-          commit-msg: 📦️ Update attendance.json
+          file-path: data/attendance.csv
+          commit-msg: 📦️ Update attendance.csv
           github-token: ${{ secrets.GITHUB_TOKEN }}
