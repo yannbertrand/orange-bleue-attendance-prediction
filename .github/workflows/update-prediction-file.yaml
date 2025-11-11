@@ -1,0 +1,44 @@
+name: Update prediction data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/10 * * * *'
+
+jobs:
+  update-prediction-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - id: update-prediction-file
+        name: Update prediction file
+        run: npm run gh:update-prediction-file
+      - id: check-empty-file
+        name: Interrupt workflow
+        run: |
+          set +e
+          git diff --quiet data/prediction.csv
+          DIFF_EXIT_CODE=$?
+          set -e
+
+          if [ $DIFF_EXIT_CODE -ne 0 ]; then
+              echo "prediction.csv has changed"
+              echo "do-commit=true" >> $GITHUB_OUTPUT
+          else
+              echo "prediction.csv has not changed"
+              echo "do-commit=false" >> $GITHUB_OUTPUT
+          fi
+      - uses: test-room-7/action-update-file@v2
+        if: steps.check-empty-file.outputs.do-commit == 'true'
+        with:
+          file-path: data/prediction.csv
+          commit-msg: 📦️ Update prediction.csv
+          github-token: ${{ secrets.GITHUB_TOKEN }}

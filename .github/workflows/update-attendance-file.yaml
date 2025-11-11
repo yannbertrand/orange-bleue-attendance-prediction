@@ -1,4 +1,4 @@
-name: Update data
+name: Update attendance data
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     - cron: '*/10 * * * *'
 
 jobs:
-  update-data:
+  update-attendance-data:
     runs-on: ubuntu-latest
     permissions:
       contents: write
