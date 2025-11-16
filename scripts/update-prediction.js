@@ -11,13 +11,13 @@ export const updatePredictionFile = async (courses) => {
     if (fileContent.includes(courseStartDateString)) {
       // Update lines
       const courseLineRegex = new RegExp(
-        `(${courseStartDateString}),(\\d*),(\\d*),(.+?),(?<status>.+?)\n(${courseEndDateString}),(\\d*),(\\d*),(.+?),(.+?)\n`
+        `(${courseStartDateString}),(\\d*),(\\d*),${course.name},(.+?)\n`
       );
       if (courseLineRegex.test(fileContent)) {
         const beforeFileContent = fileContent;
         fileContent = fileContent.replace(
           courseLineRegex,
-          `${courseStartDateString},${course.bookedParticipants},${course.bookedParticipants},${course.name},${course.appointmentStatus}\n${courseEndDateString},0,0,${course.name},FINISHED\n`
+          `${courseStartDateString},${course.bookedParticipants},${course.bookedParticipants},${course.name},${course.appointmentStatus}\n`
         );
 
         if (fileContent !== beforeFileContent) {
