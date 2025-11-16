@@ -8,21 +8,19 @@ export const updatePredictionFile = async (courses) => {
   for (const course of courses) {
     const courseStartDateString = course.startDateTime.toISOString();
     const courseEndDateString = course.endDateTime.toISOString();
-    if (fileContent.includes(courseStartDateString)) {
+    const courseLineRegex = new RegExp(
+      `(${courseStartDateString}),(\\d*),(\\d*),${course.name},(.+?)\n`
+    );
+    if (courseLineRegex.test(fileContent)) {
       // Update lines
-      const courseLineRegex = new RegExp(
-        `(${courseStartDateString}),(\\d*),(\\d*),${course.name},(.+?)\n`
+      const beforeFileContent = fileContent;
+      fileContent = fileContent.replace(
+        courseLineRegex,
+        `${courseStartDateString},${course.bookedParticipants},${course.bookedParticipants},${course.name},${course.appointmentStatus}\n`
       );
-      if (courseLineRegex.test(fileContent)) {
-        const beforeFileContent = fileContent;
-        fileContent = fileContent.replace(
-          courseLineRegex,
-          `${courseStartDateString},${course.bookedParticipants},${course.bookedParticipants},${course.name},${course.appointmentStatus}\n`
-        );
 
-        if (fileContent !== beforeFileContent) {
-          nbOfUpdatedRows++;
-        }
+      if (fileContent !== beforeFileContent) {
+        nbOfUpdatedRows++;
       }
     } else {
       // Create lines
