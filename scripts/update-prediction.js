@@ -11,13 +11,13 @@ export const updatePredictionFile = async (courses) => {
     if (fileContent.includes(courseStartDateString)) {
       // Update lines
       const courseLineRegex = new RegExp(
-        `(${courseStartDateString}),(\\d*),(\\d*),(.+?),(.+?)\n`
+        `(${courseStartDateString}),(\\d*),(\\d*),(.+?),(?<status>.+?)\n(${courseEndDateString}),(\\d*),(\\d*),(.+?),(.+?)\n`
       );
       if (courseLineRegex.test(fileContent)) {
         const beforeFileContent = fileContent;
         fileContent = fileContent.replace(
           courseLineRegex,
-          `${courseStartDateString},${course.bookedParticipants},${course.bookedParticipants},${course.name},${course.appointmentStatus}\n`
+          `${courseStartDateString},${course.bookedParticipants},${course.bookedParticipants},${course.name},${course.appointmentStatus}\n${courseEndDateString},0,0,${course.name},FINISHED\n`
         );
 
         if (fileContent !== beforeFileContent) {
@@ -28,7 +28,7 @@ export const updatePredictionFile = async (courses) => {
       // Create lines
       const lineContentStart = `${courseStartDateString},${course.bookedParticipants},${course.bookedParticipants},${course.name},${course.appointmentStatus}\n`;
       fileContent += lineContentStart;
-      const lineContentEnd = `${courseEndDateString},0,0,${course.name},${course.appointmentStatus}\n`;
+      const lineContentEnd = `${courseEndDateString},0,0,${course.name},FINISHED\n`;
       fileContent += lineContentEnd;
       nbOfNewRows++;
     }
