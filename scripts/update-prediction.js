@@ -32,6 +32,34 @@ export const updatePredictionFile = async (courses) => {
     }
   }
 
+  // Remove conflicting courses
+  console.log('aaa');
+  const fileContentAsArray = fileContent.split('\n');
+  console.log('bbb');
+  for (const [index, currentLine] of fileContentAsArray.entries()) {
+    const nextLine = fileContentAsArray[index + 1];
+    if (nextLine === undefined) {
+      break;
+    }
+    const currentLineFields = currentLine.split(',');
+    const nextLineFields = nextLine.split(',');
+
+    const currentLineDate = currentLineFields[0];
+    const nextLineDate = nextLineFields[0];
+    if (currentLineDate === nextLineDate) {
+      const currentLineStatus = currentLineFields[4];
+
+      if (currentLineStatus === 'FINISHED') {
+        fileContent = fileContent.replace(
+          new RegExp(
+            `${currentLineFields[0]},${currentLineFields[1]},${currentLineFields[2]},${currentLineFields[3]},${currentLineFields[4]}\n`
+          ),
+          ''
+        );
+      }
+    }
+  }
+
   await writeFile('./data/prediction.csv', fileContent, 'utf8');
 
   return { nbOfUpdatedRows, nbOfNewRows };
