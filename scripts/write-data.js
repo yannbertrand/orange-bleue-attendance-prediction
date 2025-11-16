@@ -2,12 +2,12 @@ import { appendFile } from 'node:fs/promises';
 
 export const updateAttendanceFile = async ({
   date,
-  liveVisitors,
+  visitors,
   courseParticipants,
   courseName,
   courseStatus,
 }) => {
-  const newAttendanceCsvFormattedData = `${date.toISOString()},${liveVisitors},${courseParticipants},${courseName},${courseStatus}\n`;
+  const newAttendanceCsvFormattedData = `${date.toISOString()},${visitors},${courseParticipants},${courseName},${courseStatus}\n`;
 
   await appendFile(
     './data/attendance.csv',

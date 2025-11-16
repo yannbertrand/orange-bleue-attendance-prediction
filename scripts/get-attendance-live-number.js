@@ -27,6 +27,6 @@ export async function getAttendanceLiveNumber(
 
   return {
     date,
-    liveVisitors: result.value,
+    visitors: result.value,
   };
 }
