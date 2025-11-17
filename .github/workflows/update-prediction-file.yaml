@@ -3,7 +3,7 @@ name: Update prediction data
 on:
   workflow_dispatch:
   schedule:
-    - cron: '50 * * * *'
+    - cron: '50 */2 * * *'
 
 jobs:
   update-prediction-data:
