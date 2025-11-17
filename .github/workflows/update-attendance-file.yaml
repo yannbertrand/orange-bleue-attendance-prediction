@@ -3,7 +3,8 @@ name: Update attendance data
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/20 * * * *'
+    - cron: '*/20 6-23 * * *'
+    - cron: '25 0-5 * * *'
 
 jobs:
   update-attendance-data:
