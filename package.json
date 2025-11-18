@@ -4,7 +4,11 @@
   "type": "module",
   "scripts": {
     "data:write": "node scripts/write-data.js",
+    "deploy:prod": "netlify deploy --prod",
     "gh:update-attendance-file": "node .github/update-attendance-file.js",
     "gh:update-prediction-file": "node .github/update-prediction-file.js"
+  },
+  "devDependencies": {
+    "netlify-cli": "23.9.5"
   }
 }
