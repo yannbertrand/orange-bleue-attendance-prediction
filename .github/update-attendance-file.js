@@ -20,19 +20,21 @@ try {
     });
     const liveCourse = getCourse(foundCourse);
 
-    console.log(`Got 1 new data row`);
+    const newEvent = { ...attendance, ...liveCourse };
+    console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-    await updateAttendanceFile({ ...attendance, ...liveCourse });
+    await updateAttendanceFile(newEvent);
 
-    console.log('Saved 1 new data row');
+    console.log(`Saved 1 new data row`);
   } else {
     const currentAttendance = await readAttendanceFile();
     const lastAttendanceEvent = currentAttendance.at(-1);
     if (lastAttendanceEvent?.visitors !== 0) {
       if (liveAttendance.visitors > 0) {
-        console.log(`Got 1 new data row`);
+        const newEvent = { ...attendance, ...getCourse() };
+        console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-        await updateAttendanceFile({ ...attendance, ...getCourse() });
+        await updateAttendanceFile(newEvent);
 
         console.log('Saved 1 new data row');
       } else {
@@ -48,7 +50,9 @@ try {
           date = new Date(date.getTime() + 20 * 60 * 1000);
         }
 
-        console.log(`Got ${newEvents.length} new data row`);
+        console.log(
+          `Got ${newEvents.length} new data row: ${JSON.stringify(newEvents)}`
+        );
 
         for (const event of newEvents) {
           await updateAttendanceFile(event);
