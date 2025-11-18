@@ -48,7 +48,7 @@ try {
         // Last visitor left
         let date = attendance.date;
         const newEvents = [];
-        while (date.getHours() < 6) {
+        while (date.getUTCHours() < 5) {
           newEvents.push({
             date,
             visitors: 0,
@@ -86,6 +86,6 @@ function getCourse({ bookedParticipants, name, appointmentStatus } = {}) {
 
 function isDayTime() {
   const today = new Date();
-  const currentHours = today.getHours();
-  return currentHours >= 6 && currentHours < 24;
+  const currentHours = today.getUTCHours();
+  return currentHours >= 5 && currentHours < 23;
 }
