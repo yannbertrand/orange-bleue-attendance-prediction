@@ -1,5 +1,6 @@
 import { getAttendanceLiveNumber } from '../scripts/get-attendance-live-number.js';
 import { getTodayCourses } from '../scripts/get-today-courses.js';
+import { readAttendanceFile } from '../scripts/read-data.js';
 import { updateAttendanceFile } from '../scripts/write-data.js';
 
 try {
@@ -9,24 +10,75 @@ try {
     visitors: liveAttendance.visitors,
   };
 
-  const todayCourses = await getTodayCourses();
-  const foundCourse = todayCourses.find((course) => {
-    return (
-      course.startDateTime <= attendance.date &&
-      attendance.date <= course.endDateTime
-    );
-  });
-  const liveCourse = {
-    courseParticipants: foundCourse?.bookedParticipants ?? '',
-    courseName: foundCourse?.name ?? '',
-    courseStatus: foundCourse?.appointmentStatus ?? '',
-  };
+  if (isDayTime()) {
+    const todayCourses = await getTodayCourses();
+    const foundCourse = todayCourses.find((course) => {
+      return (
+        course.startDateTime <= attendance.date &&
+        attendance.date <= course.endDateTime
+      );
+    });
+    const liveCourse = getCourse(foundCourse);
 
-  console.log(`Got 1 new data row`);
+    console.log(`Got 1 new data row`);
 
-  await updateAttendanceFile({ ...attendance, ...liveCourse });
+    await updateAttendanceFile({ ...attendance, ...liveCourse });
 
-  console.log('Saved 1 new data row');
+    console.log('Saved 1 new data row');
+  } else {
+    const currentAttendance = await readAttendanceFile();
+    const lastAttendanceEvent = currentAttendance.at(-1);
+    if (lastAttendanceEvent?.visitors !== 0) {
+      if (liveAttendance.visitors > 0) {
+        console.log(`Got 1 new data row`);
+
+        await updateAttendanceFile({ ...attendance, ...getCourse() });
+
+        console.log('Saved 1 new data row');
+      } else {
+        // Last visitor left
+        let date = attendance.date;
+        const newEvents = [];
+        while (date.getHours() < 6) {
+          newEvents.push({
+            date,
+            visitors: 0,
+            ...getCourse(),
+          });
+          date = new Date(date.getTime() + 20 * 60 * 1000);
+        }
+
+        console.log(`Got ${newEvents.length} new data row`);
+
+        for (const event of newEvents) {
+          await updateAttendanceFile(event);
+        }
+        console.log({ newEvents });
+
+        console.log(`Saved ${newEvents.length} new data row`);
+      }
+    } else {
+      // Already saved night events
+    }
+  }
 } catch (error) {
   console.error(`Could not get attendance ${error}`);
+}
+
+function getCourse({
+  bookedParticipants = '',
+  name = '',
+  appointmentStatus = '',
+}) {
+  return {
+    courseParticipants: bookedParticipants,
+    courseName: name,
+    courseStatus: appointmentStatus,
+  };
+}
+
+function isDayTime() {
+  const today = new Date();
+  const currentHours = today.getHours();
+  return currentHours >= 6 && currentHours < 24;
 }
