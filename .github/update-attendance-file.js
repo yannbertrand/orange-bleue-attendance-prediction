@@ -69,15 +69,11 @@ try {
   console.error(`Could not get attendance ${error}`);
 }
 
-function getCourse({
-  bookedParticipants = '',
-  name = '',
-  appointmentStatus = '',
-}) {
+function getCourse({ bookedParticipants, name, appointmentStatus }) {
   return {
-    courseParticipants: bookedParticipants,
-    courseName: name,
-    courseStatus: appointmentStatus,
+    courseParticipants: bookedParticipants ?? '',
+    courseName: name ?? '',
+    courseStatus: appointmentStatus ?? '',
   };
 }
 
