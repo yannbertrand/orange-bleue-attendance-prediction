@@ -31,19 +31,19 @@ try {
   } else {
     console.log(`It's night time!`);
 
-    const currentAttendance = await readAttendanceFile();
-    const lastAttendanceEvent = currentAttendance.at(-1);
-    if (lastAttendanceEvent?.visitors !== 0) {
-      if (liveAttendance.visitors > 0) {
-        console.log(`Still at least one visitors, saving as usual`);
+    if (liveAttendance.visitors > 0) {
+      console.log(`Still at least one visitors, saving as usual`);
 
-        const newEvent = { ...attendance, ...getCourse() };
-        console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
+      const newEvent = { ...attendance, ...getCourse() };
+      console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-        await updateAttendanceFile(newEvent);
+      await updateAttendanceFile(newEvent);
 
-        console.log('Saved 1 new data row');
-      } else {
+      console.log('Saved 1 new data row');
+    } else {
+      const currentAttendance = await readAttendanceFile();
+      const lastAttendanceEvent = currentAttendance.at(-1);
+      if (lastAttendanceEvent?.visitors > 0) {
         console.log(`Last visitor left, saving all night events (0 visitors)`);
         // Last visitor left
         let date = attendance.date;
@@ -67,9 +67,9 @@ try {
         console.log({ newEvents });
 
         console.log(`Saved ${newEvents.length} new data row`);
+      } else {
+        console.log(`Already saved night visits`);
       }
-    } else {
-      // Already saved night events
     }
   }
 } catch (error) {
