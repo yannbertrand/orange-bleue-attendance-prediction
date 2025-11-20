@@ -2,10 +2,21 @@ import { readFile } from 'node:fs/promises';
 
 export const readAttendanceFile = async () => {
   const attendanceFileContent = await readFile('./data/attendance.csv', 'utf8');
-  const attendanceLines = attendanceFileContent.split('\n');
+
+  return getEventsFromCsv(attendanceFileContent);
+};
+
+export function getEventsFromCsv(csvData) {
+  const attendanceLines = csvData.split('\n');
+  if (attendanceLines[0].startsWith('date')) {
+    attendanceLines.splice(1, 1);
+  }
+  if (attendanceLines.at(-1) === '') {
+    attendanceLines.splice(-1, 1);
+  }
 
   const result = [];
-  for (let index = 1; index < attendanceLines.length - 1; index++) {
+  for (let index = 0; index < attendanceLines.length; index++) {
     const attendanceLine = attendanceLines[index].split(',');
     const line = {
       date: new Date(attendanceLine[0]),
@@ -18,7 +29,7 @@ export const readAttendanceFile = async () => {
   }
 
   return result;
-};
+}
 
 export const groupPerDay = (attendanceData) => {
   return attendanceData.reduce((result, value) => {

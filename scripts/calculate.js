@@ -1,3 +1,5 @@
+import { getEventsFromCsv } from './read-data.js';
+
 const visitDuration = 2 * 60 * 60 * 1000;
 
 export function simulateOccupation(evolution) {
@@ -10,7 +12,7 @@ export function simulateOccupation(evolution) {
 }
 
 export function estimateEvolution(csvData) {
-  const events = readCsvData(csvData);
+  const events = getEventsFromCsv(csvData);
 
   let visitors = [];
   const result = [];
@@ -111,23 +113,4 @@ class Visitor {
   shouldLeave(date) {
     return date >= this.#departure;
   }
-}
-
-export function readCsvData(csvData) {
-  const attendanceLines = csvData.split('\n');
-
-  const result = [];
-  for (let index = 0; index < attendanceLines.length; index++) {
-    const attendanceLine = attendanceLines[index].split(',');
-    const line = {
-      date: new Date(attendanceLine[0]),
-      visitors: Number.parseInt(attendanceLine[1], 10),
-      //   courseParticipants: Number.parseInt(attendanceLine[2], 10),
-      //   courseName: attendanceLine[3],
-      //   courseStatus: attendanceLine[4],
-    };
-    result.push(line);
-  }
-
-  return result;
 }
