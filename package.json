@@ -3,12 +3,15 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "calculate": "node scripts/calculate.js",
     "data:write": "node scripts/write-data.js",
     "deploy:prod": "netlify deploy --prod",
+    "test": "vitest",
     "gh:update-attendance-file": "node .github/update-attendance-file.js",
     "gh:update-prediction-file": "node .github/update-prediction-file.js"
   },
   "devDependencies": {
-    "netlify-cli": "23.9.5"
+    "netlify-cli": "23.9.5",
+    "vitest": "4.0.10"
   }
 }
