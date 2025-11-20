@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { estimateEvolution, simulateOccupation } from './calculate.js';
+import { getEventsFromCsv } from './read-data.js';
 
 describe('estimateEvolution', () => {
   it('should count visitors arriving', () => {
-    const csvData = `2025-11-18T05:00:00.000Z,0,,,
-2025-11-18T05:30:00.000Z,2,,,`;
+    const csvData = getEventsFromCsv(`2025-11-18T05:00:00.000Z,0,,,
+2025-11-18T05:30:00.000Z,2,,,`);
 
     expect(estimateEvolution(csvData)).toStrictEqual([
       {
@@ -25,9 +26,9 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors arriving at different times', () => {
-    const csvData = `2025-11-18T05:00:00.000Z,0,,,
+    const csvData = getEventsFromCsv(`2025-11-18T05:00:00.000Z,0,,,
 2025-11-18T05:30:00.000Z,2,,,
-2025-11-18T06:00:00.000Z,5,,,`;
+2025-11-18T06:00:00.000Z,5,,,`);
 
     expect(estimateEvolution(csvData)).toStrictEqual([
       {
@@ -55,8 +56,8 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors leaving', () => {
-    const csvData = `2025-11-18T05:30:00.000Z,6,,,
-2025-11-18T07:00:00.000Z,2,,,`;
+    const csvData = getEventsFromCsv(`2025-11-18T05:30:00.000Z,6,,,
+2025-11-18T07:00:00.000Z,2,,,`);
 
     expect(estimateEvolution(csvData)).toStrictEqual([
       {
@@ -77,8 +78,8 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors leaving because of 2h timeout', () => {
-    const csvData = `2025-11-18T05:00:00.000Z,6,,,
-2025-11-18T07:00:00.000Z,6,,,`;
+    const csvData = getEventsFromCsv(`2025-11-18T05:00:00.000Z,6,,,
+2025-11-18T07:00:00.000Z,6,,,`);
 
     expect(estimateEvolution(csvData)).toStrictEqual([
       {
@@ -99,9 +100,9 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors leaving at different times', () => {
-    const csvData = `2025-11-18T05:00:00.000Z,6,,,
+    const csvData = getEventsFromCsv(`2025-11-18T05:00:00.000Z,6,,,
 2025-11-18T06:30:00.000Z,3,,,
-2025-11-18T07:00:00.000Z,2,,,`;
+2025-11-18T07:00:00.000Z,2,,,`);
 
     expect(estimateEvolution(csvData)).toStrictEqual([
       {
@@ -129,7 +130,7 @@ describe('estimateEvolution', () => {
   });
 
   it('should return visitors arrivals', () => {
-    const csvData = `2025-11-18T04:35:59.000Z,0,,,
+    const csvData = getEventsFromCsv(`2025-11-18T04:35:59.000Z,0,,,
 2025-11-18T05:33:36.000Z,1,,,
 2025-11-18T06:08:08.000Z,2,,,
 2025-11-18T06:48:49.000Z,2,,,
@@ -149,7 +150,7 @@ describe('estimateEvolution', () => {
 2025-11-18T11:27:09.000Z,25,,,
 2025-11-18T11:44:04.000Z,26,10,ABDOS FESSIERS,PLANNED
 2025-11-18T12:09:06.000Z,26,,,
-2025-11-18T12:33:04.000Z,26,,,`;
+2025-11-18T12:33:04.000Z,26,,,`);
 
     expect(estimateEvolution(csvData)).toStrictEqual([
       {

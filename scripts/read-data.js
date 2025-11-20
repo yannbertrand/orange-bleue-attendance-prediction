@@ -9,7 +9,7 @@ export const readAttendanceFile = async () => {
 export function getEventsFromCsv(csvData) {
   const attendanceLines = csvData.split('\n');
   if (attendanceLines[0].startsWith('date')) {
-    attendanceLines.splice(1, 1);
+    attendanceLines.splice(0, 1);
   }
   if (attendanceLines.at(-1) === '') {
     attendanceLines.splice(-1, 1);

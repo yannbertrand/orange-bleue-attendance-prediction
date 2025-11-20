@@ -1,14 +1,19 @@
+import { estimateEvolution } from '../scripts/calculate.js';
 import { getAttendanceLiveNumber } from '../scripts/get-attendance-live-number.js';
 import { getTodayCourses } from '../scripts/get-today-courses.js';
 import { readAttendanceFile } from '../scripts/read-data.js';
 import { updateAttendanceFile } from '../scripts/write-data.js';
 
 try {
+  const pastAttendance = await readAttendanceFile();
   const liveAttendance = await getAttendanceLiveNumber();
-  const attendance = {
+  const attendance = getAttendance({
     date: liveAttendance.date,
     visitors: liveAttendance.visitors,
-  };
+  });
+  const evolution = getEvolution(
+    estimateEvolution([pastAttendance.at(-1), attendance]).at(-1)
+  );
 
   if (isDayTime()) {
     console.log(`It's daytime!`);
@@ -22,7 +27,7 @@ try {
     });
     const liveCourse = getCourse(foundCourse);
 
-    const newEvent = { ...attendance, ...liveCourse };
+    const newEvent = { ...attendance, ...evolution, ...liveCourse };
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
     await updateAttendanceFile(newEvent);
@@ -34,7 +39,7 @@ try {
     if (liveAttendance.visitors > 0) {
       console.log(`Still at least one visitors, saving as usual`);
 
-      const newEvent = { ...attendance, ...getCourse() };
+      const newEvent = { ...attendance, ...evolution, ...getCourse() };
       console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
       await updateAttendanceFile(newEvent);
@@ -50,8 +55,12 @@ try {
         const newEvents = [];
         while (date.getUTCHours() < 5) {
           newEvents.push({
-            date,
-            visitors: 0,
+            ...getAttendance({ date, visitors: 0 }),
+            ...getEvolution({
+              arrived: 0,
+              leftOfTimeout: 0,
+              leftBeforeTimeout: 0,
+            }),
             ...getCourse(),
           });
           date = new Date(date.getTime() + 20 * 60 * 1000);
@@ -74,6 +83,21 @@ try {
   }
 } catch (error) {
   console.error(`Could not get attendance ${error}`);
+}
+
+function getAttendance({ date, visitors } = {}) {
+  return {
+    date: date,
+    visitors: visitors,
+  };
+}
+
+function getEvolution({ arrived, leftOfTimeout, leftBeforeTimeout } = {}) {
+  return {
+    arrived: arrived,
+    leftOfTimeout: leftOfTimeout,
+    leftBeforeTimeout: leftBeforeTimeout,
+  };
 }
 
 function getCourse({ bookedParticipants, name, appointmentStatus } = {}) {

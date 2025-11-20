@@ -1,5 +1,3 @@
-import { getEventsFromCsv } from './read-data.js';
-
 const visitDuration = 2 * 60 * 60 * 1000;
 
 export function simulateOccupation(evolution) {
@@ -11,9 +9,7 @@ export function simulateOccupation(evolution) {
   return result;
 }
 
-export function estimateEvolution(csvData) {
-  const events = getEventsFromCsv(csvData);
-
+export function estimateEvolution(events) {
   let visitors = [];
   const result = [];
   for (const [i, event] of Object.entries(events)) {
