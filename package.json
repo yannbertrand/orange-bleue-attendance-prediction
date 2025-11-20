@@ -11,7 +11,7 @@
     "gh:update-prediction-file": "node .github/update-prediction-file.js"
   },
   "devDependencies": {
-    "netlify-cli": "23.9.5",
+    "netlify-cli": "23.11.1",
     "vitest": "4.0.10"
   }
 }
