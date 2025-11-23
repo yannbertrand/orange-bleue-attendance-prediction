@@ -3,8 +3,12 @@ name: Update attendance data
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/20 5-22 * * *'
-    - cron: '25 23,0,1 * * *'
+    - cron: '*/30 5-10,13-15,20-22 * * MON-FRI' # 6h-11h, 14h-16h, 21h-23h
+    - cron: '*/20 11-13,16-19 * * MON-FRI' # 12h-14h,17h-20h
+    - cron: '*/30 5-7,14-22 * * SAT' # 8h-14h
+    - cron: '*/20 8-13 * * SAT' # 8h-14h
+    - cron: '*/30 2-22 * * SUN'
+    - cron: '25 23,0,1 * * *' # 0h-2h
 
 jobs:
   update-attendance-data:
