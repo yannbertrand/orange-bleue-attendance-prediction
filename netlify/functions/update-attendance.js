@@ -33,10 +33,6 @@ export default async () => {
         );
       });
       const liveCourse = getCourse(foundCourse);
-      console.log(blobs.at(-1));
-      console.log(pastAttendance);
-      console.log(attendance);
-      console.log(pastAttendance);
       console.log(JSON.stringify(evolution));
 
       const newEvent = { ...attendance, ...evolution, ...liveCourse };
