@@ -20,13 +20,8 @@ export default async () => {
       pastAttendance = await store.get(foundPastAttendanceBlob.key, {
         type: 'json',
       });
-      pastAttendance.date = new Date(pastAttendance.date);
-    } else {
-      pastAttendance = {
-        date: new Date(),
-        visitors: 0,
-      };
     }
+    pastAttendance = getAttendance(pastAttendance);
     const liveAttendance = await getAttendanceLiveNumber();
     const attendance = getAttendance({
       date: liveAttendance.date,
