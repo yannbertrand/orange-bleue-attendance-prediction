@@ -35,8 +35,10 @@ export default async () => {
         );
       });
       const liveCourse = getCourse(foundCourse);
+      console.log(JSON.stringify(pastAttendance.at(-1)));
+      console.log(pastAttendance[pastAttendance.length - 1]);
+      console.log(pastAttendance);
       console.log(JSON.stringify(evolution));
-      console.log(JSON.stringify(pastAttendance.at(-1), pastAttendance));
 
       const newEvent = { ...attendance, ...evolution, ...liveCourse };
       console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
