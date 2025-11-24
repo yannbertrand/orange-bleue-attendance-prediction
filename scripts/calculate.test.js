@@ -5,10 +5,10 @@ import { getEventsFromCsv } from './read-data.js';
 
 describe('estimateEvolution', () => {
   it('should count visitors arriving', () => {
-    const csvData = getEventsFromCsv(`2025-11-18T05:00:00.000Z,0,,,
+    const events = getEventsFromCsv(`2025-11-18T05:00:00.000Z,0,,,
 2025-11-18T05:30:00.000Z,2,,,`);
 
-    expect(estimateEvolution(csvData)).toStrictEqual([
+    expect(estimateEvolution(events)).toStrictEqual([
       {
         date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
         arrived: 0,
@@ -27,11 +27,11 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors arriving at different times', () => {
-    const csvData = getEventsFromCsv(`2025-11-18T05:00:00.000Z,0,,,
+    const events = getEventsFromCsv(`2025-11-18T05:00:00.000Z,0,,,
 2025-11-18T05:30:00.000Z,2,,,
 2025-11-18T06:00:00.000Z,5,,,`);
 
-    expect(estimateEvolution(csvData)).toStrictEqual([
+    expect(estimateEvolution(events)).toStrictEqual([
       {
         date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
         arrived: 0,
@@ -57,10 +57,10 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors leaving', () => {
-    const csvData = getEventsFromCsv(`2025-11-18T05:30:00.000Z,6,,,
+    const events = getEventsFromCsv(`2025-11-18T05:30:00.000Z,6,,,
 2025-11-18T07:00:00.000Z,2,,,`);
 
-    expect(estimateEvolution(csvData)).toStrictEqual([
+    expect(estimateEvolution(events)).toStrictEqual([
       {
         date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
         arrived: 6,
@@ -79,10 +79,10 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors leaving because of 2h timeout', () => {
-    const csvData = getEventsFromCsv(`2025-11-18T05:00:00.000Z,6,,,
+    const events = getEventsFromCsv(`2025-11-18T05:00:00.000Z,6,,,
 2025-11-18T07:00:00.000Z,6,,,`);
 
-    expect(estimateEvolution(csvData)).toStrictEqual([
+    expect(estimateEvolution(events)).toStrictEqual([
       {
         date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
         arrived: 6,
@@ -131,7 +131,7 @@ describe('estimateEvolution', () => {
   });
 
   it('should return visitors arrivals', () => {
-    const csvData = getEventsFromCsv(`2025-11-18T04:35:59.000Z,0,,,
+    const events = getEventsFromCsv(`2025-11-18T04:35:59.000Z,0,,,
 2025-11-18T05:33:36.000Z,1,,,
 2025-11-18T06:08:08.000Z,2,,,
 2025-11-18T06:48:49.000Z,2,,,
@@ -153,7 +153,7 @@ describe('estimateEvolution', () => {
 2025-11-18T12:09:06.000Z,26,,,
 2025-11-18T12:33:04.000Z,26,,,`);
 
-    expect(estimateEvolution(csvData)).toStrictEqual([
+    expect(estimateEvolution(events)).toStrictEqual([
       {
         date: Temporal.Instant.from('2025-11-18T04:35:59.000Z'),
         arrived: 0,
