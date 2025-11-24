@@ -4,7 +4,7 @@ import { getAttendanceLiveNumber } from '../../scripts/get-attendance-live-numbe
 import { getTodayCourses } from '../../scripts/get-today-courses.js';
 
 export const config = {
-  schedule: '*/5 * * * *',
+  schedule: '*/2 * * * *',
 };
 
 export default async () => {
