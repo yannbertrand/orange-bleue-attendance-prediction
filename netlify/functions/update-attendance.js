@@ -19,7 +19,7 @@ export default async () => {
       visitors: liveAttendance.visitors,
     });
     const evolution = getEvolution(
-      estimateEvolution([pastAttendance, attendance]).at(-1)
+      estimateEvolution([pastAttendance, attendance])
     );
 
     if (isDayTime()) {
@@ -34,6 +34,8 @@ export default async () => {
       });
       const liveCourse = getCourse(foundCourse);
       console.log(blobs.at(-1));
+      console.log(pastAttendance);
+      console.log(attendance);
       console.log(pastAttendance);
       console.log(JSON.stringify(evolution));
 
