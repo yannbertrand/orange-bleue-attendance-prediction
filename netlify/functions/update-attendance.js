@@ -39,7 +39,7 @@ export default async () => {
       const newEvent = { ...attendance, ...evolution, ...liveCourse };
       console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-      await store.setJSON(attendance.date, newEvent);
+      await store.setJSON(attendance.date.toISOString(), newEvent);
 
       console.log(`Saved 1 new data row`);
     } else {
@@ -48,7 +48,7 @@ export default async () => {
       const newEvent = { ...attendance, ...evolution, ...getCourse() };
       console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-      await store.setJSON(attendance.date, newEvent);
+      await store.setJSON(attendance.date.toISOString(), newEvent);
 
       console.log('Saved 1 new data row');
     }
