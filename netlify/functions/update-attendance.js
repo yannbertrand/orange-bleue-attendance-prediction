@@ -18,7 +18,10 @@ export default async () => {
       visitors: liveAttendance.visitors,
     });
     const evolution = getEvolution(
-      estimateEvolution([pastAttendance.at(-1), attendance]).at(-1)
+      estimateEvolution([
+        { date: '2025-11-24T05:37:15.000Z', visitors: 0 },
+        attendance,
+      ]).at(-1)
     );
 
     if (isDayTime()) {
