@@ -12,19 +12,27 @@ export default async () => {
 
   try {
     const { blobs } = await store.list();
-    const pastAttendance = JSON.parse(await store.get(blobs.at(-1)?.key));
+    const foundPastAttendanceBlob = blobs.at(-1);
+    let pastAttendance;
+    if (foundPastAttendanceBlob) {
+      pastAttendance = await store.get(foundPastAttendanceBlob.key, {
+        type: 'json',
+      });
+      pastAttendance.date = new Date(pastAttendance.date);
+    } else {
+      pastAttendance = {
+        date: new Date(),
+        visitors: 0,
+      };
+    }
     const liveAttendance = await getAttendanceLiveNumber();
     const attendance = getAttendance({
       date: liveAttendance.date,
       visitors: liveAttendance.visitors,
     });
-    console.log(blobs.at(-1));
     console.log({ pastAttendance });
     const evolution = getEvolution(
-      estimateEvolution([
-        { date: new Date(pastAttendance.date), ...pastAttendance },
-        attendance,
-      ])
+      estimateEvolution([pastAttendance, attendance])
     );
 
     if (isDayTime()) {
