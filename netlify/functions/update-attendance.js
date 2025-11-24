@@ -12,58 +12,53 @@ export const config = {
 export default async () => {
   const store = getStore('attendance');
 
-  try {
-    const { blobs } = await store.list();
-    const foundPastAttendanceBlob = blobs.at(-1);
-    let pastAttendance;
-    if (foundPastAttendanceBlob) {
-      pastAttendance = await store.get(foundPastAttendanceBlob.key, {
-        type: 'json',
-      });
-    }
-    pastAttendance = getAttendance(pastAttendance);
-    const liveAttendance = await getAttendanceLiveNumber();
-    const attendance = getAttendance({
-      date: liveAttendance.date,
-      visitors: liveAttendance.visitors,
+  const { blobs } = await store.list();
+  const foundPastAttendanceBlob = blobs.at(-1);
+  let pastAttendance;
+  if (foundPastAttendanceBlob) {
+    pastAttendance = await store.get(foundPastAttendanceBlob.key, {
+      type: 'json',
     });
-    const evolution = getEvolution(
-      estimateEvolution([pastAttendance, attendance]).at(-1)
-    );
-
-    if (isDayTime()) {
-      console.log(`It's daytime!`);
-
-      const todayCourses = await getTodayCourses();
-      const foundCourse = todayCourses.find((course) => {
-        return (
-          Temporal.Instant.compare(course.startDateTime, attendance.date) <=
-            0 &&
-          Temporal.Instant.compare(attendance.date, course.endDateTime) <= 0
-        );
-      });
-      const liveCourse = getCourse(foundCourse);
-
-      const newEvent = { ...attendance, ...evolution, ...liveCourse };
-      console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
-
-      await store.setJSON(attendance.date.toString(), newEvent);
-
-      console.log(`Saved 1 new data row`);
-    } else {
-      console.log(`It's night time!`);
-
-      const newEvent = { ...attendance, ...evolution, ...getCourse() };
-      console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
-
-      await store.setJSON(attendance.date.toString(), newEvent);
-
-      console.log('Saved 1 new data row');
-    }
-  } catch (error) {
-    console.error(`Could not get attendance`);
-    console.log(error);
   }
+  pastAttendance = getAttendance(pastAttendance);
+  const liveAttendance = await getAttendanceLiveNumber();
+  const attendance = getAttendance({
+    date: liveAttendance.date,
+    visitors: liveAttendance.visitors,
+  });
+  const evolution = getEvolution(
+    estimateEvolution([pastAttendance, attendance]).at(-1)
+  );
+
+  if (isDayTime()) {
+    console.log(`It's daytime!`);
+
+    const todayCourses = await getTodayCourses();
+    const foundCourse = todayCourses.find((course) => {
+      return (
+        Temporal.Instant.compare(course.startDateTime, attendance.date) <= 0 &&
+        Temporal.Instant.compare(attendance.date, course.endDateTime) <= 0
+      );
+    });
+    const liveCourse = getCourse(foundCourse);
+
+    const newEvent = { ...attendance, ...evolution, ...liveCourse };
+    console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
+
+    await store.setJSON(attendance.date.toString(), newEvent);
+
+    console.log(`Saved 1 new data row`);
+  } else {
+    console.log(`It's night time!`);
+
+    const newEvent = { ...attendance, ...evolution, ...getCourse() };
+    console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
+
+    await store.setJSON(attendance.date.toString(), newEvent);
+
+    console.log('Saved 1 new data row');
+  }
+
   return new Response();
 };
 
