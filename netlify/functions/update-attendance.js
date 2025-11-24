@@ -21,7 +21,10 @@ export default async () => {
     console.log(blobs.at(-1));
     console.log({ pastAttendance });
     const evolution = getEvolution(
-      estimateEvolution([pastAttendance, attendance])
+      estimateEvolution([
+        { date: new Date(pastAttendance.date), ...pastAttendance },
+        attendance,
+      ])
     );
 
     if (isDayTime()) {
