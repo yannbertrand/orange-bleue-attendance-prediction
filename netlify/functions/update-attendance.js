@@ -1,7 +1,9 @@
 import { getStore } from '@netlify/blobs';
+import { Temporal } from 'temporal-polyfill';
 import { estimateEvolution } from '../../scripts/calculate.js';
 import { getAttendanceLiveNumber } from '../../scripts/get-attendance-live-number.js';
 import { getTodayCourses } from '../../scripts/get-today-courses.js';
+import { isDayTime } from '../../scripts/utils/date.js';
 
 export const config = {
   schedule: '*/2 * * * *',
@@ -40,8 +42,9 @@ export default async () => {
       const todayCourses = await getTodayCourses();
       const foundCourse = todayCourses.find((course) => {
         return (
-          course.startDateTime <= attendance.date &&
-          attendance.date <= course.endDateTime
+          Temporal.Instant.compare(course.startDateTime, attendance.date) <=
+            0 &&
+          Temporal.Instant.compare(attendance.date, course.endDateTime) <= 0
         );
       });
       const liveCourse = getCourse(foundCourse);
@@ -49,7 +52,7 @@ export default async () => {
       const newEvent = { ...attendance, ...evolution, ...liveCourse };
       console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-      await store.setJSON(attendance.date.toISOString(), newEvent);
+      await store.setJSON(attendance.date.toString(), newEvent);
 
       console.log(`Saved 1 new data row`);
     } else {
@@ -58,7 +61,7 @@ export default async () => {
       const newEvent = { ...attendance, ...evolution, ...getCourse() };
       console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-      await store.setJSON(attendance.date.toISOString(), newEvent);
+      await store.setJSON(attendance.date.toString(), newEvent);
 
       console.log('Saved 1 new data row');
     }
@@ -71,7 +74,7 @@ export default async () => {
 
 function getAttendance({ date, visitors } = {}) {
   return {
-    date: date,
+    date: date ? Temporal.Instant.from(date) : Temporal.Now.instant,
     visitors: visitors,
   };
 }
@@ -90,10 +93,4 @@ function getCourse({ bookedParticipants, name, appointmentStatus } = {}) {
     courseName: name ?? '',
     courseStatus: appointmentStatus ?? '',
   };
-}
-
-function isDayTime() {
-  const today = new Date();
-  const currentHours = today.getUTCHours();
-  return currentHours >= 5 && currentHours < 23;
 }

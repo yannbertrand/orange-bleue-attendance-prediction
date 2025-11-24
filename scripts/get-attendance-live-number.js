@@ -1,3 +1,5 @@
+import { Temporal } from 'temporal-polyfill';
+
 export async function getAttendanceLiveNumber(
   studioId = '1229318070',
   authToken = '44274883-9187-4ebd-92f8-b92fb4fb9d3d',
@@ -23,7 +25,12 @@ export async function getAttendanceLiveNumber(
   );
 
   const result = await response.json();
-  const date = new Date(response.headers.get('date') ?? new Date());
+  const date =
+    response.headers.get('date') != null
+      ? Temporal.Instant.from(
+          new Date(response.headers.get('date')).toISOString()
+        )
+      : Temporal.Now.instant;
 
   return {
     date,

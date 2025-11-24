@@ -24,7 +24,7 @@ for (const i of Object.keys(data)) {
     courseParticipants = '';
   }
 
-  const newAttendanceCsvFormattedData = `${date.toISOString()},${visitors},${arrived},${leftOfTimeout},${leftBeforeTimeout},${courseParticipants},${courseName},${courseStatus}`;
+  const newAttendanceCsvFormattedData = `${date.toString()},${visitors},${arrived},${leftOfTimeout},${leftBeforeTimeout},${courseParticipants},${courseName},${courseStatus}`;
 
   result.push(newAttendanceCsvFormattedData);
 }

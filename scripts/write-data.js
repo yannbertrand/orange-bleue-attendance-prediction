@@ -10,7 +10,7 @@ export const updateAttendanceFile = async ({
   courseName,
   courseStatus,
 }) => {
-  const newAttendanceCsvFormattedData = `${date.toISOString()},${visitors},${arrived},${leftOfTimeout},${leftBeforeTimeout},${courseParticipants},${courseName},${courseStatus}\n`;
+  const newAttendanceCsvFormattedData = `${date.toString()},${visitors},${arrived},${leftOfTimeout},${leftBeforeTimeout},${courseParticipants},${courseName},${courseStatus}\n`;
 
   await appendFile(
     './data/attendance.csv',

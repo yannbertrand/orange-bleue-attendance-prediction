@@ -1,7 +1,9 @@
+import { Temporal } from 'temporal-polyfill';
 import { estimateEvolution } from '../scripts/calculate.js';
 import { getAttendanceLiveNumber } from '../scripts/get-attendance-live-number.js';
 import { getTodayCourses } from '../scripts/get-today-courses.js';
 import { readAttendanceFile } from '../scripts/read-data.js';
+import { isDayTime } from '../scripts/utils/date.js';
 import { updateAttendanceFile } from '../scripts/write-data.js';
 
 try {
@@ -21,8 +23,8 @@ try {
     const todayCourses = await getTodayCourses();
     const foundCourse = todayCourses.find((course) => {
       return (
-        course.startDateTime <= attendance.date &&
-        attendance.date <= course.endDateTime
+        Temporal.Instant.compare(course.startDateTime, attendance.date) <= 0 &&
+        Temporal.Instant.compare(attendance.date, course.endDateTime) <= 0
       );
     });
     const liveCourse = getCourse(foundCourse);
@@ -53,7 +55,7 @@ try {
         // Last visitor left
         let date = attendance.date;
         const newEvents = [];
-        while (date.getUTCHours() < 5) {
+        while (date.hour < 6) {
           newEvents.push({
             ...getAttendance({ date, visitors: 0 }),
             ...getEvolution({
@@ -63,7 +65,7 @@ try {
             }),
             ...getCourse(),
           });
-          date = new Date(date.getTime() + 20 * 60 * 1000);
+          date = date.add({ minutes: 20 });
         }
 
         console.log(
@@ -106,10 +108,4 @@ function getCourse({ bookedParticipants, name, appointmentStatus } = {}) {
     courseName: name ?? '',
     courseStatus: appointmentStatus ?? '',
   };
-}
-
-function isDayTime() {
-  const today = new Date();
-  const currentHours = today.getUTCHours();
-  return currentHours >= 5 && currentHours < 23;
 }

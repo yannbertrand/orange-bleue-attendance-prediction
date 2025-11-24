@@ -1,3 +1,4 @@
+import { Temporal } from 'temporal-polyfill';
 import { describe, expect, it } from 'vitest';
 import { estimateEvolution, simulateOccupation } from './calculate.js';
 import { getEventsFromCsv } from './read-data.js';
@@ -9,14 +10,14 @@ describe('estimateEvolution', () => {
 
     expect(estimateEvolution(csvData)).toStrictEqual([
       {
-        date: new Date('2025-11-18T05:00:00.000Z'),
+        date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T05:30:00.000Z'),
+        date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
         arrived: 2,
         left: 0,
         leftOfTimeout: 0,
@@ -32,21 +33,21 @@ describe('estimateEvolution', () => {
 
     expect(estimateEvolution(csvData)).toStrictEqual([
       {
-        date: new Date('2025-11-18T05:00:00.000Z'),
+        date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T05:30:00.000Z'),
+        date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
         arrived: 2,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T06:00:00.000Z'),
+        date: Temporal.Instant.from('2025-11-18T06:00:00.000Z'),
         arrived: 3,
         left: 0,
         leftOfTimeout: 0,
@@ -61,14 +62,14 @@ describe('estimateEvolution', () => {
 
     expect(estimateEvolution(csvData)).toStrictEqual([
       {
-        date: new Date('2025-11-18T05:30:00.000Z'),
+        date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
         arrived: 6,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T07:00:00.000Z'),
+        date: Temporal.Instant.from('2025-11-18T07:00:00.000Z'),
         arrived: 0,
         left: 4,
         leftOfTimeout: 0,
@@ -83,14 +84,14 @@ describe('estimateEvolution', () => {
 
     expect(estimateEvolution(csvData)).toStrictEqual([
       {
-        date: new Date('2025-11-18T05:00:00.000Z'),
+        date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
         arrived: 6,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T07:00:00.000Z'),
+        date: Temporal.Instant.from('2025-11-18T07:00:00.000Z'),
         arrived: 6,
         left: 6,
         leftOfTimeout: 6,
@@ -100,27 +101,27 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors leaving at different times', () => {
-    const csvData = getEventsFromCsv(`2025-11-18T05:00:00.000Z,6,,,
+    const events = getEventsFromCsv(`2025-11-18T05:00:00.000Z,6,,,
 2025-11-18T06:30:00.000Z,3,,,
 2025-11-18T07:00:00.000Z,2,,,`);
 
-    expect(estimateEvolution(csvData)).toStrictEqual([
+    expect(estimateEvolution(events)).toStrictEqual([
       {
-        date: new Date('2025-11-18T05:00:00.000Z'),
+        date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
         arrived: 6,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T06:30:00.000Z'),
+        date: Temporal.Instant.from('2025-11-18T06:30:00.000Z'),
         arrived: 0,
         left: 3,
         leftOfTimeout: 0,
         leftBeforeTimeout: 3,
       },
       {
-        date: new Date('2025-11-18T07:00:00.000Z'),
+        date: Temporal.Instant.from('2025-11-18T07:00:00.000Z'),
         arrived: 2,
         left: 3,
         leftOfTimeout: 3,
@@ -154,147 +155,147 @@ describe('estimateEvolution', () => {
 
     expect(estimateEvolution(csvData)).toStrictEqual([
       {
-        date: new Date('2025-11-18T04:35:59.000Z'),
+        date: Temporal.Instant.from('2025-11-18T04:35:59.000Z'),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T05:33:36.000Z'),
+        date: Temporal.Instant.from('2025-11-18T05:33:36.000Z'),
         arrived: 1,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T06:08:08.000Z'),
+        date: Temporal.Instant.from('2025-11-18T06:08:08.000Z'),
         arrived: 1,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T06:48:49.000Z'),
+        date: Temporal.Instant.from('2025-11-18T06:48:49.000Z'),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T07:05:46.000Z'),
+        date: Temporal.Instant.from('2025-11-18T07:05:46.000Z'),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T07:28:38.000Z'),
+        date: Temporal.Instant.from('2025-11-18T07:28:38.000Z'),
         arrived: 1,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T07:44:14.000Z'),
+        date: Temporal.Instant.from('2025-11-18T07:44:14.000Z'),
         arrived: 3,
         left: 1,
         leftOfTimeout: 1,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T08:07:24.000Z'),
+        date: Temporal.Instant.from('2025-11-18T08:07:24.000Z'),
         arrived: 0,
         left: 1,
         leftOfTimeout: 0,
         leftBeforeTimeout: 1,
       },
       {
-        date: new Date('2025-11-18T08:31:35.000Z'),
+        date: Temporal.Instant.from('2025-11-18T08:31:35.000Z'),
         arrived: 1,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T08:48:05.000Z'),
+        date: Temporal.Instant.from('2025-11-18T08:48:05.000Z'),
         arrived: 3,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T09:06:27.000Z'),
+        date: Temporal.Instant.from('2025-11-18T09:06:27.000Z'),
         arrived: 8,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T09:30:33.000Z'),
+        date: Temporal.Instant.from('2025-11-18T09:30:33.000Z'),
         arrived: 3,
         left: 1,
         leftOfTimeout: 1,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T09:45:38.000Z'),
+        date: Temporal.Instant.from('2025-11-18T09:45:38.000Z'),
         arrived: 2,
         left: 3,
         leftOfTimeout: 3,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T10:06:46.000Z'),
+        date: Temporal.Instant.from('2025-11-18T10:06:46.000Z'),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T10:30:48.000Z'),
+        date: Temporal.Instant.from('2025-11-18T10:30:48.000Z'),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T10:47:12.000Z'),
+        date: Temporal.Instant.from('2025-11-18T10:47:12.000Z'),
         arrived: 4,
         left: 1,
         leftOfTimeout: 1,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T11:05:33.000Z'),
+        date: Temporal.Instant.from('2025-11-18T11:05:33.000Z'),
         arrived: 0,
         left: 10,
         leftOfTimeout: 3,
         leftBeforeTimeout: 7,
       },
       {
-        date: new Date('2025-11-18T11:27:09.000Z'),
+        date: Temporal.Instant.from('2025-11-18T11:27:09.000Z'),
         arrived: 16,
         left: 1,
         leftOfTimeout: 1,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T11:44:04.000Z'),
+        date: Temporal.Instant.from('2025-11-18T11:44:04.000Z'),
         arrived: 4,
         left: 3,
         leftOfTimeout: 3,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T12:09:06.000Z'),
+        date: Temporal.Instant.from('2025-11-18T12:09:06.000Z'),
         arrived: 2,
         left: 2,
         leftOfTimeout: 2,
         leftBeforeTimeout: 0,
       },
       {
-        date: new Date('2025-11-18T12:33:04.000Z'),
+        date: Temporal.Instant.from('2025-11-18T12:33:04.000Z'),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
@@ -309,12 +310,12 @@ describe('simulateOccupation', () => {
     expect(
       simulateOccupation([
         {
-          date: new Date('2025-11-18T05:00:00.000Z'),
+          date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
           arrived: 0,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T05:30:00.000Z'),
+          date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
           arrived: 2,
           left: 0,
         },
@@ -326,17 +327,17 @@ describe('simulateOccupation', () => {
     expect(
       simulateOccupation([
         {
-          date: new Date('2025-11-18T05:00:00.000Z'),
+          date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
           arrived: 0,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T05:30:00.000Z'),
+          date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
           arrived: 2,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T06:00:00.000Z'),
+          date: Temporal.Instant.from('2025-11-18T06:00:00.000Z'),
           arrived: 3,
           left: 0,
         },
@@ -348,12 +349,12 @@ describe('simulateOccupation', () => {
     expect(
       simulateOccupation([
         {
-          date: new Date('2025-11-18T05:30:00.000Z'),
+          date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
           arrived: 6,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T07:00:00.000Z'),
+          date: Temporal.Instant.from('2025-11-18T07:00:00.000Z'),
           arrived: 0,
           left: 4,
         },
@@ -365,12 +366,12 @@ describe('simulateOccupation', () => {
     expect(
       simulateOccupation([
         {
-          date: new Date('2025-11-18T05:00:00.000Z'),
+          date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
           arrived: 6,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T07:00:00.000Z'),
+          date: Temporal.Instant.from('2025-11-18T07:00:00.000Z'),
           arrived: 6,
           left: 6,
         },
@@ -382,17 +383,17 @@ describe('simulateOccupation', () => {
     expect(
       simulateOccupation([
         {
-          date: new Date('2025-11-18T05:00:00.000Z'),
+          date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
           arrived: 6,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T06:30:00.000Z'),
+          date: Temporal.Instant.from('2025-11-18T06:30:00.000Z'),
           arrived: 0,
           left: 3,
         },
         {
-          date: new Date('2025-11-18T07:00:00.000Z'),
+          date: Temporal.Instant.from('2025-11-18T07:00:00.000Z'),
           arrived: 2,
           left: 3,
         },
@@ -404,107 +405,107 @@ describe('simulateOccupation', () => {
     expect(
       simulateOccupation([
         {
-          date: new Date('2025-11-18T04:35:59.000Z'),
+          date: Temporal.Instant.from('2025-11-18T04:35:59.000Z'),
           arrived: 0,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T05:33:36.000Z'),
+          date: Temporal.Instant.from('2025-11-18T05:33:36.000Z'),
           arrived: 1,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T06:08:08.000Z'),
+          date: Temporal.Instant.from('2025-11-18T06:08:08.000Z'),
           arrived: 1,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T06:48:49.000Z'),
+          date: Temporal.Instant.from('2025-11-18T06:48:49.000Z'),
           arrived: 0,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T07:05:46.000Z'),
+          date: Temporal.Instant.from('2025-11-18T07:05:46.000Z'),
           arrived: 0,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T07:28:38.000Z'),
+          date: Temporal.Instant.from('2025-11-18T07:28:38.000Z'),
           arrived: 1,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T07:44:14.000Z'),
+          date: Temporal.Instant.from('2025-11-18T07:44:14.000Z'),
           arrived: 3,
           left: 1,
         },
         {
-          date: new Date('2025-11-18T08:07:24.000Z'),
+          date: Temporal.Instant.from('2025-11-18T08:07:24.000Z'),
           arrived: 0,
           left: 1,
         },
         {
-          date: new Date('2025-11-18T08:31:35.000Z'),
+          date: Temporal.Instant.from('2025-11-18T08:31:35.000Z'),
           arrived: 1,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T08:48:05.000Z'),
+          date: Temporal.Instant.from('2025-11-18T08:48:05.000Z'),
           arrived: 3,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T09:06:27.000Z'),
+          date: Temporal.Instant.from('2025-11-18T09:06:27.000Z'),
           arrived: 8,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T09:30:33.000Z'),
+          date: Temporal.Instant.from('2025-11-18T09:30:33.000Z'),
           arrived: 3,
           left: 1,
         },
         {
-          date: new Date('2025-11-18T09:45:38.000Z'),
+          date: Temporal.Instant.from('2025-11-18T09:45:38.000Z'),
           arrived: 2,
           left: 3,
         },
         {
-          date: new Date('2025-11-18T10:06:46.000Z'),
+          date: Temporal.Instant.from('2025-11-18T10:06:46.000Z'),
           arrived: 0,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T10:30:48.000Z'),
+          date: Temporal.Instant.from('2025-11-18T10:30:48.000Z'),
           arrived: 0,
           left: 0,
         },
         {
-          date: new Date('2025-11-18T10:47:12.000Z'),
+          date: Temporal.Instant.from('2025-11-18T10:47:12.000Z'),
           arrived: 4,
           left: 1,
         },
         {
-          date: new Date('2025-11-18T11:05:33.000Z'),
+          date: Temporal.Instant.from('2025-11-18T11:05:33.000Z'),
           arrived: 0,
           left: 10,
         },
         {
-          date: new Date('2025-11-18T11:27:09.000Z'),
+          date: Temporal.Instant.from('2025-11-18T11:27:09.000Z'),
           arrived: 16,
           left: 1,
         },
         {
-          date: new Date('2025-11-18T11:44:04.000Z'),
+          date: Temporal.Instant.from('2025-11-18T11:44:04.000Z'),
           arrived: 4,
           left: 3,
         },
         {
-          date: new Date('2025-11-18T12:09:06.000Z'),
+          date: Temporal.Instant.from('2025-11-18T12:09:06.000Z'),
           arrived: 2,
           left: 2,
         },
         {
-          date: new Date('2025-11-18T12:33:04.000Z'),
+          date: Temporal.Instant.from('2025-11-18T12:33:04.000Z'),
           arrived: 0,
           left: 0,
         },

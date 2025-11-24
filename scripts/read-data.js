@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { Temporal } from 'temporal-polyfill';
 
 export const readAttendanceFile = async () => {
   const attendanceFileContent = await readFile('./data/attendance.csv', 'utf8');
@@ -19,7 +20,7 @@ export function getEventsFromCsv(csvData) {
   for (let index = 0; index < attendanceLines.length; index++) {
     const attendanceLine = attendanceLines[index].split(',');
     const line = {
-      date: new Date(attendanceLine[0]),
+      date: Temporal.Instant.from(attendanceLine[0]),
       visitors: Number.parseInt(attendanceLine[1], 10),
       courseParticipants: Number.parseInt(attendanceLine[2], 10),
       courseName: attendanceLine[3],
@@ -33,10 +34,7 @@ export function getEventsFromCsv(csvData) {
 
 export const groupPerDay = (attendanceData) => {
   return attendanceData.reduce((result, value) => {
-    const year = value.date.getFullYear();
-    const month = (value.date.getMonth() + 1).toString().padStart(2, '0');
-    const day = value.date.getDate().toString().padStart(2, '0');
-    const dayAsString = `${year}-${month}-${day}`;
+    const dayAsString = value.date.toZonedDateISO().toString();
     if (result[dayAsString] === undefined) {
       result[dayAsString] = [];
     }

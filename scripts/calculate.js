@@ -1,4 +1,6 @@
-const visitDuration = 2 * 60 * 60 * 1000;
+import { Temporal } from 'temporal-polyfill';
+
+const visitDurationInHours = 2;
 
 export function simulateOccupation(evolution) {
   const result = [];
@@ -103,10 +105,10 @@ function forceVisitorsLeave(visitors, probableNbOfVisitorsLeaving) {
 class Visitor {
   #departure;
   constructor(arrival) {
-    this.#departure = new Date(arrival.getTime() + visitDuration);
+    this.#departure = arrival.add({ hours: visitDurationInHours });
   }
 
   shouldLeave(date) {
-    return date >= this.#departure;
+    return Temporal.Instant.compare(date, this.#departure) >= 0;
   }
 }
