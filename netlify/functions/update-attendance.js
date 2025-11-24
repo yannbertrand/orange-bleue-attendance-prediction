@@ -55,7 +55,8 @@ export default async () => {
       console.log('Saved 1 new data row');
     }
   } catch (error) {
-    console.error(`Could not get attendance ${error}`);
+    console.error(`Could not get attendance`);
+    console.log(error);
   }
   return new Response();
 };
