@@ -11,17 +11,15 @@ export default async () => {
   const store = getStore('attendance');
 
   try {
-    const { blobs: pastAttendance } = await store.list();
+    const { blobs } = await store.list();
+    const pastAttendance = await store.get(blobs.at(-1)?.key);
     const liveAttendance = await getAttendanceLiveNumber();
     const attendance = getAttendance({
       date: liveAttendance.date,
       visitors: liveAttendance.visitors,
     });
     const evolution = getEvolution(
-      estimateEvolution([
-        pastAttendance[pastAttendance.length - 1],
-        attendance,
-      ]).at(-1)
+      estimateEvolution([pastAttendance, attendance]).at(-1)
     );
 
     if (isDayTime()) {
@@ -35,8 +33,7 @@ export default async () => {
         );
       });
       const liveCourse = getCourse(foundCourse);
-      console.log(JSON.stringify(pastAttendance.at(-1)));
-      console.log(pastAttendance[pastAttendance.length - 1]);
+      console.log(blobs.at(-1));
       console.log(pastAttendance);
       console.log(JSON.stringify(evolution));
 
