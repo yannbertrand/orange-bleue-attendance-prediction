@@ -23,6 +23,8 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
+      - name: Install dependencies
+        run: npm i --prefer-offline
       - id: update-attendance-file
         name: Update attendance file
         run: npm run gh:update-attendance-file
