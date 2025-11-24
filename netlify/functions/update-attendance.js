@@ -32,7 +32,7 @@ export default async () => {
     });
     console.log({ pastAttendance });
     const evolution = getEvolution(
-      estimateEvolution([pastAttendance, attendance])
+      estimateEvolution([pastAttendance, attendance]).at(-1)
     );
 
     if (isDayTime()) {
