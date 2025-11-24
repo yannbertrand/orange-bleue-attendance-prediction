@@ -22,9 +22,16 @@ export function getEventsFromCsv(csvData) {
     const line = {
       date: Temporal.Instant.from(attendanceLine[0]),
       visitors: Number.parseInt(attendanceLine[1], 10),
-      courseParticipants: Number.parseInt(attendanceLine[2], 10),
-      courseName: attendanceLine[3],
-      courseStatus: attendanceLine[4],
+      arrived: attendanceLine[2] ? Number.parseInt(attendanceLine[2], 10) : 0,
+      leftOfTimeout: attendanceLine[3]
+        ? Number.parseInt(attendanceLine[3], 10)
+        : 0,
+      leftBeforeTimeout: attendanceLine[4]
+        ? Number.parseInt(attendanceLine[4], 10)
+        : 0,
+      courseParticipants: Number.parseInt(attendanceLine[5], 10),
+      courseName: attendanceLine[6],
+      courseStatus: attendanceLine[7],
     };
     result.push(line);
   }
