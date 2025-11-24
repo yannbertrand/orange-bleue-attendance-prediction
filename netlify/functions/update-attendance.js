@@ -75,7 +75,7 @@ export default async () => {
 function getAttendance({ date, visitors } = {}) {
   return {
     date: date ? Temporal.Instant.from(date) : Temporal.Now.instant,
-    visitors: visitors,
+    visitors: visitors ?? 0,
   };
 }
 
