@@ -30,7 +30,6 @@ export default async () => {
       date: liveAttendance.date,
       visitors: liveAttendance.visitors,
     });
-    console.log({ pastAttendance });
     const evolution = getEvolution(
       estimateEvolution([pastAttendance, attendance]).at(-1)
     );
@@ -46,7 +45,6 @@ export default async () => {
         );
       });
       const liveCourse = getCourse(foundCourse);
-      console.log(JSON.stringify(evolution));
 
       const newEvent = { ...attendance, ...evolution, ...liveCourse };
       console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);

@@ -12,7 +12,6 @@ export function simulateOccupation(evolution) {
 export function estimateEvolution(events) {
   let visitors = [];
   const result = [];
-  console.log({ events });
   for (const [i, event] of Object.entries(events)) {
     let arrived = 0;
     let leftOfTimeout = 0;
@@ -60,7 +59,6 @@ export function estimateEvolution(events) {
       leftBeforeTimeout,
     });
   }
-  console.log({ result });
   return result;
 }
 
