@@ -12,7 +12,7 @@ export default async () => {
 
   try {
     const { blobs } = await store.list();
-    const pastAttendance = await store.get(blobs.at(-1)?.key);
+    const pastAttendance = JSON.parse(await store.get(blobs.at(-1)?.key));
     const liveAttendance = await getAttendanceLiveNumber();
     const attendance = getAttendance({
       date: liveAttendance.date,
