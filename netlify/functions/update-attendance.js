@@ -18,6 +18,8 @@ export default async () => {
       date: liveAttendance.date,
       visitors: liveAttendance.visitors,
     });
+    console.log(blobs.at(-1));
+    console.log({ pastAttendance });
     const evolution = getEvolution(
       estimateEvolution([pastAttendance, attendance])
     );
