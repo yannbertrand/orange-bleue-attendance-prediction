@@ -33,9 +33,7 @@ export const updatePredictionFile = async (courses) => {
   }
 
   // Remove conflicting courses
-  console.log('aaa');
   const fileContentAsArray = fileContent.split('\n');
-  console.log('bbb');
   for (const [index, currentLine] of fileContentAsArray.entries()) {
     const nextLine = fileContentAsArray[index + 1];
     if (nextLine === undefined) {

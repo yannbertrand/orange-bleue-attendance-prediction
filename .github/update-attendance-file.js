@@ -75,7 +75,6 @@ try {
         for (const event of newEvents) {
           await updateAttendanceFile(event);
         }
-        console.log({ newEvents });
 
         console.log(`Saved ${newEvents.length} new data row`);
       } else {
@@ -84,7 +83,8 @@ try {
     }
   }
 } catch (error) {
-  console.error(`Could not get attendance ${error}`);
+  console.error(`Could not get attendance`);
+  console.log(error);
 }
 
 function getAttendance({ date, visitors } = {}) {

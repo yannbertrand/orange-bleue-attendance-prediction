@@ -14,5 +14,6 @@ try {
     `Saved ${nbOfNewRows} new data row and updated ${nbOfUpdatedRows} row`
   );
 } catch (error) {
-  console.error(`Could not get attendance ${error}`);
+  console.error(`Could not get attendance`);
+  console.log(error);
 }
