@@ -18,7 +18,10 @@ export default async () => {
       visitors: liveAttendance.visitors,
     });
     const evolution = getEvolution(
-      estimateEvolution([pastAttendance.at(-1), attendance]).at(-1)
+      estimateEvolution([
+        pastAttendance[pastAttendance.length - 1],
+        attendance,
+      ]).at(-1)
     );
 
     if (isDayTime()) {
