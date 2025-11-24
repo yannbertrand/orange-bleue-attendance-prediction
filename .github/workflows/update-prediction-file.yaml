@@ -23,6 +23,10 @@ jobs:
       - id: update-prediction-file
         name: Update prediction file
         run: npm run gh:update-prediction-file
+        env:
+          ORANGE_BLEUE_STUDIO_ID: ${{secrets.ORANGE_BLEUE_STUDIO_ID}}
+          ORANGE_BLEUE_AUTH_TOKEN: ${{secrets.ORANGE_BLEUE_AUTH_TOKEN}}
+          ORANGE_BLEUE_COOKIE: ${{secrets.ORANGE_BLEUE_COOKIE}}
       - id: check-empty-file
         name: Interrupt workflow
         run: |

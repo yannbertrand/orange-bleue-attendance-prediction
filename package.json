@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "calculate": "node scripts/calculate.js",
-    "data:write": "node scripts/write-data.js",
+    "calculate": "node --env-file-if-exists=.env scripts/calculate.js",
     "deploy:prod": "netlify deploy --prod",
     "test": "vitest",
-    "gh:update-attendance-file": "node .github/update-attendance-file.js",
-    "gh:update-prediction-file": "node .github/update-prediction-file.js"
+    "gh:update-attendance-file": "node --env-file-if-exists=.env .github/update-attendance-file.js",
+    "gh:update-prediction-file": "node --env-file-if-exists=.env .github/update-prediction-file.js"
   },
   "devDependencies": {
     "@netlify/blobs": "10.4.1",

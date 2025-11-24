@@ -1,10 +1,9 @@
 import { Temporal } from 'temporal-polyfill';
+import { getOrangeBleueInfo } from './utils/env.js';
 
-export async function getFutureCourses(
-  studioId = '1229318070',
-  authToken = '44274883-9187-4ebd-92f8-b92fb4fb9d3d',
-  cookie = 'didomi_token=eyJ1c2VyX2lkIjoiMTlhMWMzODAtOGRkYy02NTI3LWE0OTItODMwNTI4YjczMWMyIiwiY3JlYXRlZCI6IjIwMjUtMTAtMjVUMTY6MzM6NDUuNjkzWiIsInVwZGF0ZWQiOiIyMDI1LTEwLTI1VDE2OjMzOjQ1LjY5NFoiLCJ2ZXJzaW9uIjpudWxsfQ=='
-) {
+export async function getFutureCourses() {
+  const { studioId, authToken, cookie } = getOrangeBleueInfo();
+
   const today = Temporal.Now.plainDateISO();
   const todayAsString = today.toString();
   const tomorrow = today.add({ days: 1 });

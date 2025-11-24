@@ -1,10 +1,9 @@
 import { Temporal } from 'temporal-polyfill';
+import { getOrangeBleueInfo } from './utils/env.js';
 
-export async function getAttendanceLiveNumber(
-  studioId = '1229318070',
-  authToken = '44274883-9187-4ebd-92f8-b92fb4fb9d3d',
-  cookie = 'didomi_token=eyJ1c2VyX2lkIjoiMTlhMWMzODAtOGRkYy02NTI3LWE0OTItODMwNTI4YjczMWMyIiwiY3JlYXRlZCI6IjIwMjUtMTAtMjVUMTY6MzM6NDUuNjkzWiIsInVwZGF0ZWQiOiIyMDI1LTEwLTI1VDE2OjMzOjQ1LjY5NFoiLCJ2ZXJzaW9uIjpudWxsfQ=='
-) {
+export async function getAttendanceLiveNumber() {
+  const { studioId, authToken, cookie } = getOrangeBleueInfo();
+
   const response = await fetch(
     `https://monespace.lorangebleue.fr/nox/v1/studios/${studioId}/utilization/v2/active-checkin`,
     {

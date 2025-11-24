@@ -1,10 +1,9 @@
 import { Temporal } from 'temporal-polyfill';
+import { getOrangeBleueInfo } from './utils/env.js';
 
-export async function getTodayCourses(
-  studioId = '1229318070',
-  authToken = '44274883-9187-4ebd-92f8-b92fb4fb9d3d',
-  cookie = 'didomi_token=eyJ1c2VyX2lkIjoiMTlhMWMzODAtOGRkYy02NTI3LWE0OTItODMwNTI4YjczMWMyIiwiY3JlYXRlZCI6IjIwMjUtMTAtMjVUMTY6MzM6NDUuNjkzWiIsInVwZGF0ZWQiOiIyMDI1LTEwLTI1VDE2OjMzOjQ1LjY5NFoiLCJ2ZXJzaW9uIjpudWxsfQ=='
-) {
+export async function getTodayCourses() {
+  const { studioId, authToken, cookie } = getOrangeBleueInfo();
+
   const todayAsString = Temporal.Now.plainDateISO().toString();
   const response = await fetch(
     `https://monespace.lorangebleue.fr/nox/v2/bookableitems/courses/with-canceled?organizationUnitIds=${studioId}&startDate=${todayAsString}&endDate=${todayAsString}&courseAvailability=ALL&maxResults=10000`,
