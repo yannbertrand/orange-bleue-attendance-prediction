@@ -33,8 +33,8 @@ export async function getTodayCourses() {
     response.headers.get('date') != null
       ? Temporal.Instant.from(
           new Date(response.headers.get('date')).toISOString()
-        )
-      : Temporal.Now.instant;
+        ).toZonedDateTimeISO('Europe/Paris')
+      : Temporal.Now.zonedDateTimeISO('Europe/Paris');
   const todayCourses = [];
   for (const course of courses) {
     for (const slot of course.slots) {
@@ -43,8 +43,8 @@ export async function getTodayCourses() {
         name: course.name,
         bookedParticipants: course.bookedParticipants ?? 0,
         appointmentStatus: course.appointmentStatus,
-        startDateTime: Temporal.Instant.from(slot.startDateTime.split('[')[0]),
-        endDateTime: Temporal.Instant.from(slot.endDateTime.split('[')[0]),
+        startDateTime: Temporal.ZonedDateTime.from(slot.startDateTime),
+        endDateTime: Temporal.ZonedDateTime.from(slot.endDateTime),
       };
       todayCourses.push(newCourse);
     }

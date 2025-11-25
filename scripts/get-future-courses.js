@@ -36,15 +36,13 @@ export async function getFutureCourses() {
     response.headers.get('date') != null
       ? Temporal.Instant.from(
           new Date(response.headers.get('date')).toISOString()
-        )
-      : Temporal.Now.instant;
+        ).toZonedDateTimeISO('Europe/Paris')
+      : Temporal.Now.zonedDateTimeISO('Europe/Paris');
   const futureCourses = [];
   for (const course of courses) {
     for (const slot of course.slots) {
-      const startDateTime = Temporal.Instant.from(
-        slot.startDateTime.split('[')[0]
-      );
-      if (Temporal.Instant.compare(date, startDateTime) > 0) {
+      const startDateTime = Temporal.ZonedDateTime.from(slot.startDateTime);
+      if (Temporal.ZonedDateTime.compare(date, startDateTime) > 0) {
         continue;
       }
 
@@ -53,8 +51,8 @@ export async function getFutureCourses() {
         name: course.name,
         bookedParticipants: course.bookedParticipants ?? 0,
         appointmentStatus: course.appointmentStatus,
-        startDateTime: Temporal.Instant.from(slot.startDateTime.split('[')[0]),
-        endDateTime: Temporal.Instant.from(slot.endDateTime.split('[')[0]),
+        startDateTime: startDateTime,
+        endDateTime: Temporal.ZonedDateTime.from(slot.endDateTime),
       };
       futureCourses.push(newCourse);
     }

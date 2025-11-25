@@ -32,8 +32,8 @@ export async function getAttendanceLiveNumber() {
     response.headers.get('date') != null
       ? Temporal.Instant.from(
           new Date(response.headers.get('date')).toISOString()
-        )
-      : Temporal.Now.instant;
+        ).toZonedDateTimeISO('Europe/Paris')
+      : Temporal.Now.zonedDateTimeISO('Europe/Paris');
 
   return {
     date,

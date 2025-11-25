@@ -36,8 +36,9 @@ export default async () => {
     const todayCourses = await getTodayCourses();
     const foundCourse = todayCourses.find((course) => {
       return (
-        Temporal.Instant.compare(course.startDateTime, attendance.date) <= 0 &&
-        Temporal.Instant.compare(attendance.date, course.endDateTime) <= 0
+        Temporal.ZonedDateTime.compare(course.startDateTime, attendance.date) <=
+          0 &&
+        Temporal.ZonedDateTime.compare(attendance.date, course.endDateTime) <= 0
       );
     });
     const liveCourse = getCourse(foundCourse);
@@ -64,7 +65,9 @@ export default async () => {
 
 function getAttendance({ date, visitors } = {}) {
   return {
-    date: date ? Temporal.Instant.from(date) : Temporal.Now.instant,
+    date: date
+      ? Temporal.Instant.from(date).toZonedDateTimeISO('Europe/Paris')
+      : Temporal.Now.zonedDateTimeISO('Europe/Paris'),
     visitors: visitors ?? 0,
   };
 }

@@ -109,6 +109,6 @@ class Visitor {
   }
 
   shouldLeave(date) {
-    return Temporal.Instant.compare(date, this.#departure) >= 0;
+    return Temporal.ZonedDateTime.compare(date, this.#departure) >= 0;
   }
 }

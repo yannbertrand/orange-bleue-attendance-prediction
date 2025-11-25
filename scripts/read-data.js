@@ -20,7 +20,9 @@ export function getEventsFromCsv(csvData) {
   for (let index = 0; index < attendanceLines.length; index++) {
     const attendanceLine = attendanceLines[index].split(',');
     const line = {
-      date: Temporal.Instant.from(attendanceLine[0]),
+      date: Temporal.Instant.from(attendanceLine[0]).toZonedDateTimeISO(
+        'Europe/Paris'
+      ),
       visitors: Number.parseInt(attendanceLine[1], 10),
       arrived: attendanceLine[2] ? Number.parseInt(attendanceLine[2], 10) : 0,
       leftOfTimeout: attendanceLine[3]
