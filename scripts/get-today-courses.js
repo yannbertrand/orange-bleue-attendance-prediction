@@ -24,6 +24,10 @@ export async function getTodayCourses() {
     }
   );
 
+  if (!response.ok) {
+    throw new Error(`${response.status} ${response.statusText}`);
+  }
+
   const courses = await response.json();
   const date =
     response.headers.get('date') != null
