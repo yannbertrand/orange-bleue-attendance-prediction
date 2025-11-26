@@ -68,7 +68,6 @@ export default async () => {
 function getEventToSave({ attendance, evolution, liveCourse }) {
   return {
     ...attendance,
-    date: attendance.date.toPlainDateTime(),
     ...evolution,
     ...liveCourse,
   };
