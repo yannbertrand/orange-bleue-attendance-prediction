@@ -1,5 +1,5 @@
-import { Temporal } from 'temporal-polyfill';
 import { getOrangeBleueInfo } from '../scripts/utils/env.js';
+import { getLiveAttendance } from './models/live-attendance.js';
 
 export async function getAttendanceLiveNumber() {
   const { studioId, authToken, cookie } = getOrangeBleueInfo();
@@ -28,15 +28,6 @@ export async function getAttendanceLiveNumber() {
   }
 
   const result = await response.json();
-  const date =
-    response.headers.get('date') != null
-      ? Temporal.Instant.from(
-          new Date(response.headers.get('date')).toISOString()
-        ).toZonedDateTimeISO('Europe/Paris')
-      : Temporal.Now.zonedDateTimeISO('Europe/Paris');
 
-  return {
-    date,
-    visitors: result.value,
-  };
+  return getLiveAttendance(response.headers.get('date'), result.value);
 }
