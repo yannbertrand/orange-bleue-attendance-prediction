@@ -44,16 +44,17 @@ export default async () => {
     });
     const liveCourse = getCourse(foundCourse);
 
-    const newEvent = { ...attendance, ...evolution, ...liveCourse };
+    const newEvent = getEventToSave({ attendance, evolution, liveCourse });
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-    await store.setJSON(attendance.date.toPlainDateTime().toString(), newEvent);
+    await store.setJSON(newEvent.date.toString(), newEvent);
 
     console.log(`Saved 1 new data row`);
   } else {
     console.log(`It's night time!`);
 
-    const newEvent = { ...attendance, ...evolution, ...getCourse() };
+    const liveCourse = getCourse();
+    const newEvent = getEventToSave({ attendance, evolution, liveCourse });
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
     await store.setJSON(attendance.date.toPlainDateTime().toString(), newEvent);
@@ -63,6 +64,15 @@ export default async () => {
 
   return new Response();
 };
+
+function getEventToSave({ attendance, evolution, liveCourse }) {
+  return {
+    ...attendance,
+    date: attendance.date.toPlainDateTime(),
+    ...evolution,
+    ...liveCourse,
+  };
+}
 
 function getAttendance({ date, visitors } = {}) {
   if (typeof date === 'string') {
