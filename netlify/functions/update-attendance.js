@@ -3,6 +3,7 @@ import { Temporal } from 'temporal-polyfill';
 import { estimateEvolution } from '../../scripts/calculate.js';
 import { getAttendanceLiveNumber } from '../../scripts/get-attendance-live-number.js';
 import { getTodayCourses } from '../../scripts/get-today-courses.js';
+import { getZonedDateTime } from '../../scripts/read-data.js';
 import { isDayTime } from '../../scripts/utils/date.js';
 
 export const config = {
@@ -66,7 +67,7 @@ export default async () => {
 function getAttendance({ date, visitors } = {}) {
   return {
     date: date
-      ? Temporal.Instant.from(date).toZonedDateTimeISO('Europe/Paris')
+      ? getZonedDateTime(date)
       : Temporal.Now.zonedDateTimeISO('Europe/Paris'),
     visitors: visitors ?? 0,
   };

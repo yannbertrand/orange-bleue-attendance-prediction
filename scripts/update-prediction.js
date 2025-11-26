@@ -6,8 +6,8 @@ export const updatePredictionFile = async (courses) => {
   let nbOfNewRows = 0;
   let nbOfUpdatedRows = 0;
   for (const course of courses) {
-    const courseStartDateString = course.startDateTime.toString();
-    const courseEndDateString = course.endDateTime.toString();
+    const courseStartDateString = course.startDateTime.toPlainDateTime();
+    const courseEndDateString = course.endDateTime.toPlainDateTime();
     const courseLineRegex = new RegExp(
       `(${courseStartDateString}),(\\d*),(\\d*),${course.name},(.+?)\n`
     );
