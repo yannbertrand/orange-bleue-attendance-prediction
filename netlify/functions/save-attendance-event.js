@@ -8,7 +8,7 @@ import { estimateEvolution } from '../../src/calculate.js';
 import { getZonedDateTime } from '../../src/io/read-attendance-events-file.js';
 
 export const config = {
-  schedule: '*/2 * * * *',
+  schedule: '* * * * *',
 };
 
 export default async () => {
