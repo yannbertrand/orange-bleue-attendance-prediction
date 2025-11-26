@@ -1,5 +1,6 @@
 import { Temporal } from 'temporal-polyfill';
 import { getOrangeBleueInfo } from '../scripts/utils/env.js';
+import { getCourseSlot } from './models/course-slot.js';
 
 export async function getFutureCourses() {
   const { studioId, authToken, cookie } = getOrangeBleueInfo();
@@ -32,31 +33,25 @@ export async function getFutureCourses() {
   }
 
   const courses = await response.json();
-  const date =
-    response.headers.get('date') != null
-      ? Temporal.Instant.from(
-          new Date(response.headers.get('date')).toISOString()
-        ).toZonedDateTimeISO('Europe/Paris')
-      : Temporal.Now.zonedDateTimeISO('Europe/Paris');
   const futureCourses = [];
   for (const course of courses) {
     for (const slot of course.slots) {
-      const startDateTime = Temporal.ZonedDateTime.from(slot.startDateTime);
-      if (Temporal.ZonedDateTime.compare(date, startDateTime) > 0) {
-        continue;
-      }
-
-      const newCourse = {
-        date,
-        name: course.name,
-        bookedParticipants: course.bookedParticipants ?? 0,
-        appointmentStatus: course.appointmentStatus,
-        startDateTime: startDateTime,
-        endDateTime: Temporal.ZonedDateTime.from(slot.endDateTime),
-      };
+      const newCourse = getCourseSlot(
+        course.name,
+        course.bookedParticipants ?? 0,
+        course.appointmentStatus,
+        slot.startDateTime,
+        slot.endDateTime
+      );
       futureCourses.push(newCourse);
     }
   }
 
-  return futureCourses;
+  return futureCourses.filter(
+    (course) =>
+      Temporal.ZonedDateTime.compare(
+        Temporal.Now.zonedDateTimeISO(),
+        course.startDateTime
+      ) <= 0
+  );
 }
