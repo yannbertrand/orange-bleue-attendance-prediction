@@ -47,7 +47,7 @@ export default async () => {
     const newEvent = getEventToSave({ attendance, evolution, liveCourse });
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-    await store.setJSON(newEvent.date.toString(), newEvent);
+    await store.setJSON(newEvent.date.toPlainDateTime(), newEvent);
 
     console.log(`Saved 1 new data row`);
   } else {
