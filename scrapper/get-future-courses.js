@@ -1,5 +1,5 @@
 import { Temporal } from 'temporal-polyfill';
-import { getOrangeBleueInfo } from './utils/env.js';
+import { getOrangeBleueInfo } from '../scripts/utils/env.js';
 
 export async function getFutureCourses() {
   const { studioId, authToken, cookie } = getOrangeBleueInfo();

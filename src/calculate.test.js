@@ -1,7 +1,7 @@
 import { Temporal } from 'temporal-polyfill';
 import { describe, expect, it } from 'vitest';
 import { estimateEvolution, simulateOccupation } from './calculate.js';
-import { getEventsFromCsv } from './read-data.js';
+import { getEventsFromCsv } from './io/read-attendance-events-file.js';
 
 describe('estimateEvolution', () => {
   it('should count visitors arriving', () => {

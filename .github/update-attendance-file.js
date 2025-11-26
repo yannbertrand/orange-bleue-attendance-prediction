@@ -1,10 +1,10 @@
 import { Temporal } from 'temporal-polyfill';
-import { estimateEvolution } from '../scripts/calculate.js';
-import { getAttendanceLiveNumber } from '../scripts/get-attendance-live-number.js';
-import { getTodayCourses } from '../scripts/get-today-courses.js';
-import { readAttendanceFile } from '../scripts/read-data.js';
+import { getAttendanceLiveNumber } from '../scrapper/get-attendance-live-number.js';
+import { getTodayCourses } from '../scrapper/get-today-courses.js';
 import { isDayTime } from '../scripts/utils/date.js';
-import { updateAttendanceFile } from '../scripts/write-data.js';
+import { estimateEvolution } from '../src/calculate.js';
+import { updateAttendanceFile } from '../src/io/add-event-to-attendance-file.js';
+import { readAttendanceFile } from '../src/io/read-attendance-events-file.js';
 
 const pastAttendance = await readAttendanceFile();
 const liveAttendance = await getAttendanceLiveNumber();

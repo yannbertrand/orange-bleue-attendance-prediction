@@ -1,10 +1,10 @@
 import { getStore } from '@netlify/blobs';
 import { Temporal } from 'temporal-polyfill';
-import { estimateEvolution } from '../../scripts/calculate.js';
-import { getAttendanceLiveNumber } from '../../scripts/get-attendance-live-number.js';
-import { getTodayCourses } from '../../scripts/get-today-courses.js';
-import { getZonedDateTime } from '../../scripts/read-data.js';
+import { getAttendanceLiveNumber } from '../../scrapper/get-attendance-live-number.js';
+import { getTodayCourses } from '../../scrapper/get-today-courses.js';
 import { isDayTime } from '../../scripts/utils/date.js';
+import { estimateEvolution } from '../../src/calculate.js';
+import { getZonedDateTime } from '../../src/io/read-attendance-events-file.js';
 
 export const config = {
   schedule: '*/2 * * * *',

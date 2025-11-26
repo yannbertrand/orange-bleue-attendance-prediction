@@ -1,4 +1,4 @@
-import { getFutureCourses } from '../scripts/get-future-courses.js';
+import { getFutureCourses } from '../scrapper/get-future-courses.js';
 import { updatePredictionFile } from '../scripts/update-prediction.js';
 
 const futureCourses = await getFutureCourses();
