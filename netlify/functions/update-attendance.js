@@ -66,9 +66,7 @@ export default async () => {
 
 function getAttendance({ date, visitors } = {}) {
   return {
-    date: date
-      ? getZonedDateTime(date)
-      : Temporal.Now.zonedDateTimeISO('Europe/Paris'),
+    date: date ?? Temporal.Now.zonedDateTimeISO('Europe/Paris'),
     visitors: visitors ?? 0,
   };
 }
