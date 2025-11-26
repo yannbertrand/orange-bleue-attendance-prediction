@@ -3,6 +3,7 @@ import { Temporal } from 'temporal-polyfill';
 import { getAttendanceLiveNumber } from '../../scrapper/get-attendance-live-number.js';
 import { getTodayCourses } from '../../scrapper/get-today-courses.js';
 import { isDayTime } from '../../scripts/utils/date.js';
+import { getNetlifyInfo } from '../../scripts/utils/env.js';
 import { estimateEvolution } from '../../src/calculate.js';
 import { getZonedDateTime } from '../../src/io/read-attendance-events-file.js';
 
@@ -11,7 +12,7 @@ export const config = {
 };
 
 export default async () => {
-  const store = getStore('attendance');
+  const store = getStore({ name: 'attendance', ...getNetlifyInfo() });
 
   const { blobs } = await store.list();
   const foundPastAttendanceBlob = blobs.at(-1);
