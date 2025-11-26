@@ -98,10 +98,10 @@ function getEvolution({ arrived, leftOfTimeout, leftBeforeTimeout } = {}) {
   };
 }
 
-function getCourse({ bookedParticipants, name, appointmentStatus } = {}) {
+function getCourse({ courseParticipants, courseName, courseStatus } = {}) {
   return {
-    courseParticipants: bookedParticipants ?? '',
-    courseName: name ?? '',
-    courseStatus: appointmentStatus ?? '',
+    courseParticipants: courseParticipants ?? '',
+    courseName: courseName ?? '',
+    courseStatus: courseStatus ?? '',
   };
 }

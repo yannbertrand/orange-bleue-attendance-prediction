@@ -56,9 +56,9 @@ export function getCourseSlot(
   const endDateTime = Temporal.ZonedDateTime.from(endDateTimeString);
 
   return {
-    name,
-    bookedParticipants,
-    appointmentStatus,
+    courseName: name,
+    courseParticipants: bookedParticipants,
+    courseStatus: appointmentStatus,
     startDateTime,
     endDateTime,
   };

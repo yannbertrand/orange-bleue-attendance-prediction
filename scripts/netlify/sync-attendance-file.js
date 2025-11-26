@@ -74,10 +74,10 @@ const todayCourses = (await getTodayCourses()).map((course) => {
 
   return {
     ...course,
-    bookedParticipants:
-      foundEvent.courseParticipants > course.bookedParticipants
+    courseParticipants:
+      foundEvent.courseParticipants > course.courseParticipants
         ? foundEvent.courseParticipants
-        : course.bookedParticipants,
+        : course.courseParticipants,
   };
 });
 
@@ -125,10 +125,10 @@ function getEvolution({ arrived, leftOfTimeout, leftBeforeTimeout } = {}) {
   };
 }
 
-function getCourse({ bookedParticipants, name, appointmentStatus } = {}) {
+function getCourse({ courseParticipants, courseName, courseStatus } = {}) {
   return {
-    courseParticipants: bookedParticipants ?? '',
-    courseName: name ?? '',
-    courseStatus: appointmentStatus ?? '',
+    courseParticipants: courseParticipants ?? '',
+    courseName: courseName ?? '',
+    courseStatus: courseStatus ?? '',
   };
 }
