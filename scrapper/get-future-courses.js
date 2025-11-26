@@ -1,6 +1,6 @@
 import { Temporal } from 'temporal-polyfill';
 import { getOrangeBleueInfo } from '../scripts/utils/env.js';
-import { getCourseSlot } from './models/course-slot.js';
+import { getCourses } from './models/courses.js';
 
 export async function getFutureCourses() {
   const { studioId, authToken, cookie } = getOrangeBleueInfo();
@@ -33,25 +33,14 @@ export async function getFutureCourses() {
   }
 
   const courses = await response.json();
-  const futureCourses = [];
-  for (const course of courses) {
-    for (const slot of course.slots) {
-      const newCourse = getCourseSlot(
-        course.name,
-        course.bookedParticipants ?? 0,
-        course.appointmentStatus,
-        slot.startDateTime,
-        slot.endDateTime
-      );
-      futureCourses.push(newCourse);
-    }
-  }
 
-  return futureCourses.filter(
+  const futureCourses = getCourses(courses).filter(
     (course) =>
       Temporal.ZonedDateTime.compare(
         Temporal.Now.zonedDateTimeISO(),
         course.startDateTime
       ) <= 0
   );
+
+  return futureCourses;
 }

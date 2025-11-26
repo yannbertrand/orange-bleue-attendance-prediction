@@ -1,6 +1,6 @@
 import { Temporal } from 'temporal-polyfill';
 import { getOrangeBleueInfo } from '../scripts/utils/env.js';
-import { getCourseSlot } from './models/course-slot.js';
+import { getCourses } from './models/courses.js';
 
 export async function getTodayCourses() {
   const { studioId, authToken, cookie } = getOrangeBleueInfo();
@@ -30,19 +30,6 @@ export async function getTodayCourses() {
   }
 
   const courses = await response.json();
-  const todayCourses = [];
-  for (const course of courses) {
-    for (const slot of course.slots) {
-      const newCourse = getCourseSlot(
-        course.name,
-        course.bookedParticipants ?? 0,
-        course.appointmentStatus,
-        slot.startDateTime,
-        slot.endDateTime
-      );
-      todayCourses.push(newCourse);
-    }
-  }
 
-  return todayCourses;
+  return getCourses(courses);
 }
