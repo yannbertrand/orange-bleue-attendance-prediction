@@ -5,19 +5,23 @@ import { getEventsFromCsv } from './io/read-attendance-events-file.js';
 
 describe('estimateEvolution', () => {
   it('should count visitors arriving', () => {
-    const events = getEventsFromCsv(`2025-11-18T05:00:00.000Z,0,,,
-2025-11-18T05:30:00.000Z,2,,,`);
+    const events = getEventsFromCsv(`2025-11-18T06:00:00,0,,,
+2025-11-18T06:30:00,2,,,`);
 
     expect(estimateEvolution(events)).toStrictEqual([
       {
-        date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T06:00:00+01:00[Europe/Paris]'
+        ),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T06:30:00+01:00[Europe/Paris]'
+        ),
         arrived: 2,
         left: 0,
         leftOfTimeout: 0,
@@ -27,27 +31,33 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors arriving at different times', () => {
-    const events = getEventsFromCsv(`2025-11-18T05:00:00.000Z,0,,,
-2025-11-18T05:30:00.000Z,2,,,
-2025-11-18T06:00:00.000Z,5,,,`);
+    const events = getEventsFromCsv(`2025-11-18T06:00:00,0,,,
+2025-11-18T06:30:00,2,,,
+2025-11-18T07:00:00,5,,,`);
 
     expect(estimateEvolution(events)).toStrictEqual([
       {
-        date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T06:00:00+01:00[Europe/Paris]'
+        ),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T06:30:00+01:00[Europe/Paris]'
+        ),
         arrived: 2,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T06:00:00.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T07:00:00+01:00[Europe/Paris]'
+        ),
         arrived: 3,
         left: 0,
         leftOfTimeout: 0,
@@ -57,19 +67,23 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors leaving', () => {
-    const events = getEventsFromCsv(`2025-11-18T05:30:00.000Z,6,,,
-2025-11-18T07:00:00.000Z,2,,,`);
+    const events = getEventsFromCsv(`2025-11-18T06:30:00,6,,,
+2025-11-18T08:00:00,2,,,`);
 
     expect(estimateEvolution(events)).toStrictEqual([
       {
-        date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T06:30:00+01:00[Europe/Paris]'
+        ),
         arrived: 6,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T07:00:00.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T08:00:00+01:00[Europe/Paris]'
+        ),
         arrived: 0,
         left: 4,
         leftOfTimeout: 0,
@@ -79,19 +93,23 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors leaving because of 2h timeout', () => {
-    const events = getEventsFromCsv(`2025-11-18T05:00:00.000Z,6,,,
-2025-11-18T07:00:00.000Z,6,,,`);
+    const events = getEventsFromCsv(`2025-11-18T06:00:00,6,,,
+2025-11-18T08:00:00,6,,,`);
 
     expect(estimateEvolution(events)).toStrictEqual([
       {
-        date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T06:00:00+01:00[Europe/Paris]'
+        ),
         arrived: 6,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T07:00:00.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T08:00:00+01:00[Europe/Paris]'
+        ),
         arrived: 6,
         left: 6,
         leftOfTimeout: 6,
@@ -101,27 +119,33 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors leaving at different times', () => {
-    const events = getEventsFromCsv(`2025-11-18T05:00:00.000Z,6,,,
-2025-11-18T06:30:00.000Z,3,,,
-2025-11-18T07:00:00.000Z,2,,,`);
+    const events = getEventsFromCsv(`2025-11-18T06:00:00,6,,,
+2025-11-18T07:30:00,3,,,
+2025-11-18T08:00:00,2,,,`);
 
     expect(estimateEvolution(events)).toStrictEqual([
       {
-        date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T06:00:00+01:00[Europe/Paris]'
+        ),
         arrived: 6,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T06:30:00.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T07:30:00+01:00[Europe/Paris]'
+        ),
         arrived: 0,
         left: 3,
         leftOfTimeout: 0,
         leftBeforeTimeout: 3,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T07:00:00.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T08:00:00+01:00[Europe/Paris]'
+        ),
         arrived: 2,
         left: 3,
         leftOfTimeout: 3,
@@ -130,172 +154,214 @@ describe('estimateEvolution', () => {
     ]);
   });
 
-  it('should return visitors arrivals', () => {
-    const events = getEventsFromCsv(`2025-11-18T04:35:59.000Z,0,,,
-2025-11-18T05:33:36.000Z,1,,,
-2025-11-18T06:08:08.000Z,2,,,
-2025-11-18T06:48:49.000Z,2,,,
-2025-11-18T07:05:46.000Z,2,,,
-2025-11-18T07:28:38.000Z,3,,,
-2025-11-18T07:44:14.000Z,5,,,
-2025-11-18T08:07:24.000Z,4,,,
-2025-11-18T08:31:35.000Z,5,,,
-2025-11-18T08:48:05.000Z,8,,,
-2025-11-18T09:06:27.000Z,16,7,YAKO PILATES,PLANNED
-2025-11-18T09:30:33.000Z,18,5,ABDOS FESSIERS,PLANNED
-2025-11-18T09:45:38.000Z,17,5,ABDOS FESSIERS,PLANNED
-2025-11-18T10:06:46.000Z,17,,,
-2025-11-18T10:30:48.000Z,17,,,
-2025-11-18T10:47:12.000Z,20,,,
-2025-11-18T11:05:33.000Z,10,,,
-2025-11-18T11:27:09.000Z,25,,,
-2025-11-18T11:44:04.000Z,26,10,ABDOS FESSIERS,PLANNED
-2025-11-18T12:09:06.000Z,26,,,
-2025-11-18T12:33:04.000Z,26,,,`);
+  it.only('should return visitors arrivals', () => {
+    const events = getEventsFromCsv(`2025-11-18T05:35:59,0,,,
+2025-11-18T06:33:36,1,,,
+2025-11-18T07:08:08,2,,,
+2025-11-18T07:48:49,2,,,
+2025-11-18T08:05:46,2,,,
+2025-11-18T08:28:38,3,,,
+2025-11-18T08:44:14,5,,,
+2025-11-18T09:07:24,4,,,
+2025-11-18T09:31:35,5,,,
+2025-11-18T09:48:05,8,,,
+2025-11-18T10:06:27,16,7,YAKO PILATES,PLANNED
+2025-11-18T10:30:33,18,5,ABDOS FESSIERS,PLANNED
+2025-11-18T10:45:38,17,5,ABDOS FESSIERS,PLANNED
+2025-11-18T11:06:46,17,,,
+2025-11-18T11:30:48,17,,,
+2025-11-18T11:47:12,20,,,
+2025-11-18T12:05:33,10,,,
+2025-11-18T12:27:09,25,,,
+2025-11-18T12:44:04,26,10,ABDOS FESSIERS,PLANNED
+2025-11-18T13:09:06,26,,,
+2025-11-18T13:33:04,26,,,`);
 
     expect(estimateEvolution(events)).toStrictEqual([
       {
-        date: Temporal.Instant.from('2025-11-18T04:35:59.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T05:35:59+01:00[Europe/Paris]'
+        ),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T05:33:36.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T06:33:36+01:00[Europe/Paris]'
+        ),
         arrived: 1,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T06:08:08.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T07:08:08+01:00[Europe/Paris]'
+        ),
         arrived: 1,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T06:48:49.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T07:48:49+01:00[Europe/Paris]'
+        ),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T07:05:46.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T08:05:46+01:00[Europe/Paris]'
+        ),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T07:28:38.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T08:28:38+01:00[Europe/Paris]'
+        ),
         arrived: 1,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T07:44:14.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T08:44:14+01:00[Europe/Paris]'
+        ),
         arrived: 3,
         left: 1,
         leftOfTimeout: 1,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T08:07:24.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T09:07:24+01:00[Europe/Paris]'
+        ),
         arrived: 0,
         left: 1,
         leftOfTimeout: 0,
         leftBeforeTimeout: 1,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T08:31:35.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T09:31:35+01:00[Europe/Paris]'
+        ),
         arrived: 1,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T08:48:05.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T09:48:05+01:00[Europe/Paris]'
+        ),
         arrived: 3,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T09:06:27.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T10:06:27+01:00[Europe/Paris]'
+        ),
         arrived: 8,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T09:30:33.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T10:30:33+01:00[Europe/Paris]'
+        ),
         arrived: 3,
         left: 1,
         leftOfTimeout: 1,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T09:45:38.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T10:45:38+01:00[Europe/Paris]'
+        ),
         arrived: 2,
         left: 3,
         leftOfTimeout: 3,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T10:06:46.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T11:06:46+01:00[Europe/Paris]'
+        ),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T10:30:48.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T11:30:48+01:00[Europe/Paris]'
+        ),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T10:47:12.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T11:47:12+01:00[Europe/Paris]'
+        ),
         arrived: 4,
         left: 1,
         leftOfTimeout: 1,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T11:05:33.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T12:05:33+01:00[Europe/Paris]'
+        ),
         arrived: 0,
         left: 10,
         leftOfTimeout: 3,
         leftBeforeTimeout: 7,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T11:27:09.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T12:27:09+01:00[Europe/Paris]'
+        ),
         arrived: 16,
         left: 1,
         leftOfTimeout: 1,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T11:44:04.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T12:44:04+01:00[Europe/Paris]'
+        ),
         arrived: 4,
         left: 3,
         leftOfTimeout: 3,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T12:09:06.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T13:09:06+01:00[Europe/Paris]'
+        ),
         arrived: 2,
         left: 2,
         leftOfTimeout: 2,
         leftBeforeTimeout: 0,
       },
       {
-        date: Temporal.Instant.from('2025-11-18T12:33:04.000Z'),
+        date: Temporal.ZonedDateTime.from(
+          '2025-11-18T13:33:04+01:00[Europe/Paris]'
+        ),
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
@@ -310,12 +376,12 @@ describe('simulateOccupation', () => {
     expect(
       simulateOccupation([
         {
-          date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T06:00:00'),
           arrived: 0,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T06:30:00'),
           arrived: 2,
           left: 0,
         },
@@ -327,17 +393,17 @@ describe('simulateOccupation', () => {
     expect(
       simulateOccupation([
         {
-          date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T06:00:00'),
           arrived: 0,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T06:30:00'),
           arrived: 2,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T06:00:00.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T07:00:00'),
           arrived: 3,
           left: 0,
         },
@@ -349,12 +415,12 @@ describe('simulateOccupation', () => {
     expect(
       simulateOccupation([
         {
-          date: Temporal.Instant.from('2025-11-18T05:30:00.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T06:30:00'),
           arrived: 6,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T07:00:00.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T08:00:00'),
           arrived: 0,
           left: 4,
         },
@@ -366,12 +432,12 @@ describe('simulateOccupation', () => {
     expect(
       simulateOccupation([
         {
-          date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T06:00:00'),
           arrived: 6,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T07:00:00.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T08:00:00'),
           arrived: 6,
           left: 6,
         },
@@ -383,17 +449,17 @@ describe('simulateOccupation', () => {
     expect(
       simulateOccupation([
         {
-          date: Temporal.Instant.from('2025-11-18T05:00:00.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T06:00:00'),
           arrived: 6,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T06:30:00.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T07:30:00'),
           arrived: 0,
           left: 3,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T07:00:00.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T08:00:00'),
           arrived: 2,
           left: 3,
         },
@@ -405,107 +471,107 @@ describe('simulateOccupation', () => {
     expect(
       simulateOccupation([
         {
-          date: Temporal.Instant.from('2025-11-18T04:35:59.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T05:35:59'),
           arrived: 0,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T05:33:36.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T06:33:36'),
           arrived: 1,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T06:08:08.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T07:08:08'),
           arrived: 1,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T06:48:49.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T07:48:49'),
           arrived: 0,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T07:05:46.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T08:05:46'),
           arrived: 0,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T07:28:38.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T08:28:38'),
           arrived: 1,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T07:44:14.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T08:44:14'),
           arrived: 3,
           left: 1,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T08:07:24.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T09:07:24'),
           arrived: 0,
           left: 1,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T08:31:35.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T09:31:35'),
           arrived: 1,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T08:48:05.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T09:48:05'),
           arrived: 3,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T09:06:27.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T10:06:27'),
           arrived: 8,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T09:30:33.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T10:30:33'),
           arrived: 3,
           left: 1,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T09:45:38.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T10:45:38'),
           arrived: 2,
           left: 3,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T10:06:46.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T11:06:46'),
           arrived: 0,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T10:30:48.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T11:30:48'),
           arrived: 0,
           left: 0,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T10:47:12.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T11:47:12'),
           arrived: 4,
           left: 1,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T11:05:33.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T12:05:33'),
           arrived: 0,
           left: 10,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T11:27:09.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T12:27:09'),
           arrived: 16,
           left: 1,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T11:44:04.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T12:44:04'),
           arrived: 4,
           left: 3,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T12:09:06.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T13:09:06'),
           arrived: 2,
           left: 2,
         },
         {
-          date: Temporal.Instant.from('2025-11-18T12:33:04.000Z'),
+          date: Temporal.PlainDateTime.from('2025-11-18T13:33:04'),
           arrived: 0,
           left: 0,
         },
