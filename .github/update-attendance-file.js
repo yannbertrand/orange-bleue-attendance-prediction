@@ -3,7 +3,7 @@ import { getAttendanceLiveNumber } from '../scrapper/get-attendance-live-number.
 import { getTodayCourses } from '../scrapper/get-today-courses.js';
 import { isDayTime } from '../scripts/utils/date.js';
 import { estimateEvolution } from '../src/calculate.js';
-import { updateAttendanceFile } from '../src/io/add-event-to-attendance-file.js';
+import { addEventToAttendanceFile } from '../src/io/add-event-to-attendance-file.js';
 import { readAttendanceFile } from '../src/io/read-attendance-events-file.js';
 
 const pastAttendance = await readAttendanceFile();
@@ -32,7 +32,7 @@ if (isDayTime()) {
   const newEvent = { ...attendance, ...evolution, ...liveCourse };
   console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-  await updateAttendanceFile(newEvent);
+  await addEventToAttendanceFile(newEvent);
 
   console.log(`Saved 1 new data row`);
 } else {
@@ -44,7 +44,7 @@ if (isDayTime()) {
     const newEvent = { ...attendance, ...evolution, ...getCourse() };
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-    await updateAttendanceFile(newEvent);
+    await addEventToAttendanceFile(newEvent);
 
     console.log('Saved 1 new data row');
   } else {
@@ -73,7 +73,7 @@ if (isDayTime()) {
       );
 
       for (const event of newEvents) {
-        await updateAttendanceFile(event);
+        await addEventToAttendanceFile(event);
       }
 
       console.log(`Saved ${newEvents.length} new data row`);

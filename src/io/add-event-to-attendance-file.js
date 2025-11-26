@@ -1,6 +1,6 @@
 import { appendFile } from 'node:fs/promises';
 
-export const updateAttendanceFile = async (event) => {
+export const addEventToAttendanceFile = async (event) => {
   const newAttendanceCsvFormattedData = getAttendanceEventAsCsv(event);
 
   await appendFile(
