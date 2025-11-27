@@ -29,12 +29,16 @@ export function getEventsFromCsv(csvData) {
       leftBeforeTimeout: attendanceLine[4]
         ? Number.parseInt(attendanceLine[4], 10)
         : 0,
-      courseParticipants: attendanceLine[5]
-        ? Number.parseInt(attendanceLine[5], 10)
-        : '',
-      courseName: attendanceLine[6] ?? '',
-      courseStatus: attendanceLine[7] ?? '',
     };
+    if (attendanceLine[5]) {
+      line.courseParticipants = Number.parseInt(attendanceLine[5], 10);
+    }
+    if (attendanceLine[6]) {
+      line.courseName = attendanceLine[6];
+    }
+    if (attendanceLine[7]) {
+      line.courseName = attendanceLine[7];
+    }
     result.push(line);
   }
 
