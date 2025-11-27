@@ -27,16 +27,19 @@ export async function getAllNetlifyEventsAfter(after) {
   const nbOfChunks = Math.ceil(keys.length / rateLimitChunkSize);
   console.debug(`Sliced in ${nbOfChunks} chunks`);
   for (let i = 0; i < keys.length; i += rateLimitChunkSize) {
+    const currentChunkNb = Math.ceil(i / rateLimitChunkSize) + 1;
     const chunkKeys = keys.slice(i, i + rateLimitChunkSize);
-    console.debug(`Getting next ${chunkKeys.length} blobs`);
+    console.debug(
+      `Getting next ${chunkKeys.length} blobs (${currentChunkNb}/${nbOfChunks})`
+    );
     events.push(
       ...(await Promise.all(
         chunkKeys.map((key) => store.get(key, { type: 'json' }))
       ))
     );
     console.debug(`Got ${chunkKeys.length} blobs`);
-    const currentChunkNb = Math.ceil(i / rateLimitChunkSize) + 1;
     if (currentChunkNb < nbOfChunks) {
+      console.debug(`Pause for 1 min to avoid rate limiting...`);
       await new Promise((resolve) => setTimeout(resolve, rateLimitTimeout));
       console.debug(`Rate limit done`);
     }

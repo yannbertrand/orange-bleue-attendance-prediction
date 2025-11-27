@@ -2,14 +2,18 @@ import { Temporal } from 'temporal-polyfill';
 
 export function dateToString(zonedDateTime) {
   if (!(zonedDateTime instanceof Temporal.ZonedDateTime)) {
-    throw new Error('dateToString only accepts Temporal.ZonedDateTime');
+    throw new Error(
+      `dateToString only accepts Temporal.ZonedDateTime, invalid value: "${zonedDateTime}"`
+    );
   }
   return zonedDateTime.toString({ timeZoneName: 'never' });
 }
 
 export function stringToDate(string) {
   if (typeof string !== 'string') {
-    throw new Error('stringToDate only accepts valid string');
+    throw new Error(
+      `stringToDate only accepts valid string, invalid value: "${string}"`
+    );
   }
 
   if (string.endsWith('[Europe/Paris]')) {
