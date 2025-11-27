@@ -14,24 +14,43 @@ const lastManualUpdate = await getLastSlowUpdateEvent();
 console.log(`Last found update: ${lastManualUpdate.toString()}`);
 
 export async function getNetlifyBlobsData(storeName, after) {
-  const { siteID, token } = getNetlifyInfo();
+  const { siteID, token, rateLimitChunkSize, rateLimitTimeout } =
+    getNetlifyInfo();
   const store = await getStore({ name: storeName, siteID, token });
   const { blobs } = await store.list();
-  const requests = [];
+  console.log(`Found ${blobs.length} blobs`);
+
+  const keys = [];
   for (const blob of blobs) {
     const key = blob.key.endsWith('Paris]')
       ? blob.key.replace(' ', '+')
       : blob.key;
     const blobDate = getZonedDateTime(key);
     if (Temporal.ZonedDateTime.compare(blobDate, after) > 0) {
-      requests.push(
-        store.get(key, {
-          type: 'json',
-        })
-      );
+      keys.push(key);
     }
   }
-  const events = await Promise.all(requests);
+  console.log(`Filtered ${keys.length} blobs in time interval`);
+
+  const events = [];
+  const nbOfChunks = Math.ceil(keys.length / rateLimitChunkSize);
+  console.log(`Sliced in ${nbOfChunks} chunks`);
+  for (let i = 0; i < keys.length; i += rateLimitChunkSize) {
+    const chunkKeys = keys.slice(i, i + rateLimitChunkSize);
+    console.log(`Getting next ${chunkKeys.length} blobs`);
+    events.push(
+      ...(await Promise.all(
+        chunkKeys.map((key) => store.get(key, { type: 'json' }))
+      ))
+    );
+    console.log(`Got ${chunkKeys.length} blobs`);
+    const currentChunkNb = Math.ceil(i / rateLimitChunkSize) + 1;
+    if (currentChunkNb < nbOfChunks) {
+      await new Promise((resolve) => setTimeout(resolve, rateLimitTimeout));
+      console.log(`Rate limit done`);
+    }
+  }
+
   const result = events.filter((e) => e !== null).map(getAttendanceEvent);
   console.log(`Found ${result.length} new events from Netlify`);
   return result;
