@@ -157,3 +157,39 @@ date,visitors,courseParticipants,courseName,courseStatus
 2025-11-27T19:00:00+01:00[Europe/Paris],13,13,YAKO BAILA,PLANNED
 2025-11-27T19:45:00+01:00[Europe/Paris],1,1,ABDOS FESSIERS,PLANNED
 2025-11-27T20:15:00+01:00[Europe/Paris],0,0,ABDOS FESSIERS,FINISHED
+2025-11-27T10:00:00+01:00[Europe/Paris],7,7,undefined,PLANNED
+2025-11-27T10:45:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-27T10:45:00+01:00[Europe/Paris],3,3,undefined,PLANNED
+2025-11-27T11:30:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-27T12:30:00+01:00[Europe/Paris],7,7,undefined,PLANNED
+2025-11-27T13:15:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-27T15:00:00+01:00[Europe/Paris],3,3,undefined,PLANNED
+2025-11-27T15:30:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-27T15:30:00+01:00[Europe/Paris],2,2,undefined,PLANNED
+2025-11-27T16:00:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-27T18:00:00+01:00[Europe/Paris],12,12,undefined,PLANNED
+2025-11-27T18:30:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-27T18:30:00+01:00[Europe/Paris],17,17,undefined,PLANNED
+2025-11-27T19:00:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-27T19:00:00+01:00[Europe/Paris],15,15,undefined,PLANNED
+2025-11-27T19:45:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-27T19:45:00+01:00[Europe/Paris],2,2,undefined,PLANNED
+2025-11-27T20:15:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-28T10:00:00+01:00[Europe/Paris],2,2,undefined,PLANNED
+2025-11-28T10:45:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-28T10:45:00+01:00[Europe/Paris],4,4,undefined,PLANNED
+2025-11-28T11:15:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-28T11:15:00+01:00[Europe/Paris],3,3,undefined,PLANNED
+2025-11-28T11:45:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-28T12:30:00+01:00[Europe/Paris],1,1,undefined,PLANNED
+2025-11-28T13:15:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-28T15:00:00+01:00[Europe/Paris],1,1,undefined,PLANNED
+2025-11-28T15:45:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-28T15:45:00+01:00[Europe/Paris],1,1,undefined,PLANNED
+2025-11-28T16:15:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-28T17:45:00+01:00[Europe/Paris],4,4,undefined,PLANNED
+2025-11-28T18:30:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-28T18:30:00+01:00[Europe/Paris],4,4,undefined,PLANNED
+2025-11-28T19:15:00+01:00[Europe/Paris],0,0,undefined,FINISHED
+2025-11-28T19:15:00+01:00[Europe/Paris],0,0,undefined,PLANNED
+2025-11-28T19:45:00+01:00[Europe/Paris],0,0,undefined,FINISHED
