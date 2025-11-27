@@ -54,7 +54,7 @@ export function estimateEvolution(events) {
     }
 
     result.push({
-      date: event.date,
+      ...event,
       arrived,
       left: leftOfTimeout + leftBeforeTimeout,
       leftOfTimeout,

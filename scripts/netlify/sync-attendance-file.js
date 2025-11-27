@@ -13,10 +13,18 @@ console.log(`Last found update: ${dateToString(lastManualUpdate)}`);
 
 const existingEvents = await readAttendanceFile();
 console.log(`Got ${existingEvents.length} events from attendance file`);
+
 const newNetlifyData = await getAllNetlifyEventsAfter(lastManualUpdate);
 console.log(`Found ${newNetlifyData.length} new events from Netlify`);
 
-const morningOfLastManualUpdate = lastManualUpdate.with({ hour: 5, minute: 0 });
+const startOfDay = lastManualUpdate?.with({ hour: 5, minute: 0 });
+const morningOfLastManualUpdate = existingEvents.find(
+  (event) => event.date.since(startOfDay).sign >= 0
+)?.date;
+console.log(
+  `Calculating evolution from ${dateToString(morningOfLastManualUpdate)}`
+);
+
 const upToDateData = [...existingEvents, ...newNetlifyData]
   .filter(
     (event) =>
@@ -54,26 +62,23 @@ const todayCourses = (await getTodayCourses()).map((course) => {
   };
 });
 
-const completeData = newData
-  .map((event, i) => {
-    const evolution = getEvolution(
-      newData[i - 1] ? estimateEvolution([newData[i - 1], event]).at(-1) : event
-    );
-    return { ...event, ...evolution };
-  })
-  .filter(
-    (event) => Temporal.ZonedDateTime.compare(event.date, lastManualUpdate) > 0
-  )
-  .map((event) => {
-    const liveCourse = getActiveCourse(todayCourses, event.date);
-    return { ...event, ...liveCourse };
-  });
+const dataWithEvolution = estimateEvolution(newData);
 
-console.log(`${completeData.length} events will be updated`);
+const completeData = dataWithEvolution.map((event) => {
+  const liveCourse = getActiveCourse(todayCourses, event.date);
+  return { ...event, ...liveCourse };
+});
 
-await updateAttendanceFile(lastManualUpdate, completeData);
+console.log(`${completeData.length} events found today`);
 
-console.log(`File wrote successfully`);
+const { nbOfNewRows, nbOfUpdatedRows } = await updateAttendanceFile(
+  morningOfLastManualUpdate,
+  completeData
+);
+
+console.log(
+  `Saved ${nbOfNewRows} new data row and updated ${nbOfUpdatedRows} row`
+);
 
 export function getAttendanceEvent({ date, visitors } = {}) {
   return {

@@ -59,9 +59,9 @@ export async function getNetlifyLastEvent() {
   return getAttendance(pastAttendance);
 }
 
-function getAttendance({ date, visitors }) {
+function getAttendance(event) {
   return {
-    date: stringToDate(date),
-    visitors: visitors,
+    ...event,
+    date: stringToDate(event.date),
   };
 }

@@ -14,10 +14,19 @@ export const updateAttendanceFile = async (lastKnownEvent, newEvents) => {
   );
 
   const newAttendanceFileContentAsArray =
-    baseAttendanceFileContentAsArray.toSpliced(indexToRemove + 1);
+    baseAttendanceFileContentAsArray.toSpliced(indexToRemove);
 
+  let nbOfUpdatedRows = 0;
   for (const event of newEvents) {
-    newAttendanceFileContentAsArray.push(getAttendanceEventAsCsv(event));
+    const eventAsCsv = getAttendanceEventAsCsv(event);
+    newAttendanceFileContentAsArray.push(eventAsCsv);
+
+    const existingEventCsv = baseAttendanceFileContentAsArray.find(
+      (baseEventCsv) => baseEventCsv.startsWith(eventAsCsv.split(',')[0])
+    );
+    if (existingEventCsv && existingEventCsv !== eventAsCsv) {
+      nbOfUpdatedRows++;
+    }
   }
   newAttendanceFileContentAsArray.push('');
 
@@ -29,5 +38,9 @@ export const updateAttendanceFile = async (lastKnownEvent, newEvents) => {
     'utf8'
   );
 
-  return newAttendanceCsvFormattedData;
+  const nbOfNewRows =
+    newAttendanceFileContentAsArray.length -
+    baseAttendanceFileContentAsArray.length;
+
+  return { nbOfNewRows, nbOfUpdatedRows };
 };

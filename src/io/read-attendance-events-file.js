@@ -29,7 +29,7 @@ export function getEventsFromCsv(csvData) {
       leftBeforeTimeout: attendanceLine[4]
         ? Number.parseInt(attendanceLine[4], 10)
         : 0,
-      courseParticipants: Number.isInteger(attendanceLine[5])
+      courseParticipants: attendanceLine[5]
         ? Number.parseInt(attendanceLine[5], 10)
         : '',
       courseName: attendanceLine[6] ?? '',
