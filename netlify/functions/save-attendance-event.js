@@ -19,18 +19,26 @@ export default async () => {
     const newEvent = { ...attendance, ...liveCourse };
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-    await setNetlifyEvent(newEvent);
+    const { modified } = await setNetlifyEvent(newEvent);
 
-    console.log(`Saved 1 new data row`);
+    if (modified) {
+      console.log(`Saved 1 new data row`);
+    } else {
+      console.log(`No new row saved`);
+    }
   } else {
     console.log(`It's night time!`);
 
     const newEvent = { ...attendance };
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-    await setNetlifyEvent(newEvent);
+    const { modified } = await setNetlifyEvent(newEvent);
 
-    console.log('Saved 1 new data row');
+    if (modified) {
+      console.log(`Saved 1 new data row`);
+    } else {
+      console.log(`No new row saved`);
+    }
   }
 
   return new Response();
