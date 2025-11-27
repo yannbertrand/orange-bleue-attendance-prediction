@@ -7,11 +7,7 @@ import { addEventToAttendanceFile } from '../src/io/add-event-to-attendance-file
 import { readAttendanceFile } from '../src/io/read-attendance-events-file.js';
 
 const pastAttendance = await readAttendanceFile();
-const liveAttendance = await getAttendanceLiveNumber();
-const attendance = getAttendance({
-  date: liveAttendance.date,
-  visitors: liveAttendance.visitors,
-});
+const attendance = await getAttendanceLiveNumber();
 const evolution = getEvolution(
   estimateEvolution([pastAttendance.at(-1), attendance]).at(-1)
 );
@@ -57,7 +53,7 @@ if (isDayTime()) {
       const newEvents = [];
       while (date.hour < 6) {
         newEvents.push({
-          ...getAttendance({ date, visitors: 0 }),
+          ...{ date, visitors: 0 },
           ...getEvolution({
             arrived: 0,
             leftOfTimeout: 0,
@@ -81,13 +77,6 @@ if (isDayTime()) {
       console.log(`Already saved night visits`);
     }
   }
-}
-
-function getAttendance({ date, visitors } = {}) {
-  return {
-    date: date,
-    visitors: visitors,
-  };
 }
 
 function getEvolution({ arrived, leftOfTimeout, leftBeforeTimeout } = {}) {
