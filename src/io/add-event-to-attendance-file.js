@@ -25,5 +25,7 @@ export function getAttendanceEventAsCsv({
 }) {
   return `${dateToString(
     date
-  )},${visitors},${arrived},${leftOfTimeout},${leftBeforeTimeout},${courseParticipants},${courseName},${courseStatus}`;
+  )},${visitors},${arrived},${leftOfTimeout},${leftBeforeTimeout},${
+    courseParticipants ?? ''
+  },${courseName ?? ''},${courseStatus ?? ''}`;
 }

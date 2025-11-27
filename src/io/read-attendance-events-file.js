@@ -29,9 +29,11 @@ export function getEventsFromCsv(csvData) {
       leftBeforeTimeout: attendanceLine[4]
         ? Number.parseInt(attendanceLine[4], 10)
         : 0,
-      courseParticipants: Number.parseInt(attendanceLine[5], 10),
-      courseName: attendanceLine[6],
-      courseStatus: attendanceLine[7],
+      courseParticipants: Number.isInteger(attendanceLine[5])
+        ? Number.parseInt(attendanceLine[5], 10)
+        : '',
+      courseName: attendanceLine[6] ?? '',
+      courseStatus: attendanceLine[7] ?? '',
     };
     result.push(line);
   }
