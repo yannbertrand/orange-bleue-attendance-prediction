@@ -1,33 +1,18 @@
-import { getStore } from '@netlify/blobs';
 import { Temporal } from 'temporal-polyfill';
 import { getAttendanceLiveNumber } from '../../scrapper/get-attendance-live-number.js';
 import { getTodayCourses } from '../../scrapper/get-today-courses.js';
 import { isDayTime } from '../../scripts/utils/date.js';
-import { getNetlifyInfo } from '../../scripts/utils/env.js';
 import { estimateEvolution } from '../../src/calculate.js';
-import { stringToDate } from '../../src/io/models/date.js';
+import { getNetlifyLastEvent, store } from '../../src/io/read-netlify-data.js';
+import { setNetlifyEvent } from '../../src/io/write-netlify-data.js';
 
 export const config = {
   schedule: '* * * * *',
 };
 
 export default async () => {
-  const store = getStore({ name: 'attendance', ...getNetlifyInfo() });
-
-  const { blobs } = await store.list();
-  const foundPastAttendanceBlob = blobs.at(-1);
-  let pastAttendance;
-  if (foundPastAttendanceBlob) {
-    pastAttendance = await store.get(foundPastAttendanceBlob.key, {
-      type: 'json',
-    });
-  }
-  pastAttendance = getAttendance(pastAttendance);
-  const liveAttendance = await getAttendanceLiveNumber();
-  const attendance = getAttendance({
-    date: liveAttendance.date,
-    visitors: liveAttendance.visitors,
-  });
+  const pastAttendance = await getNetlifyLastEvent();
+  const attendance = await getAttendanceLiveNumber();
   const evolution = getEvolution(
     estimateEvolution([pastAttendance, attendance]).at(-1)
   );
@@ -48,7 +33,7 @@ export default async () => {
     const newEvent = getEventToSave({ attendance, evolution, liveCourse });
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-    await store.setJSON(newEvent.date.toPlainDateTime().toString(), newEvent);
+    await setNetlifyEvent(newEvent);
 
     console.log(`Saved 1 new data row`);
   } else {
@@ -58,7 +43,7 @@ export default async () => {
     const newEvent = getEventToSave({ attendance, evolution, liveCourse });
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
-    await store.setJSON(attendance.date.toPlainDateTime().toString(), newEvent);
+    await setNetlifyEvent(newEvent);
 
     console.log('Saved 1 new data row');
   }
@@ -71,19 +56,6 @@ function getEventToSave({ attendance, evolution, liveCourse }) {
     ...attendance,
     ...evolution,
     ...liveCourse,
-  };
-}
-
-function getAttendance({ date, visitors } = {}) {
-  if (typeof date === 'string') {
-    return {
-      date: stringToDate(date),
-      visitors: visitors ?? 0,
-    };
-  }
-  return {
-    date: date ?? Temporal.Now.zonedDateTimeISO('Europe/Paris'),
-    visitors: visitors ?? 0,
   };
 }
 
