@@ -5,7 +5,7 @@ import { getTodayCourses } from '../../scrapper/get-today-courses.js';
 import { isDayTime } from '../../scripts/utils/date.js';
 import { getNetlifyInfo } from '../../scripts/utils/env.js';
 import { estimateEvolution } from '../../src/calculate.js';
-import { getZonedDateTime } from '../../src/io/read-attendance-events-file.js';
+import { stringToDate } from '../../src/io/models/date.js';
 
 export const config = {
   schedule: '* * * * *',
@@ -77,7 +77,7 @@ function getEventToSave({ attendance, evolution, liveCourse }) {
 function getAttendance({ date, visitors } = {}) {
   if (typeof date === 'string') {
     return {
-      date: getZonedDateTime(date),
+      date: stringToDate(date),
       visitors: visitors ?? 0,
     };
   }

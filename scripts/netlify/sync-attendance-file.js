@@ -3,15 +3,13 @@ import { Temporal } from 'temporal-polyfill';
 import { getTodayCourses } from '../../scrapper/get-today-courses.js';
 import { estimateEvolution } from '../../src/calculate.js';
 import { getLastSlowUpdateEvent } from '../../src/io/attendance/get-last-slow-update-event.js';
-import {
-  getZonedDateTime,
-  readAttendanceFile,
-} from '../../src/io/read-attendance-events-file.js';
+import { dateToString, stringToDate } from '../../src/io/models/date.js';
+import { readAttendanceFile } from '../../src/io/read-attendance-events-file.js';
 import { updateAttendanceFile } from '../../src/io/update-attendance-file.js';
 import { getNetlifyInfo } from '../utils/env.js';
 
 const lastManualUpdate = await getLastSlowUpdateEvent();
-console.log(`Last found update: ${lastManualUpdate.toString()}`);
+console.log(`Last found update: ${dateToString(lastManualUpdate)}`);
 
 export async function getNetlifyBlobsData(storeName, after) {
   const { siteID, token, rateLimitChunkSize, rateLimitTimeout } =
@@ -25,7 +23,7 @@ export async function getNetlifyBlobsData(storeName, after) {
     const key = blob.key.endsWith('Paris]')
       ? blob.key.replace(' ', '+')
       : blob.key;
-    const blobDate = getZonedDateTime(key);
+    const blobDate = stringToDate(key);
     if (Temporal.ZonedDateTime.compare(blobDate, after) > 0) {
       keys.push(key);
     }
@@ -130,7 +128,7 @@ console.log(`File wrote successfully`);
 export function getAttendanceEvent({ date, visitors } = {}) {
   return {
     date: date
-      ? getZonedDateTime(date)
+      ? stringToDate(date)
       : Temporal.Now.zonedDateTimeISO('Europe/Paris'),
     visitors: visitors ?? 0,
   };

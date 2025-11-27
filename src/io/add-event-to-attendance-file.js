@@ -1,4 +1,5 @@
 import { appendFile } from 'node:fs/promises';
+import { dateToString } from './models/date.js';
 
 export const addEventToAttendanceFile = async (event) => {
   const newAttendanceCsvFormattedData = getAttendanceEventAsCsv(event);
@@ -22,5 +23,7 @@ export function getAttendanceEventAsCsv({
   courseName,
   courseStatus,
 }) {
-  return `${date.toString()},${visitors},${arrived},${leftOfTimeout},${leftBeforeTimeout},${courseParticipants},${courseName},${courseStatus}`;
+  return `${dateToString(
+    date
+  )},${visitors},${arrived},${leftOfTimeout},${leftBeforeTimeout},${courseParticipants},${courseName},${courseStatus}`;
 }
