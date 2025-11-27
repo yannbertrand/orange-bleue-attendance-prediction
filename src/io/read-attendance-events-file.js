@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { stringToDate } from './models/date.js';
+import { stringToDate } from './utils/date.js';
 
 export const readAttendanceFile = async () => {
   const attendanceFileContent = await readFile('./data/attendance.csv', 'utf8');

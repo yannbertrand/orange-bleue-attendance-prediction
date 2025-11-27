@@ -1,7 +1,7 @@
 import { getStore } from '@netlify/blobs';
 import { Temporal } from 'temporal-polyfill';
 import { getNetlifyInfo } from '../../scripts/utils/env.js';
-import { stringToDate } from './models/date.js';
+import { stringToDate } from './utils/date.js';
 
 const netlifyInfo = getNetlifyInfo();
 export const store = getStore({ name: 'attendance', ...netlifyInfo });

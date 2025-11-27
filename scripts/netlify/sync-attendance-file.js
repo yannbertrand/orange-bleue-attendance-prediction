@@ -2,10 +2,10 @@ import { Temporal } from 'temporal-polyfill';
 import { getTodayCourses } from '../../scrapper/get-today-courses.js';
 import { estimateEvolution } from '../../src/calculate.js';
 import { getLastSlowUpdateEvent } from '../../src/io/attendance/get-last-slow-update-event.js';
-import { dateToString, stringToDate } from '../../src/io/models/date.js';
 import { readAttendanceFile } from '../../src/io/read-attendance-events-file.js';
 import { getAllNetlifyEventsAfter } from '../../src/io/read-netlify-data.js';
 import { updateAttendanceFile } from '../../src/io/update-attendance-file.js';
+import { dateToString, stringToDate } from '../../src/io/utils/date.js';
 
 const lastManualUpdate = await getLastSlowUpdateEvent();
 console.log(`Last found update: ${dateToString(lastManualUpdate)}`);
