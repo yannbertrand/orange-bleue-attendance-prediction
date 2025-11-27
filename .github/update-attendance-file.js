@@ -1,5 +1,5 @@
 import { getAttendanceLiveNumber } from '../scrapper/get-attendance-live-number.js';
-import { getTodayCourses } from '../scrapper/get-today-courses.js';
+import { getTodayCourses } from '../scrapper/get-courses.js';
 import { isDayTime } from '../scripts/utils/date.js';
 import { addEventToAttendanceFile } from '../src/io/add-event-to-attendance-file.js';
 import { getActiveCourse } from '../src/io/attendance/get-active-course.js';

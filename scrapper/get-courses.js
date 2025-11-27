@@ -3,11 +3,33 @@ import { getOrangeBleueInfo } from '../scripts/utils/env.js';
 import { getCourses } from './models/courses.js';
 
 export async function getTodayCourses() {
-  const { studioId, authToken, cookie } = getOrangeBleueInfo();
+  return await getCoursesByDate(Temporal.Now.zonedDateTimeISO());
+}
 
-  const todayAsString = Temporal.Now.plainDateISO().toString();
+export async function getFutureCourses() {
+  const today = Temporal.Now.zonedDateTimeISO();
+  const tomorrow = today.add({ days: 1 });
+  const courses = await getCoursesByDate(today, tomorrow);
+
+  const futureCourses = courses.filter(
+    (course) =>
+      Temporal.ZonedDateTime.compare(
+        Temporal.Now.zonedDateTimeISO(),
+        course.startDateTime
+      ) <= 0
+  );
+
+  return futureCourses;
+}
+
+export async function getCoursesByDate(after, before = after) {
+  const { studioId, authToken, cookie } = getOrangeBleueInfo();
+  const startDate = after.toPlainDate().toString();
+  const endDate = before.toPlainDate().toString();
+  const dateFilter = `startDate=${startDate}&endDate=${endDate}`;
+
   const response = await fetch(
-    `https://monespace.lorangebleue.fr/nox/v2/bookableitems/courses/with-canceled?organizationUnitIds=${studioId}&startDate=${todayAsString}&endDate=${todayAsString}&courseAvailability=ALL&maxResults=10000`,
+    `https://monespace.lorangebleue.fr/nox/v2/bookableitems/courses/with-canceled?organizationUnitIds=${studioId}&${dateFilter}&courseAvailability=ALL&maxResults=10000`,
     {
       headers: {
         Host: 'monespace.lorangebleue.fr',

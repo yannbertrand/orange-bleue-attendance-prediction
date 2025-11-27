@@ -1,5 +1,5 @@
 import { Temporal } from 'temporal-polyfill';
-import { getTodayCourses } from '../../scrapper/get-today-courses.js';
+import { getCoursesByDate } from '../../scrapper/get-courses.js';
 import { estimateEvolution } from '../../src/calculate.js';
 import { getActiveCourse } from '../../src/io/attendance/get-active-course.js';
 import { getLastSlowUpdateEvent } from '../../src/io/attendance/get-last-slow-update-event.js';
@@ -43,7 +43,9 @@ for (const e of upToDateData) {
 
 const newData = Object.values(Object.fromEntries(filteredDuplicates));
 
-const todayCourses = (await getTodayCourses()).map((course) => {
+const courses = (
+  await getCoursesByDate(lastManualUpdate, Temporal.Now.zonedDateTimeISO())
+).map((course) => {
   const foundEvent = existingEvents.find(
     (event) =>
       Temporal.ZonedDateTime.compare(course.startDateTime, event.date) <= 0 &&
@@ -65,7 +67,7 @@ const todayCourses = (await getTodayCourses()).map((course) => {
 const dataWithEvolution = estimateEvolution(newData);
 
 const completeData = dataWithEvolution.map((event) => {
-  const liveCourse = getActiveCourse(todayCourses, event.date);
+  const liveCourse = getActiveCourse(courses, event.date);
   return { ...event, ...liveCourse };
 });
 
