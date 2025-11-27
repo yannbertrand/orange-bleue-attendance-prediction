@@ -3,7 +3,8 @@ import { getAttendanceLiveNumber } from '../../scrapper/get-attendance-live-numb
 import { getTodayCourses } from '../../scrapper/get-today-courses.js';
 import { isDayTime } from '../../scripts/utils/date.js';
 import { estimateEvolution } from '../../src/calculate.js';
-import { getNetlifyLastEvent, store } from '../../src/io/read-netlify-data.js';
+import { getActiveCourse } from '../../src/io/attendance/get-active-course.js';
+import { getNetlifyLastEvent } from '../../src/io/read-netlify-data.js';
 import { setNetlifyEvent } from '../../src/io/write-netlify-data.js';
 
 export const config = {
@@ -21,14 +22,9 @@ export default async () => {
     console.log(`It's daytime!`);
 
     const todayCourses = await getTodayCourses();
-    const foundCourse = todayCourses.find((course) => {
-      return (
-        Temporal.ZonedDateTime.compare(course.startDateTime, attendance.date) <=
-          0 &&
-        Temporal.ZonedDateTime.compare(attendance.date, course.endDateTime) <= 0
-      );
-    });
-    const liveCourse = getCourse(foundCourse);
+    const liveCourse = getCourse(
+      getActiveCourse(todayCourses, attendance.date)
+    );
 
     const newEvent = { ...attendance, ...evolution, ...liveCourse };
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);

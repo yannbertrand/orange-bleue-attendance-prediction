@@ -1,6 +1,7 @@
 import { Temporal } from 'temporal-polyfill';
 import { getTodayCourses } from '../../scrapper/get-today-courses.js';
 import { estimateEvolution } from '../../src/calculate.js';
+import { getActiveCourse } from '../../src/io/attendance/get-active-course.js';
 import { getLastSlowUpdateEvent } from '../../src/io/attendance/get-last-slow-update-event.js';
 import { readAttendanceFile } from '../../src/io/read-attendance-events-file.js';
 import { getAllNetlifyEventsAfter } from '../../src/io/read-netlify-data.js';
@@ -64,13 +65,7 @@ const completeData = newData
     (event) => Temporal.ZonedDateTime.compare(event.date, lastManualUpdate) > 0
   )
   .map((event) => {
-    const foundCourse = todayCourses.find((course) => {
-      return (
-        Temporal.ZonedDateTime.compare(course.startDateTime, event.date) <= 0 &&
-        Temporal.ZonedDateTime.compare(event.date, course.endDateTime) <= 0
-      );
-    });
-    const liveCourse = getCourse(foundCourse);
+    const liveCourse = getCourse(getActiveCourse(todayCourses, event.date));
     return { ...event, ...liveCourse };
   });
 
