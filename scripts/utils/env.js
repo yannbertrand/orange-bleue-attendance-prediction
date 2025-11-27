@@ -8,7 +8,7 @@ export function getNetlifyInfo() {
   return {
     siteID: process.env.NETLIFY_SITE_ID,
     token: process.env.NETLIFY_AUTH_TOKEN,
-    rateLimitChunkSize: 250,
+    rateLimitChunkSize: 499,
     rateLimitTimeout: 60 * 1_000,
   };
 }
