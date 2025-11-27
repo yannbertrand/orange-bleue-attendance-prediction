@@ -1,6 +1,6 @@
 import { Temporal } from 'temporal-polyfill';
 
-export const availableCourseSlotStatuses = ['CANCELLED', 'PLANNED', 'FINISHED'];
+export const availableCourseSlotStatuses = ['CANCELED', 'PLANNED', 'FINISHED'];
 
 export function getCourses(rawCourses) {
   if (!Array.isArray(rawCourses)) {
