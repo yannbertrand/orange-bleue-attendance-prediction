@@ -13,6 +13,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T06:00:00+01:00[Europe/Paris]'
         ),
+        visitors: 0,
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
@@ -22,6 +23,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T06:30:00+01:00[Europe/Paris]'
         ),
+        visitors: 2,
         arrived: 2,
         left: 0,
         leftOfTimeout: 0,
@@ -40,6 +42,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T06:00:00+01:00[Europe/Paris]'
         ),
+        visitors: 0,
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
@@ -49,6 +52,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T06:30:00+01:00[Europe/Paris]'
         ),
+        visitors: 2,
         arrived: 2,
         left: 0,
         leftOfTimeout: 0,
@@ -58,6 +62,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T07:00:00+01:00[Europe/Paris]'
         ),
+        visitors: 5,
         arrived: 3,
         left: 0,
         leftOfTimeout: 0,
@@ -75,6 +80,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T06:30:00+01:00[Europe/Paris]'
         ),
+        visitors: 6,
         arrived: 6,
         left: 0,
         leftOfTimeout: 0,
@@ -84,6 +90,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T08:00:00+01:00[Europe/Paris]'
         ),
+        visitors: 2,
         arrived: 0,
         left: 4,
         leftOfTimeout: 0,
@@ -101,6 +108,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T06:00:00+01:00[Europe/Paris]'
         ),
+        visitors: 6,
         arrived: 6,
         left: 0,
         leftOfTimeout: 0,
@@ -110,6 +118,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T08:00:00+01:00[Europe/Paris]'
         ),
+        visitors: 6,
         arrived: 6,
         left: 6,
         leftOfTimeout: 6,
@@ -128,6 +137,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T06:00:00+01:00[Europe/Paris]'
         ),
+        visitors: 6,
         arrived: 6,
         left: 0,
         leftOfTimeout: 0,
@@ -137,6 +147,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T07:30:00+01:00[Europe/Paris]'
         ),
+        visitors: 3,
         arrived: 0,
         left: 3,
         leftOfTimeout: 0,
@@ -146,6 +157,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T08:00:00+01:00[Europe/Paris]'
         ),
+        visitors: 2,
         arrived: 2,
         left: 3,
         leftOfTimeout: 3,
@@ -182,6 +194,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T05:35:59+01:00[Europe/Paris]'
         ),
+        visitors: 0,
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
@@ -191,6 +204,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T06:33:36+01:00[Europe/Paris]'
         ),
+        visitors: 1,
         arrived: 1,
         left: 0,
         leftOfTimeout: 0,
@@ -200,6 +214,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T07:08:08+01:00[Europe/Paris]'
         ),
+        visitors: 2,
         arrived: 1,
         left: 0,
         leftOfTimeout: 0,
@@ -209,6 +224,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T07:48:49+01:00[Europe/Paris]'
         ),
+        visitors: 2,
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
@@ -218,6 +234,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T08:05:46+01:00[Europe/Paris]'
         ),
+        visitors: 2,
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
@@ -227,6 +244,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T08:28:38+01:00[Europe/Paris]'
         ),
+        visitors: 3,
         arrived: 1,
         left: 0,
         leftOfTimeout: 0,
@@ -236,6 +254,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T08:44:14+01:00[Europe/Paris]'
         ),
+        visitors: 5,
         arrived: 3,
         left: 1,
         leftOfTimeout: 1,
@@ -245,6 +264,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T09:07:24+01:00[Europe/Paris]'
         ),
+        visitors: 4,
         arrived: 0,
         left: 1,
         leftOfTimeout: 0,
@@ -254,6 +274,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T09:31:35+01:00[Europe/Paris]'
         ),
+        visitors: 5,
         arrived: 1,
         left: 0,
         leftOfTimeout: 0,
@@ -263,6 +284,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T09:48:05+01:00[Europe/Paris]'
         ),
+        visitors: 8,
         arrived: 3,
         left: 0,
         leftOfTimeout: 0,
@@ -272,6 +294,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T10:06:27+01:00[Europe/Paris]'
         ),
+        visitors: 16,
         arrived: 8,
         left: 0,
         leftOfTimeout: 0,
@@ -281,6 +304,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T10:30:33+01:00[Europe/Paris]'
         ),
+        visitors: 18,
         arrived: 3,
         left: 1,
         leftOfTimeout: 1,
@@ -290,6 +314,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T10:45:38+01:00[Europe/Paris]'
         ),
+        visitors: 17,
         arrived: 2,
         left: 3,
         leftOfTimeout: 3,
@@ -299,6 +324,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T11:06:46+01:00[Europe/Paris]'
         ),
+        visitors: 17,
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
@@ -308,6 +334,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T11:30:48+01:00[Europe/Paris]'
         ),
+        visitors: 17,
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
@@ -317,6 +344,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T11:47:12+01:00[Europe/Paris]'
         ),
+        visitors: 20,
         arrived: 4,
         left: 1,
         leftOfTimeout: 1,
@@ -326,6 +354,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T12:05:33+01:00[Europe/Paris]'
         ),
+        visitors: 10,
         arrived: 0,
         left: 10,
         leftOfTimeout: 3,
@@ -335,6 +364,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T12:27:09+01:00[Europe/Paris]'
         ),
+        visitors: 25,
         arrived: 16,
         left: 1,
         leftOfTimeout: 1,
@@ -344,6 +374,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T12:44:04+01:00[Europe/Paris]'
         ),
+        visitors: 26,
         arrived: 4,
         left: 3,
         leftOfTimeout: 3,
@@ -353,6 +384,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T13:09:06+01:00[Europe/Paris]'
         ),
+        visitors: 26,
         arrived: 2,
         left: 2,
         leftOfTimeout: 2,
@@ -362,6 +394,7 @@ describe('estimateEvolution', () => {
         date: Temporal.ZonedDateTime.from(
           '2025-11-18T13:33:04+01:00[Europe/Paris]'
         ),
+        visitors: 26,
         arrived: 0,
         left: 0,
         leftOfTimeout: 0,
