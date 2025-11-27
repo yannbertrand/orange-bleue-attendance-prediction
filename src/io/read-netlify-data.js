@@ -45,9 +45,7 @@ export async function getAllNetlifyEventsAfter(after) {
     }
   }
 
-  const result = events.filter((e) => e !== null).map(getAttendance);
-  console.debug(`Found ${result.length} new events from Netlify`);
-  return result;
+  return events.filter((e) => e !== null).map(getAttendance);
 }
 
 export async function getNetlifyLastEvent() {
