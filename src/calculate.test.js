@@ -5,9 +5,8 @@ import { getEventsFromCsv } from './io/read-attendance-events-file.js';
 
 describe('estimateEvolution', () => {
   it('should count visitors arriving', () => {
-    const events =
-      getEventsFromCsv(`2025-11-18T06:00:00+01:00[Europe/Paris],0,,,
-2025-11-18T06:30:00+01:00[Europe/Paris],2,,,`);
+    const events = getEventsFromCsv(`2025-11-18T06:00:00+01:00,0,,,
+2025-11-18T06:30:00+01:00,2,,,`);
 
     expect(estimateEvolution(events)).toStrictEqual([
       {
@@ -32,10 +31,9 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors arriving at different times', () => {
-    const events =
-      getEventsFromCsv(`2025-11-18T06:00:00+01:00[Europe/Paris],0,,,
-2025-11-18T06:30:00+01:00[Europe/Paris],2,,,
-2025-11-18T07:00:00+01:00[Europe/Paris],5,,,`);
+    const events = getEventsFromCsv(`2025-11-18T06:00:00+01:00,0,,,
+2025-11-18T06:30:00+01:00,2,,,
+2025-11-18T07:00:00+01:00,5,,,`);
 
     expect(estimateEvolution(events)).toStrictEqual([
       {
@@ -69,9 +67,8 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors leaving', () => {
-    const events =
-      getEventsFromCsv(`2025-11-18T06:30:00+01:00[Europe/Paris],6,,,
-2025-11-18T08:00:00+01:00[Europe/Paris],2,,,`);
+    const events = getEventsFromCsv(`2025-11-18T06:30:00+01:00,6,,,
+2025-11-18T08:00:00+01:00,2,,,`);
 
     expect(estimateEvolution(events)).toStrictEqual([
       {
@@ -96,9 +93,8 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors leaving because of 2h timeout', () => {
-    const events =
-      getEventsFromCsv(`2025-11-18T06:00:00+01:00[Europe/Paris],6,,,
-2025-11-18T08:00:00+01:00[Europe/Paris],6,,,`);
+    const events = getEventsFromCsv(`2025-11-18T06:00:00+01:00,6,,,
+2025-11-18T08:00:00+01:00,6,,,`);
 
     expect(estimateEvolution(events)).toStrictEqual([
       {
@@ -123,10 +119,9 @@ describe('estimateEvolution', () => {
   });
 
   it('should count visitors leaving at different times', () => {
-    const events =
-      getEventsFromCsv(`2025-11-18T06:00:00+01:00[Europe/Paris],6,,,
-2025-11-18T07:30:00+01:00[Europe/Paris],3,,,
-2025-11-18T08:00:00+01:00[Europe/Paris],2,,,`);
+    const events = getEventsFromCsv(`2025-11-18T06:00:00+01:00,6,,,
+2025-11-18T07:30:00+01:00,3,,,
+2025-11-18T08:00:00+01:00,2,,,`);
 
     expect(estimateEvolution(events)).toStrictEqual([
       {
@@ -160,28 +155,27 @@ describe('estimateEvolution', () => {
   });
 
   it('should return visitors arrivals', () => {
-    const events =
-      getEventsFromCsv(`2025-11-18T05:35:59+01:00[Europe/Paris],0,,,
-2025-11-18T06:33:36+01:00[Europe/Paris],1,,,
-2025-11-18T07:08:08+01:00[Europe/Paris],2,,,
-2025-11-18T07:48:49+01:00[Europe/Paris],2,,,
-2025-11-18T08:05:46+01:00[Europe/Paris],2,,,
-2025-11-18T08:28:38+01:00[Europe/Paris],3,,,
-2025-11-18T08:44:14+01:00[Europe/Paris],5,,,
-2025-11-18T09:07:24+01:00[Europe/Paris],4,,,
-2025-11-18T09:31:35+01:00[Europe/Paris],5,,,
-2025-11-18T09:48:05+01:00[Europe/Paris],8,,,
-2025-11-18T10:06:27+01:00[Europe/Paris],16,7,YAKO PILATES,PLANNED
-2025-11-18T10:30:33+01:00[Europe/Paris],18,5,ABDOS FESSIERS,PLANNED
-2025-11-18T10:45:38+01:00[Europe/Paris],17,5,ABDOS FESSIERS,PLANNED
-2025-11-18T11:06:46+01:00[Europe/Paris],17,,,
-2025-11-18T11:30:48+01:00[Europe/Paris],17,,,
-2025-11-18T11:47:12+01:00[Europe/Paris],20,,,
-2025-11-18T12:05:33+01:00[Europe/Paris],10,,,
-2025-11-18T12:27:09+01:00[Europe/Paris],25,,,
-2025-11-18T12:44:04+01:00[Europe/Paris],26,10,ABDOS FESSIERS,PLANNED
-2025-11-18T13:09:06+01:00[Europe/Paris],26,,,
-2025-11-18T13:33:04+01:00[Europe/Paris],26,,,`);
+    const events = getEventsFromCsv(`2025-11-18T05:35:59+01:00,0,,,
+2025-11-18T06:33:36+01:00,1,,,
+2025-11-18T07:08:08+01:00,2,,,
+2025-11-18T07:48:49+01:00,2,,,
+2025-11-18T08:05:46+01:00,2,,,
+2025-11-18T08:28:38+01:00,3,,,
+2025-11-18T08:44:14+01:00,5,,,
+2025-11-18T09:07:24+01:00,4,,,
+2025-11-18T09:31:35+01:00,5,,,
+2025-11-18T09:48:05+01:00,8,,,
+2025-11-18T10:06:27+01:00,16,7,YAKO PILATES,PLANNED
+2025-11-18T10:30:33+01:00,18,5,ABDOS FESSIERS,PLANNED
+2025-11-18T10:45:38+01:00,17,5,ABDOS FESSIERS,PLANNED
+2025-11-18T11:06:46+01:00,17,,,
+2025-11-18T11:30:48+01:00,17,,,
+2025-11-18T11:47:12+01:00,20,,,
+2025-11-18T12:05:33+01:00,10,,,
+2025-11-18T12:27:09+01:00,25,,,
+2025-11-18T12:44:04+01:00,26,10,ABDOS FESSIERS,PLANNED
+2025-11-18T13:09:06+01:00,26,,,
+2025-11-18T13:33:04+01:00,26,,,`);
 
     expect(estimateEvolution(events)).toStrictEqual([
       {

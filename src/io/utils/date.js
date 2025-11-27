@@ -4,7 +4,7 @@ export function dateToString(zonedDateTime) {
   if (!(zonedDateTime instanceof Temporal.ZonedDateTime)) {
     throw new Error('dateToString only accepts Temporal.ZonedDateTime');
   }
-  return zonedDateTime.toString();
+  return zonedDateTime.toString({ timeZoneName: 'never' });
 }
 
 export function stringToDate(string) {

@@ -9,22 +9,18 @@ describe('#dateToString', () => {
     );
   });
 
-  it('should return string with timezone on winter time', () => {
+  it('should return string with timezone offset on winter time', () => {
     const winterDateTime = Temporal.ZonedDateTime.from(
       '2025-12-26T12:00:00+01:00[Europe/Paris]'
     );
-    expect(dateToString(winterDateTime)).toEqual(
-      '2025-12-26T12:00:00+01:00[Europe/Paris]'
-    );
+    expect(dateToString(winterDateTime)).toEqual('2025-12-26T12:00:00+01:00');
   });
 
-  it('should return string with timezone on summer time', () => {
+  it('should return string with timezone offset on summer time', () => {
     const summerDateTime = Temporal.ZonedDateTime.from(
       '2025-08-08T12:00:00+02:00[Europe/Paris]'
     );
-    expect(dateToString(summerDateTime)).toEqual(
-      '2025-08-08T12:00:00+02:00[Europe/Paris]'
-    );
+    expect(dateToString(summerDateTime)).toEqual('2025-08-08T12:00:00+02:00');
   });
 });
 
