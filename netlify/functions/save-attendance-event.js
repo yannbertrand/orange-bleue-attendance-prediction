@@ -22,10 +22,7 @@ export default async () => {
     console.log(`It's daytime!`);
 
     const todayCourses = await getTodayCourses();
-    const liveCourse = getCourse(
-      getActiveCourse(todayCourses, attendance.date)
-    );
-
+    const liveCourse = getActiveCourse(todayCourses, attendance.date);
     const newEvent = { ...attendance, ...evolution, ...liveCourse };
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
@@ -51,13 +48,5 @@ function getEvolution({ arrived, leftOfTimeout, leftBeforeTimeout } = {}) {
     arrived: arrived,
     leftOfTimeout: leftOfTimeout,
     leftBeforeTimeout: leftBeforeTimeout,
-  };
-}
-
-function getCourse({ courseParticipants, courseName, courseStatus } = {}) {
-  return {
-    courseParticipants: courseParticipants ?? '',
-    courseName: courseName ?? '',
-    courseStatus: courseStatus ?? '',
   };
 }

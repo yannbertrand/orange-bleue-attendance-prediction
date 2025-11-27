@@ -65,7 +65,7 @@ const completeData = newData
     (event) => Temporal.ZonedDateTime.compare(event.date, lastManualUpdate) > 0
   )
   .map((event) => {
-    const liveCourse = getCourse(getActiveCourse(todayCourses, event.date));
+    const liveCourse = getActiveCourse(todayCourses, event.date);
     return { ...event, ...liveCourse };
   });
 
@@ -89,13 +89,5 @@ function getEvolution({ arrived, leftOfTimeout, leftBeforeTimeout } = {}) {
     arrived: arrived ?? 0,
     leftOfTimeout: leftOfTimeout ?? 0,
     leftBeforeTimeout: leftBeforeTimeout ?? 0,
-  };
-}
-
-function getCourse({ courseParticipants, courseName, courseStatus } = {}) {
-  return {
-    courseParticipants: courseParticipants ?? '',
-    courseName: courseName ?? '',
-    courseStatus: courseStatus ?? '',
   };
 }
