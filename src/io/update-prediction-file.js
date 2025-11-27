@@ -9,7 +9,10 @@ export const updatePredictionFile = async (courses) => {
     const courseStartDateString = course.startDateTime.toString();
     const courseEndDateString = course.endDateTime.toString();
     const courseLineRegex = new RegExp(
-      `(${courseStartDateString}),(\\d*),(\\d*),${course.courseName},(.+?)\n`
+      `(${courseStartDateString.replaceAll(
+        /([+[\]])/g,
+        '\\$1'
+      )}),(\\d*),(\\d*),${course.courseName},(.+?)\n`
     );
     if (courseLineRegex.test(fileContent)) {
       // Update lines
