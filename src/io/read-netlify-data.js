@@ -60,8 +60,20 @@ export async function getNetlifyLastEvent() {
 }
 
 function getAttendance(event) {
-  return {
+  const baseEvent = {
     ...event,
     date: stringToDate(event.date),
+  };
+
+  if (event.courseParticipants !== undefined) {
+    return {
+      ...baseEvent,
+      startDateTime: stringToDate(event.startDateTime),
+      endDateTime: stringToDate(event.endDateTime),
+    };
+  }
+
+  return {
+    ...baseEvent,
   };
 }
