@@ -41,7 +41,8 @@ export function getCourseSlot(
   if (name.length < 1) {
     throw new Error(`CourseSlot invalid name: "${name}"`);
   }
-  if (!Number.isInteger(bookedParticipants)) {
+  const courseParticipants = bookedParticipants ?? 0;
+  if (!Number.isInteger(courseParticipants)) {
     throw new Error(
       `CourseSlot invalid bookedParticipants: "${bookedParticipants}"`
     );
@@ -57,7 +58,7 @@ export function getCourseSlot(
 
   return {
     courseName: name,
-    courseParticipants: bookedParticipants,
+    courseParticipants: courseParticipants,
     courseStatus: appointmentStatus,
     startDateTime,
     endDateTime,
