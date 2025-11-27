@@ -30,7 +30,7 @@ export default async () => {
     });
     const liveCourse = getCourse(foundCourse);
 
-    const newEvent = getEventToSave({ attendance, evolution, liveCourse });
+    const newEvent = { ...attendance, ...evolution, ...liveCourse };
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
     await setNetlifyEvent(newEvent);
@@ -39,8 +39,7 @@ export default async () => {
   } else {
     console.log(`It's night time!`);
 
-    const liveCourse = getCourse();
-    const newEvent = getEventToSave({ attendance, evolution, liveCourse });
+    const newEvent = { ...attendance, ...evolution };
     console.log(`Got 1 new data row: ${JSON.stringify(newEvent)}`);
 
     await setNetlifyEvent(newEvent);
@@ -50,14 +49,6 @@ export default async () => {
 
   return new Response();
 };
-
-function getEventToSave({ attendance, evolution, liveCourse }) {
-  return {
-    ...attendance,
-    ...evolution,
-    ...liveCourse,
-  };
-}
 
 function getEvolution({ arrived, leftOfTimeout, leftBeforeTimeout } = {}) {
   return {
