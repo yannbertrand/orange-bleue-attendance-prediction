@@ -1,4 +1,3 @@
-import { Temporal } from 'temporal-polyfill';
 import { getAttendanceLiveNumber } from '../../scrapper/get-attendance-live-number.js';
 import { getTodayCourses } from '../../scrapper/get-today-courses.js';
 import { isDayTime } from '../../scripts/utils/date.js';
