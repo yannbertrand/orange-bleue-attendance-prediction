@@ -1,7 +1,6 @@
 import { getStore } from '@netlify/blobs';
-import { Temporal } from 'temporal-polyfill';
 import { getNetlifyInfo } from '../../scripts/utils/env.js';
-import { stringToDate } from './utils/date.js';
+import { CustomDate } from '../utils/date.js';
 
 const netlifyInfo = getNetlifyInfo();
 export const store = getStore({ name: 'attendance', ...netlifyInfo });
@@ -16,8 +15,8 @@ export async function getAllNetlifyEventsAfter(after) {
     const key = blob.key.endsWith('Paris]')
       ? blob.key.replace(' ', '+')
       : blob.key;
-    const blobDate = stringToDate(key);
-    if (Temporal.ZonedDateTime.compare(blobDate, after) > 0) {
+    const blobDate = new CustomDate(key);
+    if (blobDate.isAfter(after)) {
       keys.push(key);
     }
   }
@@ -63,14 +62,14 @@ export async function getNetlifyLastEvent() {
 function getAttendance(event) {
   const baseEvent = {
     ...event,
-    date: stringToDate(event.date),
+    date: new CustomDate(event.date),
   };
 
   if (event.courseParticipants !== undefined) {
     return {
       ...baseEvent,
-      startDateTime: stringToDate(event.startDateTime),
-      endDateTime: stringToDate(event.endDateTime),
+      startDateTime: new CustomDate(event.startDateTime),
+      endDateTime: new CustomDate(event.endDateTime),
     };
   }
 

@@ -13,8 +13,10 @@ export async function getLastSlowUpdateEvent() {
       lastSlowUpdate = event.date;
       continue;
     }
-    if (Temporal.ZonedDateTime.compare(nextEventDate, event.date) < 0) {
-      throw new Error(`nextEventDate.date before event.date`);
+    if (event.date.isAfter(nextEventDate)) {
+      throw new Error(
+        `event.date (${event.date}) is after nextEventDate (${nextEventDate})`
+      );
     }
 
     if (

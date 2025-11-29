@@ -1,5 +1,4 @@
 import { readFile, writeFile } from 'node:fs/promises';
-import { dateToString } from './utils/date.js';
 
 export const updatePredictionFile = async (courses) => {
   let fileContent = await readFile('./data/prediction.csv', 'utf8');
@@ -7,8 +6,8 @@ export const updatePredictionFile = async (courses) => {
   let nbOfNewRows = 0;
   let nbOfUpdatedRows = 0;
   for (const course of courses) {
-    const courseStartDateString = dateToString(course.startDateTime);
-    const courseEndDateString = dateToString(course.endDateTime);
+    const courseStartDateString = course.startDateTime.toString();
+    const courseEndDateString = course.endDateTime.toString();
     const courseLineRegex = new RegExp(
       `(${courseStartDateString.replaceAll(
         /([+[\]])/g,

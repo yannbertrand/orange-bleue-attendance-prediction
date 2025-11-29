@@ -6,10 +6,10 @@ import { getLastSlowUpdateEvent } from '../../src/io/attendance/get-last-slow-up
 import { readAttendanceFile } from '../../src/io/read-attendance-events-file.js';
 import { getAllNetlifyEventsAfter } from '../../src/io/read-netlify-data.js';
 import { updateAttendanceFile } from '../../src/io/update-attendance-file.js';
-import { dateToString, stringToDate } from '../../src/io/utils/date.js';
+import { CustomDate, getNow } from '../../src/utils/date.js';
 
 const lastManualUpdate = await getLastSlowUpdateEvent();
-console.log(`Last found update: ${dateToString(lastManualUpdate)}`);
+console.log(`Last found update: ${lastManualUpdate}`);
 
 const existingEvents = await readAttendanceFile();
 console.log(`Got ${existingEvents.length} events from attendance file`);
@@ -21,15 +21,10 @@ const startOfDay = lastManualUpdate?.with({ hour: 5, minute: 0 });
 const morningOfLastManualUpdate = existingEvents.find(
   (event) => event.date.since(startOfDay).sign >= 0
 )?.date;
-console.log(
-  `Calculating evolution from ${dateToString(morningOfLastManualUpdate)}`
-);
+console.log(`Calculating evolution from ${morningOfLastManualUpdate}`);
 
 const upToDateData = [...existingEvents, ...newNetlifyData]
-  .filter(
-    (event) =>
-      Temporal.ZonedDateTime.compare(event.date, morningOfLastManualUpdate) >= 0
-  )
+  .filter((event) => event.date.isAfterOrEquals(morningOfLastManualUpdate))
   .sort((eventA, eventB) =>
     Temporal.ZonedDateTime.compare(eventA.date, eventB.date)
   );
@@ -43,26 +38,24 @@ for (const e of upToDateData) {
 
 const newData = Object.values(Object.fromEntries(filteredDuplicates));
 
-const courses = (
-  await getCoursesByDate(lastManualUpdate, Temporal.Now.zonedDateTimeISO())
-).map((course) => {
-  const foundEvent = existingEvents.find(
-    (event) =>
-      Temporal.ZonedDateTime.compare(course.startDateTime, event.date) <= 0 &&
-      Temporal.ZonedDateTime.compare(event.date, course.endDateTime) <= 0
-  );
-  if (!foundEvent) {
-    return course;
-  }
+const courses = (await getCoursesByDate(lastManualUpdate, getNow())).map(
+  (course) => {
+    const foundEvent = existingEvents.find((event) =>
+      event.date.isBetween(course.startDateTime, course.endDateTime)
+    );
+    if (!foundEvent) {
+      return course;
+    }
 
-  return {
-    ...course,
-    courseParticipants:
-      foundEvent.courseParticipants > course.courseParticipants
-        ? foundEvent.courseParticipants
-        : course.courseParticipants,
-  };
-});
+    return {
+      ...course,
+      courseParticipants:
+        foundEvent.courseParticipants > course.courseParticipants
+          ? foundEvent.courseParticipants
+          : course.courseParticipants,
+    };
+  }
+);
 
 const dataWithEvolution = estimateEvolution(newData);
 
@@ -84,9 +77,7 @@ console.log(
 
 export function getAttendanceEvent({ date, visitors } = {}) {
   return {
-    date: date
-      ? stringToDate(date)
-      : Temporal.Now.zonedDateTimeISO('Europe/Paris'),
+    date: date ? new CustomDate(date) : getNow(),
     visitors: visitors ?? 0,
   };
 }

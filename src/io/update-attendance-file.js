@@ -1,6 +1,5 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { getAttendanceEventAsCsv } from './add-event-to-attendance-file.js';
-import { dateToString } from './utils/date.js';
 
 export const updateAttendanceFile = async (lastKnownEvent, newEvents) => {
   const baseAttendanceFileContent = await readFile(
@@ -10,7 +9,7 @@ export const updateAttendanceFile = async (lastKnownEvent, newEvents) => {
   const baseAttendanceFileContentAsArray =
     baseAttendanceFileContent.split('\n');
   const indexToRemove = baseAttendanceFileContentAsArray.findIndex((event) =>
-    event.startsWith(dateToString(lastKnownEvent))
+    event.startsWith(lastKnownEvent.toString())
   );
 
   const newAttendanceFileContentAsArray =

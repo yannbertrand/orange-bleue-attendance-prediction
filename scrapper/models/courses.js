@@ -1,4 +1,4 @@
-import { Temporal } from 'temporal-polyfill';
+import { CustomDate } from '../../src/utils/date.js';
 
 export const availableCourseSlotStatuses = ['CANCELED', 'PLANNED', 'FINISHED'];
 
@@ -53,8 +53,8 @@ export function getCourseSlot(
     );
   }
 
-  const startDateTime = Temporal.ZonedDateTime.from(startDateTimeString);
-  const endDateTime = Temporal.ZonedDateTime.from(endDateTimeString);
+  const startDateTime = new CustomDate(startDateTimeString);
+  const endDateTime = new CustomDate(endDateTimeString);
 
   return {
     courseName: name,

@@ -1,22 +1,18 @@
-import { Temporal } from 'temporal-polyfill';
 import { getOrangeBleueInfo } from '../scripts/utils/env.js';
+import { getNow } from '../src/utils/date.js';
 import { getCourses } from './models/courses.js';
 
 export async function getTodayCourses() {
-  return await getCoursesByDate(Temporal.Now.zonedDateTimeISO());
+  return await getCoursesByDate(getNow());
 }
 
 export async function getFutureCourses() {
-  const today = Temporal.Now.zonedDateTimeISO();
+  const today = getNow();
   const tomorrow = today.add({ days: 1 });
   const courses = await getCoursesByDate(today, tomorrow);
 
-  const futureCourses = courses.filter(
-    (course) =>
-      Temporal.ZonedDateTime.compare(
-        Temporal.Now.zonedDateTimeISO(),
-        course.startDateTime
-      ) <= 0
+  const futureCourses = courses.filter((course) =>
+    course.startDateTime.isAfterOrEquals(getNow())
   );
 
   return futureCourses;

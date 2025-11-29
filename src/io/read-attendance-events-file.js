@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { stringToDate } from './utils/date.js';
+import { CustomDate } from '../utils/date.js';
 
 export const readAttendanceFile = async () => {
   const attendanceFileContent = await readFile('./data/attendance.csv', 'utf8');
@@ -20,7 +20,7 @@ export function getEventsFromCsv(csvData) {
   for (let index = 0; index < attendanceLines.length; index++) {
     const attendanceLine = attendanceLines[index].split(',');
     const line = {
-      date: stringToDate(attendanceLine[0]),
+      date: new CustomDate(attendanceLine[0]),
       visitors: Number.parseInt(attendanceLine[1], 10),
       arrived: attendanceLine[2] ? Number.parseInt(attendanceLine[2], 10) : 0,
       leftOfTimeout: attendanceLine[3]

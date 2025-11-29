@@ -1,8 +1,7 @@
 import { store } from './read-netlify-data.js';
-import { dateToString } from './utils/date.js';
 
 export async function setNetlifyEvent(event) {
-  const dateString = dateToString(event.date);
+  const dateString = event.date.toString();
   const baseEvent = {
     ...event,
     date: dateString,
@@ -11,8 +10,8 @@ export async function setNetlifyEvent(event) {
   if (event.courseParticipants !== undefined) {
     return await store.setJSON(dateString, {
       ...baseEvent,
-      startDateTime: dateToString(event.startDateTime),
-      endDateTime: dateToString(event.endDateTime),
+      startDateTime: event.startDateTime.toString(),
+      endDateTime: event.endDateTime.toString(),
     });
   } else {
     return await store.setJSON(dateString, baseEvent);

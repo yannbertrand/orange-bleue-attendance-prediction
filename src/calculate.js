@@ -1,5 +1,3 @@
-import { Temporal } from 'temporal-polyfill';
-
 const visitDurationInHours = 2;
 
 export function simulateOccupation(evolution) {
@@ -109,6 +107,6 @@ class Visitor {
   }
 
   shouldLeave(date) {
-    return Temporal.ZonedDateTime.compare(date, this.#departure) >= 0;
+    return date.isAfterOrEquals(this.#departure);
   }
 }
