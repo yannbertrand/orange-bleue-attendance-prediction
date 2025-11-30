@@ -11,11 +11,25 @@ export async function getAllNetlifyEventsAfter(after) {
   console.debug(`Found ${blobs.length} blobs`);
 
   const keys = [];
+  const nightFilter = new Map();
   for (const blob of blobs) {
     const key = blob.key.endsWith('Paris]')
       ? blob.key.replace(' ', '+')
       : blob.key;
+
     const blobDate = new CustomDate(key);
+    if (blobDate.hour > 0 && blobDate.hour < 6) {
+      if (!nightFilter.has(blobDate.toPlainDate())) {
+        nightFilter.set(blobDate.toPlainDate(), new Map());
+      }
+      const dayMap = nightFilter.get(blobDate.toPlainDate());
+      if (dayMap.has(blobDate.hour)) {
+        continue;
+      } else {
+        dayMap.set(blobDate.hour, true);
+      }
+    }
+
     if (blobDate.isAfter(after)) {
       keys.push(key);
     }
