@@ -19,10 +19,10 @@ export async function getAllNetlifyEventsAfter(after) {
 
     const blobDate = new CustomDate(key);
     if (blobDate.hour > 0 && blobDate.hour < 6) {
-      if (!nightFilter.has(blobDate.toPlainDate())) {
-        nightFilter.set(blobDate.toPlainDate(), new Map());
+      if (!nightFilter.has(blobDate.toPlainDate().toString())) {
+        nightFilter.set(blobDate.toPlainDate().toString(), new Map());
       }
-      const dayMap = nightFilter.get(blobDate.toPlainDate());
+      const dayMap = nightFilter.get(blobDate.toPlainDate().toString());
       if (dayMap.has(blobDate.hour)) {
         continue;
       } else {
