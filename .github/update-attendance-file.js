@@ -22,7 +22,7 @@ if (isDayTime()) {
 } else {
   console.log(`It's night time!`);
 
-  if (liveAttendance.visitors > 0) {
+  if (attendance.visitors > 0) {
     console.log(`Still at least one visitors, saving as usual`);
 
     const newEvent = { ...attendance };
