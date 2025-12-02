@@ -81,11 +81,3 @@ export function getAttendanceEvent({ date, visitors } = {}) {
     visitors: visitors ?? 0,
   };
 }
-
-function getEvolution({ arrived, leftOfTimeout, leftBeforeTimeout } = {}) {
-  return {
-    arrived: arrived ?? 0,
-    leftOfTimeout: leftOfTimeout ?? 0,
-    leftBeforeTimeout: leftBeforeTimeout ?? 0,
-  };
-}
