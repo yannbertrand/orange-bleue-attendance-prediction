@@ -17,14 +17,18 @@ console.log(`Got ${existingEvents.length} events from attendance file`);
 const newNetlifyData = await getAllNetlifyEventsAfter(lastManualUpdate);
 console.log(`Found ${newNetlifyData.length} new events from Netlify`);
 
-const startOfDay = lastManualUpdate?.with({ hour: 5, minute: 0 });
-const morningOfLastManualUpdate = existingEvents.find(
+const startOfDay = lastManualUpdate?.with({ hour: 0, minute: 0 });
+const morningOfLastManualUpdateEvent = existingEvents.find(
   (event) => event.date.since(startOfDay).sign >= 0
-)?.date;
-console.log(`Calculating evolution from ${morningOfLastManualUpdate}`);
+);
+console.log(
+  `Calculating evolution from ${morningOfLastManualUpdateEvent?.date}`
+);
 
 const upToDateData = [...existingEvents, ...newNetlifyData]
-  .filter((event) => event.date.isAfterOrEquals(morningOfLastManualUpdate))
+  .filter((event) =>
+    event.date.isAfterOrEquals(morningOfLastManualUpdateEvent?.date)
+  )
   .sort((eventA, eventB) =>
     Temporal.ZonedDateTime.compare(eventA.date, eventB.date)
   );
@@ -57,7 +61,10 @@ const courses = (await getCoursesByDate(lastManualUpdate, getNow())).map(
   }
 );
 
-const dataWithEvolution = estimateEvolution(newData);
+const dataWithEvolution = estimateEvolution(
+  newData,
+  morningOfLastManualUpdateEvent
+);
 
 const completeData = dataWithEvolution.map((event) => {
   const liveCourse = getActiveCourse(courses, event.date);
@@ -67,7 +74,7 @@ const completeData = dataWithEvolution.map((event) => {
 console.log(`${completeData.length} events found today`);
 
 const { nbOfNewRows, nbOfUpdatedRows } = await updateAttendanceFile(
-  morningOfLastManualUpdate,
+  morningOfLastManualUpdateEvent.date,
   completeData
 );
 

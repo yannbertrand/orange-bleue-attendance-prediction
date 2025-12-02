@@ -9,13 +9,21 @@ export function simulateOccupation(evolution) {
   return result;
 }
 
-export function estimateEvolution(events) {
-  let visitors = [];
+export function estimateEvolution(
+  events,
+  initialState = {
+    visitors: 0,
+    arrived: 0,
+    leftOfTimeout: 0,
+    leftBeforeTimeout: 0,
+  }
+) {
+  let visitors = Array.from(Array(initialState.visitors)).map(
+    (v) => new Visitor(events[0].date.subtract({ hours: 1 }))
+  );
   const result = [];
   for (const [i, event] of Object.entries(events)) {
-    let arrived = 0;
-    let leftOfTimeout = 0;
-    let leftBeforeTimeout = 0;
+    let { arrived, leftOfTimeout, leftBeforeTimeout } = initialState;
     const targetNbVisitors = event.visitors;
     if (visitors.length === 0) {
       // Init
@@ -23,7 +31,7 @@ export function estimateEvolution(events) {
       arrived = newVisitors.count;
       visitors = newVisitors.visitors;
     } else {
-      const previousNbOfVisitors = events[i - 1].visitors;
+      const previousNbOfVisitors = events[i - 1]?.visitors ?? visitors;
       const leftVisitors = makeVisitorsLeave(event.date, visitors);
       leftOfTimeout = leftVisitors.count;
       visitors = leftVisitors.visitors;
