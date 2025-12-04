@@ -51,6 +51,13 @@ export class CustomDate extends Temporal.ZonedDateTime {
   toString() {
     return super.toString({ timeZoneName: 'never' });
   }
+
+  print() {
+    return super.toLocaleString('fr-FR', {
+      dateStyle: 'short',
+      timeStyle: 'short',
+    });
+  }
 }
 
 export function stringToZonedDateTime(string) {

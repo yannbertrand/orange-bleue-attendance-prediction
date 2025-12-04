@@ -9,7 +9,7 @@ import { updateAttendanceFile } from '../../src/io/update-attendance-file.js';
 import { CustomDate, getNow } from '../../src/utils/date.js';
 
 const lastManualUpdate = await getLastSlowUpdateEvent();
-console.log(`Last found update: ${lastManualUpdate}`);
+console.log(`Last found update: ${lastManualUpdate?.print()}`);
 
 const existingEvents = await readAttendanceFile();
 console.log(`Got ${existingEvents.length} events from attendance file`);
@@ -21,9 +21,8 @@ const startOfDay = lastManualUpdate?.with({ hour: 0, minute: 0 });
 const morningOfLastManualUpdateEvent = existingEvents.find(
   (event) => event.date.since(startOfDay).sign >= 0
 );
-console.log(
-  `Calculating evolution from ${morningOfLastManualUpdateEvent?.date}`
-);
+
+console.log(`Filtering and sorting events`);
 
 const upToDateData = [...existingEvents, ...newNetlifyData]
   .filter((event) =>
@@ -42,6 +41,8 @@ for (const e of upToDateData) {
 
 const newData = Object.values(Object.fromEntries(filteredDuplicates));
 
+console.log('Finding courses and participants');
+
 const courses = (await getCoursesByDate(lastManualUpdate, getNow())).map(
   (course) => {
     const foundEvent = existingEvents.find((event) =>
@@ -59,6 +60,12 @@ const courses = (await getCoursesByDate(lastManualUpdate, getNow())).map(
           : course.courseParticipants,
     };
   }
+);
+
+console.log(
+  `Calculating evolution from ${morningOfLastManualUpdateEvent?.date.print()} to ${newData
+    .at(-1)
+    .date.print()}`
 );
 
 const dataWithEvolution = estimateEvolution(

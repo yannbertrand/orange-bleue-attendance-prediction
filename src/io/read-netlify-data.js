@@ -16,13 +16,17 @@ export async function getAllNetlifyEventsAfter(after) {
     currentDate = currentDate.add({ days: 1 });
     keys.push(currentDate.toString());
   }
-  console.debug(
-    `Filtered ${
-      keys.length
-    } blobs in time interval, from ${keys[0].toString()} to ${keys
-      .at(-1)
-      .toString()}`
-  );
+  if (keys > 1) {
+    console.debug(
+      `Filtered ${
+        keys.length
+      } blobs in time interval, from ${keys[0].toString()} to ${keys
+        .at(-1)
+        .toString()}`
+    );
+  } else {
+    console.debug(`Filtered 1 blobs in time interval at ${keys[0].toString()}`);
+  }
 
   const events = await Promise.all(
     keys.map((key) => store.get(key, { type: 'json' }))
