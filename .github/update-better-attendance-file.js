@@ -19,9 +19,11 @@ console.log(
   `Got ${newEvents.length} new data rows: ${JSON.stringify(newEvents)}`
 );
 
-await addEventsToBetterAttendanceFile(newEvents);
+if (newEvents.length > 0) {
+  await addEventsToBetterAttendanceFile(newEvents);
 
-console.log(`Saved ${newEvents.length} new data row`);
+  console.log(`Saved ${newEvents.length} new data row`);
+}
 
 function getNewEvents(lastAttendanceEvent, events) {
   const newEvents = [];
