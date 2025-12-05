@@ -89,4 +89,16 @@ describe('getCheckinsCheckoutsEvents', () => {
       ])
     ).toStrictEqual([{ date: now, arrived: 1, left: 0 }]);
   });
+
+  it('should filter out future events when double scan', () => {
+    const now = new CustomDate(Temporal.Now.zonedDateTimeISO());
+    expect(
+      getCheckinsCheckoutsEvents([
+        {
+          checkin: now,
+          checkout: now.add({ seconds: 5 }),
+        },
+      ])
+    ).toStrictEqual([{ date: now, arrived: 1, left: 0 }]);
+  });
 });
