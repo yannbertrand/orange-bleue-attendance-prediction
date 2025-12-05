@@ -11,12 +11,9 @@ export const readBetterAttendanceFile = async () => {
 };
 
 export function getBetterEventsFromCsv(csvData) {
-  const attendanceLines = csvData.split('\n');
+  const attendanceLines = csvData.split('\n').filter((l) => l !== '');
   if (attendanceLines[0].startsWith('date')) {
     attendanceLines.splice(0, 1);
-  }
-  if (attendanceLines.at(-1) === '') {
-    attendanceLines.splice(-1, 1);
   }
 
   const result = [];
