@@ -2,7 +2,7 @@ import { store } from './read-netlify-data.js';
 
 export async function setNetlifyEvent(event) {
   const eventDay =
-    event.date.hour < 5 ? event.date.subtract({ day: 1 }) : event.date;
+    event.date.hour < 6 ? event.date.subtract({ day: 1 }) : event.date;
   const dayString = eventDay.toPlainDate().toString();
   const netlifyContent = await store.get(dayString, { type: 'json' });
 

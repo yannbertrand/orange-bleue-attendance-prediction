@@ -17,7 +17,14 @@ console.log(`Got ${existingEvents.length} events from attendance file`);
 const newNetlifyData = await getAllNetlifyEventsAfter(lastManualUpdate);
 console.log(`Found ${newNetlifyData.length} new events from Netlify`);
 
-const startOfDay = lastManualUpdate?.with({ hour: 0, minute: 0 });
+const firstDayNeededForEstimationCalculation =
+  lastManualUpdate.hour <= 1
+    ? lastManualUpdate.subtract({ days: 1 })
+    : lastManualUpdate;
+const startOfDay = firstDayNeededForEstimationCalculation.with({
+  hour: 6,
+  minute: 0,
+});
 const morningOfLastManualUpdateEvent = existingEvents.find(
   (event) => event.date.since(startOfDay).sign >= 0
 );
