@@ -11,6 +11,16 @@ export function getNetlifyInfo() {
   };
 }
 
+export function getMagicLineInfo() {
+  if (!process.env.MAGICLINE_COOKIE) {
+    throw new Error('Missing env var MAGICLINE_COOKIE');
+  }
+  return {
+    studioId: getOrangeBleueInfo().studioId,
+    cookie: process.env.MAGICLINE_COOKIE,
+  };
+}
+
 export function getOrangeBleueInfo() {
   if (!process.env.ORANGE_BLEUE_STUDIO_ID) {
     throw new Error('Missing env var ORANGE_BLEUE_STUDIO_ID');
