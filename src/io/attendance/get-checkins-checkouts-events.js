@@ -1,16 +1,10 @@
 import { Temporal } from 'temporal-polyfill';
-import { CustomDate, getNow } from '../../utils/date.js';
 
 export function getCheckinsCheckoutsEvents(rawEvents) {
-  const now = new CustomDate(getNow());
   const events = [];
   for (const rawEvent of rawEvents) {
     events.push(getEvent(rawEvent.checkin, 'CHECKED_IN'));
-    if (rawEvent.checkout) {
-      if (rawEvent.checkout.isBeforeOrEquals(now)) {
-        events.push(getEvent(rawEvent.checkout, 'CHECKED_OUT'));
-      }
-    }
+    events.push(getEvent(rawEvent.checkout, 'CHECKED_OUT'));
   }
 
   return events.sort((eventA, eventB) =>
