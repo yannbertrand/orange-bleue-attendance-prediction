@@ -20,13 +20,9 @@ export function getCustomer({ customerNumber, checkinTime, checkoutTime }) {
         checkin,
         checkout,
       };
-    } else {
-      return {
-        id: customerNumber,
-        checkin,
-        checkout: checkin.add({ hours: 2 }),
-      };
     }
   }
-  return { id: customerNumber, checkin };
+
+  const estimatedCheckout = checkin.add({ hours: 2 });
+  return { id: customerNumber, checkin, checkout: estimatedCheckout };
 }
