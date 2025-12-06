@@ -2,34 +2,48 @@ import {
   getLiveCheckins,
   getLiveCheckouts,
 } from '../scrapper/get-live-checkins.js';
-import { addEventsToBetterAttendanceFile } from '../src/io/add-events-to-better-attendance-file.js';
 import { getCheckinsCheckoutsEvents } from '../src/io/attendance/get-checkins-checkouts-events.js';
 import { readBetterAttendanceFile } from '../src/io/read-better-attendance-events-file.js';
+import { updateBetterAttendanceFile } from '../src/io/update-better-attendance-file.js';
+import { CustomDate, getNow } from '../src/utils/date.js';
+
+const forcedCalculationDate = undefined;
 
 const currentAttendance = await readBetterAttendanceFile();
-const lastAttendanceEvent = currentAttendance.at(-1);
+const today = forcedCalculationDate ?? new CustomDate(getNow());
+const firstDayNeededForEstimationCalculation =
+  today.hour <= 1 ? today.subtract({ days: 1 }) : today;
+const startOfDay = {
+  date: firstDayNeededForEstimationCalculation.with({
+    hour: 6,
+    minute: 0,
+  }),
+  visitors: 0,
+};
+const firstAttendanceEventOfDay = {
+  ...(currentAttendance.find((e) => e.date.isAfter(startOfDay.date)) ??
+    startOfDay),
+};
 
 const checkins = await getLiveCheckins();
 const checkouts = await getLiveCheckouts();
 
 const events = getCheckinsCheckoutsEvents([...checkins, ...checkouts]);
-const newEvents = getNewEvents(lastAttendanceEvent, events);
+const newEvents = getNewEvents(firstAttendanceEventOfDay, events);
 
+const { nbOfNewRows, nbOfUpdatedRows } = await updateBetterAttendanceFile(
+  firstAttendanceEventOfDay.date,
+  newEvents
+);
 console.log(
-  `Got ${newEvents.length} new data rows: ${JSON.stringify(newEvents)}`
+  `Saved ${nbOfNewRows} new data row and updated ${nbOfUpdatedRows} row`
 );
 
-if (newEvents.length > 0) {
-  await addEventsToBetterAttendanceFile(newEvents);
-
-  console.log(`Saved ${newEvents.length} new data row`);
-}
-
-function getNewEvents(lastAttendanceEvent, events) {
+function getNewEvents(firstAttendanceEventOfDay, events) {
   const newEvents = [];
-  let visitors = lastAttendanceEvent.visitors;
+  let visitors = firstAttendanceEventOfDay.visitors;
   for (const event of events) {
-    if (event.date.isBeforeOrEquals(lastAttendanceEvent.date)) {
+    if (event.date.isBeforeOrEquals(firstAttendanceEventOfDay.date)) {
       continue;
     }
 
