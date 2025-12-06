@@ -1,3 +1,4 @@
+import { Temporal } from 'temporal-polyfill';
 import { CustomDate } from '../../src/utils/date.js';
 
 export function getCustomer({ customerNumber, checkinTime, checkoutTime }) {
@@ -7,11 +8,25 @@ export function getCustomer({ customerNumber, checkinTime, checkoutTime }) {
 
   const checkin = new CustomDate(checkinTime);
   if (checkoutTime) {
-    return {
-      id: customerNumber,
-      checkin,
-      checkout: new CustomDate(checkoutTime),
-    };
+    const checkout = new CustomDate(checkoutTime);
+    if (
+      Temporal.Duration.compare(
+        checkin.until(checkout),
+        Temporal.Duration.from({ seconds: 10 })
+      ) > 0
+    ) {
+      return {
+        id: customerNumber,
+        checkin,
+        checkout,
+      };
+    } else {
+      return {
+        id: customerNumber,
+        checkin,
+        checkout: checkin.add({ hours: 2 }),
+      };
+    }
   }
   return { id: customerNumber, checkin };
 }

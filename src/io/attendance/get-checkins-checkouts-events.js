@@ -7,20 +7,8 @@ export function getCheckinsCheckoutsEvents(rawEvents) {
   for (const rawEvent of rawEvents) {
     events.push(getEvent(rawEvent.checkin, 'CHECKED_IN'));
     if (rawEvent.checkout) {
-      if (
-        Temporal.Duration.compare(
-          rawEvent.checkin.until(rawEvent.checkout),
-          Temporal.Duration.from({ seconds: 10 })
-        ) > 0
-      ) {
-        if (rawEvent.checkout.isBeforeOrEquals(now)) {
-          events.push(getEvent(rawEvent.checkout, 'CHECKED_OUT'));
-        }
-      } else {
-        const simulatedCheckout = rawEvent.checkin.add({ hours: 2 });
-        if (simulatedCheckout.isBeforeOrEquals(now)) {
-          events.push(getEvent(simulatedCheckout, 'CHECKED_OUT'));
-        }
+      if (rawEvent.checkout.isBeforeOrEquals(now)) {
+        events.push(getEvent(rawEvent.checkout, 'CHECKED_OUT'));
       }
     }
   }

@@ -46,20 +46,6 @@ describe('getCheckinsCheckoutsEvents', () => {
     ]);
   });
 
-  it('should fake checkout if double scan', () => {
-    expect(
-      getCheckinsCheckoutsEvents([
-        {
-          checkin: new CustomDate('2025-12-05T06:00:00'),
-          checkout: new CustomDate('2025-12-05T06:00:01'),
-        },
-      ])
-    ).toStrictEqual([
-      { date: new CustomDate('2025-12-05T06:00:00'), arrived: 1, left: 0 },
-      { date: new CustomDate('2025-12-05T08:00:00'), arrived: 0, left: 1 },
-    ]);
-  });
-
   it('should sort events', () => {
     expect(
       getCheckinsCheckoutsEvents([
@@ -85,18 +71,6 @@ describe('getCheckinsCheckoutsEvents', () => {
         {
           checkin: now,
           checkout: now.add({ hours: 2 }),
-        },
-      ])
-    ).toStrictEqual([{ date: now, arrived: 1, left: 0 }]);
-  });
-
-  it('should filter out future events when double scan', () => {
-    const now = new CustomDate(Temporal.Now.zonedDateTimeISO());
-    expect(
-      getCheckinsCheckoutsEvents([
-        {
-          checkin: now,
-          checkout: now.add({ seconds: 5 }),
         },
       ])
     ).toStrictEqual([{ date: now, arrived: 1, left: 0 }]);
