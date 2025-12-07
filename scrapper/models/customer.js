@@ -7,6 +7,7 @@ export function getCustomer({ customerNumber, checkinTime, checkoutTime }) {
   }
 
   const checkin = new CustomDate(checkinTime);
+  const estimatedCheckout = checkin.add({ hours: 2 });
   if (checkoutTime) {
     const checkout = new CustomDate(checkoutTime);
     if (
@@ -19,10 +20,25 @@ export function getCustomer({ customerNumber, checkinTime, checkoutTime }) {
         id: customerNumber,
         checkin,
         checkout,
+        realCheckout: true,
+        reason: '',
       };
     }
+
+    return {
+      id: customerNumber,
+      checkin,
+      checkout: estimatedCheckout,
+      realCheckout: false,
+      reason: 'DOUBLE_SCAN',
+    };
   }
 
-  const estimatedCheckout = checkin.add({ hours: 2 });
-  return { id: customerNumber, checkin, checkout: estimatedCheckout };
+  return {
+    id: customerNumber,
+    checkin,
+    checkout: estimatedCheckout,
+    realCheckout: false,
+    reason: 'PREDICTION',
+  };
 }

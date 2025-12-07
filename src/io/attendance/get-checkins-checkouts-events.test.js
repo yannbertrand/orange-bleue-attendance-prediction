@@ -9,11 +9,27 @@ describe('getCheckinsCheckoutsEvents', () => {
         {
           checkin: new CustomDate('2025-12-05T06:00:00'),
           checkout: new CustomDate('2025-12-05T08:00:00'),
+          realCheckout: true,
+          reason: '',
         },
       ])
     ).toStrictEqual([
-      { date: new CustomDate('2025-12-05T06:00:00'), arrived: 1, left: 0 },
-      { date: new CustomDate('2025-12-05T08:00:00'), arrived: 0, left: 1 },
+      {
+        date: new CustomDate('2025-12-05T06:00:00'),
+        type: 'CHECKIN',
+        arrived: 1,
+        left: 0,
+        isRealDate: true,
+        reason: '',
+      },
+      {
+        date: new CustomDate('2025-12-05T08:00:00'),
+        type: 'CHECKOUT',
+        arrived: 0,
+        left: 1,
+        isRealDate: true,
+        reason: '',
+      },
     ]);
   });
 
@@ -23,17 +39,49 @@ describe('getCheckinsCheckoutsEvents', () => {
         {
           checkin: new CustomDate('2025-12-05T06:00:00'),
           checkout: new CustomDate('2025-12-05T08:00:00'),
+          realCheckout: false,
+          reason: 'DOUBLE_SCAN',
         },
         {
           checkin: new CustomDate('2025-12-05T09:00:00'),
           checkout: new CustomDate('2025-12-05T09:30:00'),
+          realCheckout: true,
+          reason: '',
         },
       ])
     ).toStrictEqual([
-      { date: new CustomDate('2025-12-05T06:00:00'), arrived: 1, left: 0 },
-      { date: new CustomDate('2025-12-05T08:00:00'), arrived: 0, left: 1 },
-      { date: new CustomDate('2025-12-05T09:00:00'), arrived: 1, left: 0 },
-      { date: new CustomDate('2025-12-05T09:30:00'), arrived: 0, left: 1 },
+      {
+        date: new CustomDate('2025-12-05T06:00:00'),
+        type: 'CHECKIN',
+        arrived: 1,
+        left: 0,
+        isRealDate: true,
+        reason: '',
+      },
+      {
+        date: new CustomDate('2025-12-05T08:00:00'),
+        type: 'CHECKOUT',
+        arrived: 0,
+        left: 1,
+        isRealDate: false,
+        reason: 'DOUBLE_SCAN',
+      },
+      {
+        date: new CustomDate('2025-12-05T09:00:00'),
+        type: 'CHECKIN',
+        arrived: 1,
+        left: 0,
+        isRealDate: true,
+        reason: '',
+      },
+      {
+        date: new CustomDate('2025-12-05T09:30:00'),
+        type: 'CHECKOUT',
+        arrived: 0,
+        left: 1,
+        isRealDate: true,
+        reason: '',
+      },
     ]);
   });
 
@@ -43,17 +91,49 @@ describe('getCheckinsCheckoutsEvents', () => {
         {
           checkin: new CustomDate('2025-12-05T06:00:00'),
           checkout: new CustomDate('2025-12-05T08:00:00'),
+          realCheckout: true,
+          reason: '',
         },
         {
           checkin: new CustomDate('2025-12-05T07:00:00'),
           checkout: new CustomDate('2025-12-05T07:30:00'),
+          realCheckout: true,
+          reason: '',
         },
       ])
     ).toStrictEqual([
-      { date: new CustomDate('2025-12-05T06:00:00'), arrived: 1, left: 0 },
-      { date: new CustomDate('2025-12-05T07:00:00'), arrived: 1, left: 0 },
-      { date: new CustomDate('2025-12-05T07:30:00'), arrived: 0, left: 1 },
-      { date: new CustomDate('2025-12-05T08:00:00'), arrived: 0, left: 1 },
+      {
+        date: new CustomDate('2025-12-05T06:00:00'),
+        type: 'CHECKIN',
+        arrived: 1,
+        left: 0,
+        isRealDate: true,
+        reason: '',
+      },
+      {
+        date: new CustomDate('2025-12-05T07:00:00'),
+        type: 'CHECKIN',
+        arrived: 1,
+        left: 0,
+        isRealDate: true,
+        reason: '',
+      },
+      {
+        date: new CustomDate('2025-12-05T07:30:00'),
+        type: 'CHECKOUT',
+        arrived: 0,
+        left: 1,
+        isRealDate: true,
+        reason: '',
+      },
+      {
+        date: new CustomDate('2025-12-05T08:00:00'),
+        type: 'CHECKOUT',
+        arrived: 0,
+        left: 1,
+        isRealDate: true,
+        reason: '',
+      },
     ]);
   });
 });

@@ -14,6 +14,14 @@ export const addEventsToBetterAttendanceFile = async (events) => {
   return newAttendanceCsvFormattedData;
 };
 
-export function getAttendanceEventAsCsv({ date, visitors, arrived, left }) {
-  return `${date},${visitors},${arrived ?? ''},${left ?? ''}`;
+export function getAttendanceEventAsCsv({
+  date,
+  type,
+  visitors,
+  arrived,
+  left,
+  isRealDate,
+  reason,
+}) {
+  return `${date},${type},${visitors},${arrived},${left},${isRealDate},${reason}`;
 }
