@@ -1,4 +1,4 @@
-date,visitors,arrived,left
+date,type,visitors,arrived,left,isRealDate,reason
 2025-12-04T17:46:23.652+01:00,CHECKIN,1,1,0,true,
 2025-12-04T17:46:41.667+01:00,CHECKIN,2,1,0,true,
 2025-12-04T17:47:50.067+01:00,CHECKIN,3,1,0,true,
