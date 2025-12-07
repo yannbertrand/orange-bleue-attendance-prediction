@@ -21,9 +21,12 @@ export function getBetterEventsFromCsv(csvData) {
     const attendanceLine = attendanceLines[index].split(',');
     const line = {
       date: new CustomDate(attendanceLine[0]),
-      visitors: Number.parseInt(attendanceLine[1], 10),
-      arrived: Number.parseInt(attendanceLine[2], 10),
-      left: Number.parseInt(attendanceLine[3], 10),
+      type: attendanceLine[1],
+      visitors: Number.parseInt(attendanceLine[2], 10),
+      arrived: Number.parseInt(attendanceLine[3], 10),
+      left: Number.parseInt(attendanceLine[4], 10),
+      isRealDate: attendanceLine[5] === 'true',
+      reason: attendanceLine[6],
     };
     result.push(line);
   }
