@@ -20,8 +20,9 @@ export function getAttendanceEventAsCsv({
   visitors,
   arrived,
   left,
+  customer,
   isRealDate,
   reason,
 }) {
-  return `${date},${type},${visitors},${arrived},${left},${isRealDate},${reason}`;
+  return `${date},${type},${visitors},${arrived},${left},${customer},${isRealDate},${reason}`;
 }

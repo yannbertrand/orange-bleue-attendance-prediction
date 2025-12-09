@@ -1,7 +1,12 @@
 import { Temporal } from 'temporal-polyfill';
 import { CustomDate } from '../../src/utils/date.js';
 
-export function getCustomer({ customerNumber, checkinTime, checkoutTime }) {
+export function getCustomer({
+  customerId,
+  customerNumber,
+  checkinTime,
+  checkoutTime,
+}) {
   if (!customerNumber.startsWith('FF0')) {
     throw new Error(`Customer invalid number: "${customerNumber}"`);
   }
@@ -20,6 +25,7 @@ export function getCustomer({ customerNumber, checkinTime, checkoutTime }) {
         id: customerNumber,
         checkin,
         checkout,
+        customer: customerId,
         realCheckout: true,
         reason: '',
       };
@@ -29,6 +35,7 @@ export function getCustomer({ customerNumber, checkinTime, checkoutTime }) {
       id: customerNumber,
       checkin,
       checkout: estimatedCheckout,
+      customer: customerId,
       realCheckout: false,
       reason: 'DOUBLE_SCAN',
     };
@@ -38,6 +45,7 @@ export function getCustomer({ customerNumber, checkinTime, checkoutTime }) {
     id: customerNumber,
     checkin,
     checkout: estimatedCheckout,
+    customer: customerId,
     realCheckout: false,
     reason: 'PREDICTION',
   };

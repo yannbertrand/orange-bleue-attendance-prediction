@@ -25,8 +25,9 @@ export function getBetterEventsFromCsv(csvData) {
       visitors: Number.parseInt(attendanceLine[2], 10),
       arrived: Number.parseInt(attendanceLine[3], 10),
       left: Number.parseInt(attendanceLine[4], 10),
-      isRealDate: attendanceLine[5] === 'true',
-      reason: attendanceLine[6],
+      customer: attendanceLine[5],
+      isRealDate: attendanceLine[6],
+      reason: attendanceLine[7],
     };
     result.push(line);
   }

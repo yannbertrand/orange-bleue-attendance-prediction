@@ -19,6 +19,7 @@ function getEvent(type, rawEvent) {
       type: 'CHECKIN',
       arrived: 1,
       left: 0,
+      customer: rawEvent.customer,
       isRealDate: true,
       reason: '',
     };
@@ -28,6 +29,7 @@ function getEvent(type, rawEvent) {
       type: 'CHECKOUT',
       arrived: 0,
       left: 1,
+      customer: rawEvent.customer,
       isRealDate: rawEvent.realCheckout,
       reason: rawEvent.reason,
     };
