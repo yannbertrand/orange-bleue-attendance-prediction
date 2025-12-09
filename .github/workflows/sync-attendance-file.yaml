@@ -1,0 +1,53 @@
+name: Sync attendance data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 5-22 * * *' # 6h-23h
+    - cron: '25 23,0,1 * * *' # 0h-2h
+
+jobs:
+  sync-attendance-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm i --prefer-offline
+      - id: sync-attendance-file
+        name: Sync attendance file
+        run: npm run gh:sync-attendance-file
+        env:
+          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
+          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+          ORANGE_BLEUE_STUDIO_ID: ${{secrets.ORANGE_BLEUE_STUDIO_ID}}
+          ORANGE_BLEUE_AUTH_TOKEN: ${{secrets.ORANGE_BLEUE_AUTH_TOKEN}}
+          ORANGE_BLEUE_COOKIE: ${{secrets.ORANGE_BLEUE_COOKIE}}
+      - id: check-empty-file
+        name: Interrupt workflow
+        run: |
+          set +e
+          git diff --quiet data/attendance.csv
+          DIFF_EXIT_CODE=$?
+          set -e
+
+          if [ $DIFF_EXIT_CODE -ne 0 ]; then
+              echo "attendance.csv has changed"
+              echo "do-commit=true" >> $GITHUB_OUTPUT
+          else
+              echo "attendance.csv has not changed"
+              echo "do-commit=false" >> $GITHUB_OUTPUT
+          fi
+      - uses: test-room-7/action-update-file@v2
+        if: steps.check-empty-file.outputs.do-commit == 'true'
+        with:
+          file-path: data/attendance.csv
+          commit-msg: 📦️ Sync attendance.csv
+          github-token: ${{ secrets.GITHUB_TOKEN }}
