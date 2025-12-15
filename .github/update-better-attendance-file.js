@@ -2,7 +2,7 @@ import {
   getLiveCheckins,
   getLiveCheckouts,
 } from '../scrapper/get-live-checkins.js';
-import { getCheckinsCheckoutsEvents } from '../src/io/attendance/get-checkins-checkouts-events.js';
+import { toEvents } from '../src/io/attendance/to-events.js';
 import { readBetterAttendanceFile } from '../src/io/read-better-attendance-events-file.js';
 import { updateBetterAttendanceFile } from '../src/io/update-better-attendance-file.js';
 import { CustomDate, getNow } from '../src/utils/date.js';
@@ -28,7 +28,7 @@ const firstAttendanceEventOfDay = {
 const checkins = await getLiveCheckins();
 const checkouts = await getLiveCheckouts();
 
-const events = getCheckinsCheckoutsEvents([...checkins, ...checkouts]);
+const events = toEvents([...checkins, ...checkouts]);
 const newEvents = getNewEvents(firstAttendanceEventOfDay, events);
 
 const { nbOfNewRows, nbOfUpdatedRows } = await updateBetterAttendanceFile(

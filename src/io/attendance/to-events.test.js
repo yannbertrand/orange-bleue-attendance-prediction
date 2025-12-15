@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { CustomDate } from '../../utils/date.js';
-import { getCheckinsCheckoutsEvents } from './get-checkins-checkouts-events.js';
+import { toEvents } from './to-events.js';
 
-describe('getCheckinsCheckoutsEvents', () => {
+describe('toEvents', () => {
   it('should create two separate events for checkin and checkouts', () => {
     expect(
-      getCheckinsCheckoutsEvents([
+      toEvents([
         {
           checkin: new CustomDate('2025-12-05T06:00:00'),
           checkout: new CustomDate('2025-12-05T08:00:00'),
@@ -38,7 +38,7 @@ describe('getCheckinsCheckoutsEvents', () => {
 
   it('should create all events needed', () => {
     expect(
-      getCheckinsCheckoutsEvents([
+      toEvents([
         {
           checkin: new CustomDate('2025-12-05T06:00:00'),
           checkout: new CustomDate('2025-12-05T08:00:00'),
@@ -96,7 +96,7 @@ describe('getCheckinsCheckoutsEvents', () => {
 
   it('should sort events', () => {
     expect(
-      getCheckinsCheckoutsEvents([
+      toEvents([
         {
           checkin: new CustomDate('2025-12-05T06:00:00'),
           checkout: new CustomDate('2025-12-05T08:00:00'),

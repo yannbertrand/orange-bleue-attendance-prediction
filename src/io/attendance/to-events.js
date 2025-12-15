@@ -1,10 +1,10 @@
 import { Temporal } from 'temporal-polyfill';
 
-export function getCheckinsCheckoutsEvents(rawEvents) {
+export function toEvents(customerVisits) {
   const events = [];
-  for (const rawEvent of rawEvents) {
-    events.push(getEvent('CHECKED_IN', rawEvent));
-    events.push(getEvent('CHECKED_OUT', rawEvent));
+  for (const customerVisit of customerVisits) {
+    events.push(getEvent('CHECKED_IN', customerVisit));
+    events.push(getEvent('CHECKED_OUT', customerVisit));
   }
 
   return events.sort((eventA, eventB) =>

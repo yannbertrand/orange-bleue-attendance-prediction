@@ -1,5 +1,4 @@
 import { Temporal } from 'temporal-polyfill';
-import { getEvent } from '../../src/io/attendance/get-checkins-checkouts-events.js';
 import { CustomDate } from '../../src/utils/date.js';
 
 const officialEstimatedVisitDuration = Temporal.Duration.from({ hours: 2 });
