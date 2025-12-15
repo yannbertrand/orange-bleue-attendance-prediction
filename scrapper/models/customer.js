@@ -18,7 +18,7 @@ export function getCustomer({
     if (
       Temporal.Duration.compare(
         checkin.until(checkout),
-        Temporal.Duration.from({ seconds: 10 })
+        Temporal.Duration.from({ minutes: 10 })
       ) > 0
     ) {
       return {
