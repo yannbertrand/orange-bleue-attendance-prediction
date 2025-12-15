@@ -1,5 +1,5 @@
 import { getMagicLineInfo } from '../scripts/utils/env.js';
-import { getCustomer } from './models/customer.js';
+import { getCustomerVisit } from './models/customer.js';
 
 export async function getLiveCheckins() {
   const { studioId, cookie } = getMagicLineInfo();
@@ -35,7 +35,7 @@ export async function getLiveCheckins() {
 
   const result = await response.json();
 
-  return result.checkins.map((c) => getCustomer(c));
+  return result.checkins.map((c) => getCustomerVisit(c));
 }
 
 export async function getLiveCheckouts() {
@@ -101,5 +101,5 @@ export async function getLiveCheckouts() {
   const result1 = await response1.json();
   const result2 = await response2.json();
 
-  return [...result1, ...result2].map((c) => getCustomer(c));
+  return [...result1, ...result2].map((c) => getCustomerVisit(c));
 }

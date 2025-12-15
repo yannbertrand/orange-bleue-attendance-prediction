@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { CustomDate } from '../../src/utils/date.js';
-import { getCustomer } from './customer.js';
+import { getCustomerVisit } from './customer.js';
 
-describe('getCustomer', () => {
+describe('getCustomerVisit', () => {
   it('should throw if invalid customerNumber', () => {
-    expect(() => getCustomer({ customerNumber: 1 })).toThrow();
+    expect(() => getCustomerVisit({ customerNumber: 1 })).toThrow();
   });
 
   describe('when checkout not available', () => {
     it('should predict checkout', () => {
-      const customer = getCustomer({
+      const customer = getCustomerVisit({
         customerId: 1,
         customerNumber: 'FF01',
         checkinTime: '2025-12-26T12:00:00+01:00',
@@ -29,7 +29,7 @@ describe('getCustomer', () => {
   describe('when checkout is available', () => {
     describe('when is supposedly double scan', () => {
       it('should correct checkout', () => {
-        const customer = getCustomer({
+        const customer = getCustomerVisit({
           customerId: 1,
           customerNumber: 'FF01',
           checkinTime: '2025-12-26T12:00:00+01:00',
@@ -48,7 +48,7 @@ describe('getCustomer', () => {
 
       describe('when visit timed out', () => {
         it('should correct checkout', () => {
-          const customer = getCustomer({
+          const customer = getCustomerVisit({
             customerId: 1,
             customerNumber: 'FF01',
             checkinTime: '2025-12-26T12:00:00+01:00',
@@ -68,7 +68,7 @@ describe('getCustomer', () => {
 
       describe('when real checkout', () => {
         it('should keep checkout value', () => {
-          const customer = getCustomer({
+          const customer = getCustomerVisit({
             customerId: 1,
             customerNumber: 'FF01',
             checkinTime: '2025-12-26T12:00:00+01:00',
