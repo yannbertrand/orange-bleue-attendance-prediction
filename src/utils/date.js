@@ -48,6 +48,10 @@ export class CustomDate extends Temporal.ZonedDateTime {
     return new CustomDate(super.subtract(duration).toString());
   }
 
+  with(param) {
+    return new CustomDate(super.with(param).toString());
+  }
+
   toString() {
     return super.toString({ timeZoneName: 'never' });
   }

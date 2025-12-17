@@ -28,8 +28,29 @@ const firstAttendanceEventOfDay = {
 const checkins = await getLiveCheckins();
 const checkouts = await getLiveCheckouts();
 
-const events = toEvents([...checkins, ...checkouts]);
-const newEvents = getNewEvents(firstAttendanceEventOfDay, events);
+const nightEvents = getNightEvents(
+  firstDayNeededForEstimationCalculation,
+  new CustomDate(getNow())
+);
+const events = [
+  ...nightEvents,
+  ...currentAttendance,
+  ...toEvents([...checkins, ...checkouts]),
+].sort((eventA, eventB) =>
+  Temporal.ZonedDateTime.compare(eventA.date, eventB.date)
+);
+
+const filteredDuplicates = new Map();
+for (const e of events) {
+  if (!filteredDuplicates.has(e.date)) {
+    filteredDuplicates.set(e.date, e);
+  }
+}
+
+const newEvents = getNewEvents(
+  firstAttendanceEventOfDay,
+  Object.values(Object.fromEntries(filteredDuplicates))
+);
 
 const { nbOfNewRows, nbOfUpdatedRows } = await updateBetterAttendanceFile(
   firstAttendanceEventOfDay.date,
@@ -57,4 +78,65 @@ function getNewEvents(firstAttendanceEventOfDay, events) {
   }
 
   return newEvents;
+}
+
+function getNightEvents(firstDay, today) {
+  const nightEvents = [];
+
+  let currentDay = firstDay;
+  do {
+    nightEvents.push(
+      getNightEvent(
+        currentDay
+          .subtract({ days: 1 })
+          .with({ hour: 23, minute: 59, second: 59, microsecond: 0 })
+      )
+    );
+    nightEvents.push(
+      getNightEvent(
+        currentDay.with({ hour: 0, minute: 0, second: 0, microsecond: 0 })
+      )
+    );
+    nightEvents.push(
+      getNightEvent(
+        currentDay.with({ hour: 1, minute: 0, second: 0, microsecond: 0 })
+      )
+    );
+    nightEvents.push(
+      getNightEvent(
+        currentDay.with({ hour: 2, minute: 0, second: 0, microsecond: 0 })
+      )
+    );
+    nightEvents.push(
+      getNightEvent(
+        currentDay.with({ hour: 3, minute: 0, second: 0, microsecond: 0 })
+      )
+    );
+    nightEvents.push(
+      getNightEvent(
+        currentDay.with({ hour: 4, minute: 0, second: 0, microsecond: 0 })
+      )
+    );
+    nightEvents.push(
+      getNightEvent(
+        currentDay.with({ hour: 5, minute: 0, second: 0, microsecond: 0 })
+      )
+    );
+
+    currentDay = currentDay.add({ days: 1 });
+  } while (Temporal.PlainDate.compare(currentDay, today) <= 0);
+
+  return nightEvents;
+}
+
+function getNightEvent(date) {
+  return {
+    date: new CustomDate(date.toString()),
+    type: 'BLANK',
+    arrived: 0,
+    left: 0,
+    customer: '',
+    isRealDate: false,
+    reason: 'NIGHT_TIME',
+  };
 }
