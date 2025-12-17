@@ -53,7 +53,7 @@ export class CustomDate extends Temporal.ZonedDateTime {
   }
 
   toString() {
-    return super.toString({ timeZoneName: 'never' });
+    return super.toString({ timeZoneName: 'never', fractionalSecondDigits: 3 });
   }
 
   print() {
