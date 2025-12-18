@@ -28,17 +28,13 @@ const firstAttendanceEventOfDay = {
 
 const checkins = await getLiveCheckins();
 const checkouts = await getLiveCheckouts();
-
+console.log(JSON.stringify(checkouts.slice(0, 10)));
 const nightEvents = getNightEvents(
   firstDayNeededForEstimationCalculation,
   new CustomDate(getNow())
 );
-const events = [
-  ...nightEvents,
-  ...currentAttendance,
-  ...toEvents([...checkins, ...checkouts]),
-].sort((eventA, eventB) =>
-  Temporal.ZonedDateTime.compare(eventA.date, eventB.date)
+const events = [...nightEvents, ...toEvents([...checkins, ...checkouts])].sort(
+  (eventA, eventB) => Temporal.ZonedDateTime.compare(eventA.date, eventB.date)
 );
 
 const filteredDuplicates = new Map();
