@@ -3,38 +3,21 @@ import { CustomDate } from '../../src/utils/date.js';
 import { getCustomerVisit } from './customer.js';
 
 describe('getCustomerVisit', () => {
-  it('should throw if invalid customerNumber', () => {
-    expect(() => getCustomerVisit({ customerNumber: 1 })).toThrow();
-  });
-
-  describe('when checkout not available', () => {
-    it('should predict checkout', () => {
-      const customer = getCustomerVisit({
-        customerId: 1,
-        customerNumber: 'FF01',
-        checkinTime: '2025-12-26T12:00:00+01:00',
-      });
-
-      expect(customer).toStrictEqual({
-        id: 'FF01',
-        checkin: new CustomDate('2025-12-26T12:00:00+01:00'),
-        checkout: new CustomDate('2025-12-26T13:00:00+01:00'),
-        customer: 1,
-        realCheckout: false,
-        reason: 'PREDICTION',
-      });
+  describe('doCustomPrediction = true', () => {
+    it('should throw if invalid customerNumber', () => {
+      expect(() => getCustomerVisit({ customerNumber: 1 }, true)).toThrow();
     });
-  });
 
-  describe('when checkout is available', () => {
-    describe('when is supposedly double scan', () => {
-      it('should correct checkout', () => {
-        const customer = getCustomerVisit({
-          customerId: 1,
-          customerNumber: 'FF01',
-          checkinTime: '2025-12-26T12:00:00+01:00',
-          checkoutTime: '2025-12-26T12:01:00+01:00',
-        });
+    describe('when checkout not available', () => {
+      it('should predict checkout', () => {
+        const customer = getCustomerVisit(
+          {
+            customerId: 1,
+            customerNumber: 'FF01',
+            checkinTime: '2025-12-26T12:00:00+01:00',
+          },
+          true
+        );
 
         expect(customer).toStrictEqual({
           id: 'FF01',
@@ -42,18 +25,23 @@ describe('getCustomerVisit', () => {
           checkout: new CustomDate('2025-12-26T13:00:00+01:00'),
           customer: 1,
           realCheckout: false,
-          reason: 'DOUBLE_SCAN',
+          reason: 'PREDICTION',
         });
       });
+    });
 
-      describe('when visit timed out', () => {
+    describe('when checkout is available', () => {
+      describe('when is supposedly double scan', () => {
         it('should correct checkout', () => {
-          const customer = getCustomerVisit({
-            customerId: 1,
-            customerNumber: 'FF01',
-            checkinTime: '2025-12-26T12:00:00+01:00',
-            checkoutTime: '2025-12-26T14:00:00+01:00',
-          });
+          const customer = getCustomerVisit(
+            {
+              customerId: 1,
+              customerNumber: 'FF01',
+              checkinTime: '2025-12-26T12:00:00+01:00',
+              checkoutTime: '2025-12-26T12:01:00+01:00',
+            },
+            true
+          );
 
           expect(customer).toStrictEqual({
             id: 'FF01',
@@ -61,27 +49,140 @@ describe('getCustomerVisit', () => {
             checkout: new CustomDate('2025-12-26T13:00:00+01:00'),
             customer: 1,
             realCheckout: false,
-            reason: 'VISIT_TIMEOUT',
+            reason: 'DOUBLE_SCAN',
+          });
+        });
+
+        describe('when visit timed out', () => {
+          it('should correct checkout', () => {
+            const customer = getCustomerVisit(
+              {
+                customerId: 1,
+                customerNumber: 'FF01',
+                checkinTime: '2025-12-26T12:00:00+01:00',
+                checkoutTime: '2025-12-26T14:00:00+01:00',
+              },
+              true
+            );
+
+            expect(customer).toStrictEqual({
+              id: 'FF01',
+              checkin: new CustomDate('2025-12-26T12:00:00+01:00'),
+              checkout: new CustomDate('2025-12-26T13:00:00+01:00'),
+              customer: 1,
+              realCheckout: false,
+              reason: 'VISIT_TIMEOUT',
+            });
+          });
+        });
+
+        describe('when real checkout', () => {
+          it('should keep checkout value', () => {
+            const customer = getCustomerVisit(
+              {
+                customerId: 1,
+                customerNumber: 'FF01',
+                checkinTime: '2025-12-26T12:00:00+01:00',
+                checkoutTime: '2025-12-26T12:34:00+01:00',
+              },
+              true
+            );
+
+            expect(customer).toStrictEqual({
+              id: 'FF01',
+              checkin: new CustomDate('2025-12-26T12:00:00+01:00'),
+              checkout: new CustomDate('2025-12-26T12:34:00+01:00'),
+              customer: 1,
+              realCheckout: true,
+              reason: '',
+            });
           });
         });
       });
+    });
+  });
 
-      describe('when real checkout', () => {
-        it('should keep checkout value', () => {
+  describe('doCustomPrediction = false', () => {
+    it('should throw if invalid customerNumber', () => {
+      expect(() => getCustomerVisit({ customerNumber: 1 })).toThrow();
+    });
+
+    describe('when checkout not available', () => {
+      it('should not predict checkout', () => {
+        const customer = getCustomerVisit({
+          customerId: 1,
+          customerNumber: 'FF01',
+          checkinTime: '2025-12-26T12:00:00+01:00',
+        });
+
+        expect(customer).toStrictEqual({
+          id: 'FF01',
+          checkin: new CustomDate('2025-12-26T12:00:00+01:00'),
+          checkout: undefined,
+          customer: 1,
+          realCheckout: true,
+          reason: '',
+        });
+      });
+    });
+
+    describe('when checkout is available', () => {
+      describe('when is supposedly double scan', () => {
+        it('should not correct checkout', () => {
           const customer = getCustomerVisit({
             customerId: 1,
             customerNumber: 'FF01',
             checkinTime: '2025-12-26T12:00:00+01:00',
-            checkoutTime: '2025-12-26T12:34:00+01:00',
+            checkoutTime: '2025-12-26T12:01:00+01:00',
           });
 
           expect(customer).toStrictEqual({
             id: 'FF01',
             checkin: new CustomDate('2025-12-26T12:00:00+01:00'),
-            checkout: new CustomDate('2025-12-26T12:34:00+01:00'),
+            checkout: new CustomDate('2025-12-26T12:01:00+01:00'),
             customer: 1,
             realCheckout: true,
             reason: '',
+          });
+        });
+
+        describe('when visit timed out', () => {
+          it('should not correct checkout', () => {
+            const customer = getCustomerVisit({
+              customerId: 1,
+              customerNumber: 'FF01',
+              checkinTime: '2025-12-26T12:00:00+01:00',
+              checkoutTime: '2025-12-26T14:00:00+01:00',
+            });
+
+            expect(customer).toStrictEqual({
+              id: 'FF01',
+              checkin: new CustomDate('2025-12-26T12:00:00+01:00'),
+              checkout: new CustomDate('2025-12-26T14:00:00+01:00'),
+              customer: 1,
+              realCheckout: true,
+              reason: '',
+            });
+          });
+        });
+
+        describe('when real checkout', () => {
+          it('should keep checkout value', () => {
+            const customer = getCustomerVisit({
+              customerId: 1,
+              customerNumber: 'FF01',
+              checkinTime: '2025-12-26T12:00:00+01:00',
+              checkoutTime: '2025-12-26T12:34:00+01:00',
+            });
+
+            expect(customer).toStrictEqual({
+              id: 'FF01',
+              checkin: new CustomDate('2025-12-26T12:00:00+01:00'),
+              checkout: new CustomDate('2025-12-26T12:34:00+01:00'),
+              customer: 1,
+              realCheckout: true,
+              reason: '',
+            });
           });
         });
       });

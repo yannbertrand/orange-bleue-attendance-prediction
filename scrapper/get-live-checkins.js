@@ -1,7 +1,7 @@
 import { getMagicLineInfo } from '../scripts/utils/env.js';
 import { getCustomerVisit } from './models/customer.js';
 
-export async function getLiveCheckins() {
+export async function getLiveCheckins(doCustomPrediction = false) {
   const { studioId, cookie } = getMagicLineInfo();
 
   const response = await fetch(
@@ -35,10 +35,10 @@ export async function getLiveCheckins() {
 
   const result = await response.json();
 
-  return result.checkins.map((c) => getCustomerVisit(c));
+  return result.checkins.map((c) => getCustomerVisit(c, doCustomPrediction));
 }
 
-export async function getLiveCheckouts() {
+export async function getLiveCheckouts(doCustomPrediction = false) {
   const { studioId, cookie } = getMagicLineInfo();
 
   const response1 = await fetch(
@@ -101,5 +101,7 @@ export async function getLiveCheckouts() {
   const result1 = await response1.json();
   const result2 = await response2.json();
 
-  return [...result1, ...result2].map((c) => getCustomerVisit(c));
+  return [...result1, ...result2].map((c) =>
+    getCustomerVisit(c, doCustomPrediction)
+  );
 }

@@ -1,15 +1,15 @@
 import { Temporal } from 'temporal-polyfill';
 import { CustomDate } from '../../src/utils/date.js';
 
-const officialEstimatedVisitDuration = Temporal.Duration.from({ hours: 2 });
+export const officialEstimatedVisitDuration = Temporal.Duration.from({
+  hours: 2,
+});
 const customEstimatedVisitDuration = Temporal.Duration.from({ hours: 1 });
 
-export function getCustomerVisit({
-  customerId,
-  customerNumber,
-  checkinTime,
-  checkoutTime,
-}) {
+export function getCustomerVisit(
+  { customerId, customerNumber, checkinTime, checkoutTime },
+  doCustomPrediction
+) {
   if (!customerNumber.startsWith('FF0')) {
     throw new Error(`Customer invalid number: "${customerNumber}"`);
   }
@@ -30,10 +30,10 @@ export function getCustomerVisit({
         return {
           id: customerNumber,
           checkin,
-          checkout: customEstimatedCheckout,
+          checkout: doCustomPrediction ? customEstimatedCheckout : checkout,
           customer: customerId,
-          realCheckout: false,
-          reason: 'VISIT_TIMEOUT',
+          realCheckout: doCustomPrediction ? false : true,
+          reason: doCustomPrediction ? 'VISIT_TIMEOUT' : '',
         };
       }
       return {
@@ -49,19 +49,19 @@ export function getCustomerVisit({
     return {
       id: customerNumber,
       checkin,
-      checkout: customEstimatedCheckout,
+      checkout: doCustomPrediction ? customEstimatedCheckout : checkout,
       customer: customerId,
-      realCheckout: false,
-      reason: 'DOUBLE_SCAN',
+      realCheckout: doCustomPrediction ? false : true,
+      reason: doCustomPrediction ? 'DOUBLE_SCAN' : '',
     };
   }
 
   return {
     id: customerNumber,
     checkin,
-    checkout: customEstimatedCheckout,
+    checkout: doCustomPrediction ? customEstimatedCheckout : undefined,
     customer: customerId,
-    realCheckout: false,
-    reason: 'PREDICTION',
+    realCheckout: doCustomPrediction ? false : true,
+    reason: doCustomPrediction ? 'PREDICTION' : '',
   };
 }
