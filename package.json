@@ -9,6 +9,7 @@
     "gh:update-attendance-file": "node --env-file-if-exists=.env .github/update-attendance-file.js",
     "gh:sync-attendance-file": "node --env-file-if-exists=.env .github/sync-attendance-file.js",
     "gh:update-better-attendance-file": "node --env-file-if-exists=.env .github/update-better-attendance-file.js",
+    "gh:update-raw-attendance-file": "node --env-file-if-exists=.env .github/update-raw-attendance-file.js",
     "gh:update-prediction-file": "node --env-file-if-exists=.env .github/update-prediction-file.js",
     "netlify:save-attendance-event": "node --env-file-if-exists=.env scripts/netlify/save-attendance-event.js",
     "netlify:sync-attendance-file": "node --env-file-if-exists=.env scripts/netlify/sync-attendance-file.js"
