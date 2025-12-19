@@ -125,21 +125,25 @@ describe('CustomDate', () => {
     it('should return date without timezone name', () => {
       expect(
         new CustomDate('2025-12-26T12:00:00+01:00[Europe/Paris]').toString()
-      ).toEqual('2025-12-26T12:00:00+01:00');
+      ).toEqual('2025-12-26T12:00:00.000+01:00');
     });
 
     it('should return string with timezone offset on winter time', () => {
       const winterDateTime = new CustomDate(
         '2025-12-26T12:00:00+01:00[Europe/Paris]'
       );
-      expect(winterDateTime.toString()).toEqual('2025-12-26T12:00:00+01:00');
+      expect(winterDateTime.toString()).toEqual(
+        '2025-12-26T12:00:00.000+01:00'
+      );
     });
 
     it('should return string with timezone offset on summer time', () => {
       const summerDateTime = new CustomDate(
         '2025-08-08T12:00:00+02:00[Europe/Paris]'
       );
-      expect(summerDateTime.toString()).toEqual('2025-08-08T12:00:00+02:00');
+      expect(summerDateTime.toString()).toEqual(
+        '2025-08-08T12:00:00.000+02:00'
+      );
     });
   });
 });

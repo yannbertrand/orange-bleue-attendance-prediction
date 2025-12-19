@@ -56,6 +56,10 @@ export class CustomDate extends Temporal.ZonedDateTime {
     return super.toString({ timeZoneName: 'never', fractionalSecondDigits: 3 });
   }
 
+  equals(date) {
+    return super.equals(date);
+  }
+
   print() {
     return super.toLocaleString('fr-FR', {
       dateStyle: 'short',
