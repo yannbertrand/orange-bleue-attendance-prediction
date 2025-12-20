@@ -26,9 +26,8 @@ const firstAttendanceEventOfDay = {
     startOfDay),
 };
 
-const checkins = await getLiveCheckins();
-const checkouts = await getLiveCheckouts();
-console.log(JSON.stringify(checkouts.slice(0, 10)));
+const checkins = await getLiveCheckins(true);
+const checkouts = await getLiveCheckouts(true);
 const nightEvents = getNightEvents(
   firstDayNeededForEstimationCalculation,
   new CustomDate(getNow())
