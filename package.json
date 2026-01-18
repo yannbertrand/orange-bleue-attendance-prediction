@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@netlify/blobs": "10.5.0",
-    "netlify-cli": "23.13.3",
+    "netlify-cli": "23.13.4",
     "vitest": "4.0.17"
   },
   "dependencies": {
