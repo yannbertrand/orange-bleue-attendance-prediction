@@ -20,6 +20,6 @@
     "vitest": "4.0.18"
   },
   "dependencies": {
-    "temporal-polyfill": "0.3.0"
+    "temporal-polyfill": "0.3.2"
   }
 }
