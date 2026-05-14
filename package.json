@@ -15,7 +15,7 @@
     "netlify:sync-attendance-file": "node --env-file-if-exists=.env scripts/netlify/sync-attendance-file.js"
   },
   "devDependencies": {
-    "@netlify/blobs": "10.7.5",
+    "@netlify/blobs": "10.7.6",
     "netlify-cli": "23.15.1",
     "vitest": "4.1.6"
   },
