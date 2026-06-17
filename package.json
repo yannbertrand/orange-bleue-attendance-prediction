@@ -17,7 +17,7 @@
   "devDependencies": {
     "@netlify/blobs": "10.7.9",
     "netlify-cli": "23.15.1",
-    "vitest": "4.1.8"
+    "vitest": "4.1.9"
   },
   "dependencies": {
     "temporal-polyfill": "0.3.2"
