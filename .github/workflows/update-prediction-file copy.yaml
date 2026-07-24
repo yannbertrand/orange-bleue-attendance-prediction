@@ -1,0 +1,50 @@
+name: Update calendar data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '50 0 * * *'
+
+jobs:
+  update-calendar-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v6.1.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v6.5.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm i --prefer-offline
+      - id: update-calendar-file
+        name: Update calendar file
+        run: npm run gh:update-calendar-file
+        env:
+          ORANGE_BLEUE_STUDIO_ID: ${{secrets.ORANGE_BLEUE_STUDIO_ID}}
+          ORANGE_BLEUE_AUTH_TOKEN: ${{secrets.ORANGE_BLEUE_AUTH_TOKEN}}
+          ORANGE_BLEUE_COOKIE: ${{secrets.ORANGE_BLEUE_COOKIE}}
+      - id: check-empty-file
+        name: Interrupt workflow
+        run: |
+          set +e
+          git diff --quiet data/calendar.ics
+          DIFF_EXIT_CODE=$?
+          set -e
+
+          if [ $DIFF_EXIT_CODE -ne 0 ]; then
+              echo "calendar.ics has changed"
+              echo "do-commit=true" >> $GITHUB_OUTPUT
+          else
+              echo "calendar.ics has not changed"
+              echo "do-commit=false" >> $GITHUB_OUTPUT
+          fi
+      - uses: test-room-7/action-update-file@v2.1.0
+        if: steps.check-empty-file.outputs.do-commit == 'true'
+        with:
+          file-path: data/calendar.ics
+          commit-msg: 📦️ Update calendar.ics
+          github-token: ${{ secrets.GITHUB_TOKEN }}

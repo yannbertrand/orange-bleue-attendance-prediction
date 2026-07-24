@@ -10,6 +10,7 @@
     "gh:sync-attendance-file": "node --env-file-if-exists=.env .github/sync-attendance-file.js",
     "gh:update-better-attendance-file": "node --env-file-if-exists=.env .github/update-better-attendance-file.js",
     "gh:update-raw-attendance-file": "node --env-file-if-exists=.env .github/update-raw-attendance-file.js",
+    "gh:update-calendar-file": "node --env-file-if-exists=.env .github/update-calendar-file.js",
     "gh:update-prediction-file": "node --env-file-if-exists=.env .github/update-prediction-file.js",
     "netlify:save-attendance-event": "node --env-file-if-exists=.env scripts/netlify/save-attendance-event.js",
     "netlify:sync-attendance-file": "node --env-file-if-exists=.env scripts/netlify/sync-attendance-file.js"
@@ -20,6 +21,7 @@
     "vitest": "4.1.10"
   },
   "dependencies": {
+    "ical-generator": "11.0.0",
     "temporal-polyfill": "0.3.2"
   }
 }
