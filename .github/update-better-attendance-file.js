@@ -4,11 +4,15 @@ import {
   getLiveCheckouts,
 } from '../scrapper/get-live-checkins.js';
 import { toEvents } from '../src/io/attendance/to-events.js';
+import { verifyEvents } from '../src/io/attendance/verify-events.js';
 import { readBetterAttendanceFile } from '../src/io/read-better-attendance-events-file.js';
 import { updateBetterAttendanceFile } from '../src/io/update-better-attendance-file.js';
 import { CustomDate, getNow } from '../src/utils/date.js';
 
 const forcedCalculationDate = undefined;
+// const forcedCalculationDate = Temporal.ZonedDateTime.from(
+//   '2025-12-14T06:00:00+01:00[Europe/Paris]'
+// );
 
 const currentAttendance = await readBetterAttendanceFile();
 const today = forcedCalculationDate ?? new CustomDate(getNow());
@@ -32,7 +36,7 @@ const nightEvents = getNightEvents(
   firstDayNeededForEstimationCalculation,
   new CustomDate(getNow())
 );
-const events = [...nightEvents, ...toEvents([...checkins, ...checkouts])].sort(
+const events = [...nightEvents, ...toEvents([...checkouts, ...checkins])].sort(
   (eventA, eventB) => Temporal.ZonedDateTime.compare(eventA.date, eventB.date)
 );
 
