@@ -21,7 +21,7 @@
     "vitest": "4.1.12"
   },
   "dependencies": {
-    "ical-generator": "11.1.2",
+    "ical-generator": "11.1.3",
     "temporal-polyfill": "0.3.2"
   }
 }
